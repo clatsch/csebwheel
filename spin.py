@@ -83,3 +83,5 @@ while True:
         # delay between updates
         time.sleep(0.1)
 
+finally:
+    pixels.fill((0, 0, 0))
