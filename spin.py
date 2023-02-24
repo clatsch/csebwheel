@@ -17,7 +17,7 @@ pixels = neopixel.NeoPixel(
 counter = 0  # counter for the number of spins
 
 starting_delay = 0.1
-delay_increment = 0.01
+delay_increment = 0.1
 current_delay = starting_delay
 
 while True:
