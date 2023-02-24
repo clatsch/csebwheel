@@ -14,6 +14,8 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
 
+counter = 0  # counter for the number of spins
+
 while True:
     pixels.fill((0, 0, 0))  # turn off all pixels
     pixels.show()
@@ -22,8 +24,7 @@ while True:
     pixel_index = random.randint(0, num_pixels-1)
 
     # choose a random number of spins
-    num_spins = 2
-    # num_spins = random.randint(3, 10)
+    num_spins = random.randint(3, 10)
 
     # light up the chosen pixel
     for i in range(num_spins * num_pixels):
@@ -42,6 +43,20 @@ while True:
 
         # delay between updates
         time.sleep(0.1)
+
+        # check if three spins have been completed
+        if i % num_pixels == num_pixels - 1:
+            counter += 1  # increment the counter
+
+            if counter == 3:
+                # light up the last LED
+                pixels.fill((255, 255, 255))
+                pixels.show()
+                break  # break out of the loop
+
+    if counter == 3:
+        # break out of the outer while loop
+        break
 
 pixels.fill((0, 0, 0))  # turn off all pixels
 pixels.show()           # update the pixels to turn them off
