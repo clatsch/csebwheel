@@ -52,6 +52,7 @@ while True:
                 # light up the last LED
                 pixels.fill((255, 255, 255))
                 pixels.show()
+                time.sleep(15)
                 break  # break out of the loop
 
     if counter == 3:
