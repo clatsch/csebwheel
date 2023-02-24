@@ -48,14 +48,14 @@ while True:
         current_delay += delay_increment
 
         # check if the delay has been more than 3 seconds
-        if current_delay > 3:
+        if current_delay > 1.5:
             # light up the last LED
             pixels.fill((255, 0, 255))
             pixels.show()
             time.sleep(5)
             break  # break out of the loop
 
-    if current_delay > 3:
+    if current_delay > 1.5:
         # break out of the outer while loop
         break
 
