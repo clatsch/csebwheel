@@ -14,8 +14,6 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
 
-counter = 0  # counter for the number of spins
-
 starting_delay = 0.1
 delay_increment = 0.1
 current_delay = starting_delay
@@ -49,18 +47,15 @@ while True:
         time.sleep(current_delay)
         current_delay += delay_increment
 
-        # check if three spins have been completed
-        if i % num_pixels == num_pixels - 1:
-            counter += 1  # increment the counter
+        # check if the delay has been more than 3 seconds
+        if current_delay > 3:
+            # light up the last LED
+            pixels.fill((255, 0, 255))
+            pixels.show()
+            time.sleep(5)
+            break  # break out of the loop
 
-            if counter == 3:
-                # light up the last LED
-                pixels.fill((255, 0, 255))
-                pixels.show()
-                time.sleep(5)
-                break  # break out of the loop
-
-    if counter == 3:
+    if current_delay > 3:
         # break out of the outer while loop
         break
 
