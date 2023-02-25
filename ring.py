@@ -88,13 +88,13 @@ try:
 
                 pixels[led] = (255,255,255)
 
-                pixels[led-15] = (255, 0, 0)
-                pixels[led-14] = (128, 0, 0)
-                pixels[led-13] = (64, 0, 0)
-                pixels[led-12] = (32, 0, 0)
-                pixels[led-11] = (64, 0, 0)
+                pixels[led-11] = (255, 0, 0)
                 pixels[led-10] = (128, 0, 0)
-                pixels[led-9] = (255, 0, 0)
+                pixels[led-9] = (64, 0, 0)
+                pixels[led-8] = (32, 0, 0)
+                pixels[led-7] = (64, 0, 0)
+                pixels[led-6] = (128, 0, 0)
+                pixels[led-5] = (255, 0, 0)
 
                 time.sleep(rotation/decay) # creates log style increasing time delay
                 decay -= 1 # increases time delay per led
