@@ -97,7 +97,7 @@ try:
                 time.sleep(rotation/decay) # creates log style increasing time delay
                 decay -= 1 # increases time delay per led
 
-                # pixels.show()
+                pixels.show()
                 # pixels.fill((0, 0, 0))
                 # pixels.show()
 
