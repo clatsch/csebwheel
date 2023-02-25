@@ -11,7 +11,7 @@ num_pixels = 16
 ORDER = neopixel.GRB
 
 pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.2, auto_write=True, pixel_order=ORDER
+    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
 
 while True:
@@ -28,7 +28,10 @@ while True:
     # pixels.show()
     # time.sleep(1)
 
-    pixels.fill((255, 0, 0))
+    pixels.fill((255, 255, 0))
+    pixels.show()
+    # time.sleep(1)pixels.show()
+    #     # time.sleep(1)
 
 
 
