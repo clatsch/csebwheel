@@ -21,10 +21,9 @@ while True:
     for rotation in range(rotations):
 
         for i in range(num_pixels):
-            pixels[i] = (0, 0, 250)
-            time.sleep(0.2)
+            pixels[i] = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            time.sleep(0.1)
             pixels[i] = (0, 0, 0)
-            print(i)
 
     time.sleep(1)
 
