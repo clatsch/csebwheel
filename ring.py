@@ -85,7 +85,9 @@ try:
                     led_colour = led_stop_colour # changes colour based on winner or loser
 
                 pixels[led] = (255,0,255)
-                pixels[led-2] = (0,0,0)
+                pixels[led-1] = (150,0,150)
+                pixels[led-2] = (50,0,50)
+                pixels[led-3] = (0,0,0)
 
                 # pixels[led-11] = (255, 0, 0)
                 # pixels[led-10] = (128, 0, 0)
