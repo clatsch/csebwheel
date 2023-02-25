@@ -86,6 +86,8 @@ try:
 
                 # pixels = [led_colour[0], led_colour[1], led_colour[2]]  # pointer led
 
+                pixels[led] = (255,255,255)
+
                 pixels[led-15] = (255, 0, 0)
                 pixels[led-14] = (128, 0, 0)
                 pixels[led-13] = (64, 0, 0)
