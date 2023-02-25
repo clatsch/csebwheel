@@ -22,7 +22,7 @@ while True:
     pixels.show()
     time.sleep(1)
     pixels.fill((255, 0, 0))
-    pixels.show()
+    pixels[2].show()
     time.sleep(1)
     pixels.fill((0, 255, 0))
     pixels.show()
