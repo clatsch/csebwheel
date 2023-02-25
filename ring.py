@@ -106,4 +106,4 @@ try:
 finally:
     print("ALL LEDS OFF")
     pixels= (0, 0, 0)
-    pixels.show()
+    # pixels.show()
