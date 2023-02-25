@@ -84,7 +84,7 @@ try:
                 if led+1 == numleds: # if the last selected led - winner or loser
                     led_colour = led_stop_colour # changes colour based on winner or loser
 
-                pixels[led] = (255,255,255)
+                pixels[led] = (255,0,255)
 
                 # pixels[led-11] = (255, 0, 0)
                 # pixels[led-10] = (128, 0, 0)
@@ -97,9 +97,9 @@ try:
                 time.sleep(rotation/decay) # creates log style increasing time delay
                 decay -= 1 # increases time delay per led
 
-                pixels.show()
-                pixels.fill((0, 0, 0))
-                pixels.show()
+                # pixels.show()
+                # pixels.fill((0, 0, 0))
+                # pixels.show()
 
         time.sleep(5.0) # infinite loop pause between spins
 
