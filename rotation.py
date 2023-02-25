@@ -37,10 +37,14 @@ while True:
     pixels[1] = (0, 0, 250)
     pixels.show()
     time.sleep(1)
+    pixels[1] = (0, 0, 0)
+    pixels.show()
 
     pixels[2] = (255, 0, 250)
     pixels.show()
     time.sleep(1)
+    pixels[2] = (0, 0, 0)
+    pixels.show()
 
     # time.sleep(1)pixels.show()
     #     # time.sleep(1)
