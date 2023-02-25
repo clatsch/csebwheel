@@ -34,6 +34,8 @@ while True:
     time.sleep(1)
     pixels.fill((0, 250, 250))
     time.sleep(1)
+    pixels[1] = (0, 0, 250)
+    time.sleep(1)
 
     # time.sleep(1)pixels.show()
     #     # time.sleep(1)
