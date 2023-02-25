@@ -18,15 +18,17 @@ while True:
 
     # for led in range(num_pixels): # start single rotation loop
 
-    pixels.fill((0, 0, 0))  # turn off all pixels
-    pixels.show()
-    time.sleep(1)
+    # pixels.fill((0, 0, 0))  # turn off all pixels
+    # pixels.show()
+    # time.sleep(1)
+    # pixels.fill((255, 0, 0))
+    # pixels.show()
+    # time.sleep(1)
+    # pixels.fill((0, 255, 0))
+    # pixels.show()
+    # time.sleep(1)
+
     pixels.fill((255, 0, 0))
-    pixels[2].show()
-    time.sleep(1)
-    pixels.fill((0, 255, 0))
-    pixels.show()
-    time.sleep(1)
 
 
 
