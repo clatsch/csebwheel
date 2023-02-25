@@ -35,9 +35,9 @@ while True:
     # pixels.fill((0, 250, 250))
     # time.sleep(1)
     for i in range(num_pixels):
-        pixels = (0, 0, 250)
+        pixels[i] = (0, 0, 250)
         time.sleep(1)
-        pixels = (0, 0, 0)
+        pixels[i] = (0, 0, 0)
 
 
     # time.sleep(1)pixels.show()
