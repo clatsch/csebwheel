@@ -84,9 +84,9 @@ try:
                 if led+1 == numleds: # if the last selected led - winner or loser
                     led_colour = led_stop_colour # changes colour based on winner or loser
 
-                pixels[led] = (255,0,255)
-                pixels[led-1] = (150,0,150)
-                pixels[led-2] = (50,0,50)
+                pixels[led] = (95,110,125)
+                pixels[led-1] = (95/2,110/2,125/2)
+                pixels[led-2] = (95/4,110/4,125/4)
                 pixels[led-3] = (0,0,0)
 
                 # pixels[led-11] = (255, 0, 0)
