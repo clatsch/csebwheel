@@ -84,7 +84,7 @@ try:
                 if led+1 == numleds: # if the last selected led - winner or loser
                     led_colour = led_stop_colour # changes colour based on winner or loser
 
-                pixels = (led_colour[0], led_colour[1], led_colour[2]) # pointer led
+                pixels = [led_colour[0], led_colour[1], led_colour[2]]  # pointer led
 
                 pixels[led-14] = (255, 0, 0)
                 pixels[led-13] = (128, 0, 0)
