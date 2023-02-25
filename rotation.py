@@ -34,7 +34,7 @@ while True:
     # time.sleep(1)
     # pixels.fill((0, 250, 250))
     # time.sleep(1)
-    for i in pixels:
+    for i in range(num_pixels):
         pixels = (0, 0, 250)
         time.sleep(1)
         pixels = (0, 0, 0)
