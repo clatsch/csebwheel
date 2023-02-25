@@ -38,6 +38,7 @@ while True:
         pixels[i] = (0, 0, 250)
         time.sleep(1)
         pixels[i] = (0, 0, 0)
+        print i
 
 
     # time.sleep(1)pixels.show()
