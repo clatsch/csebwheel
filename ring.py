@@ -98,7 +98,7 @@ try:
                 decay -= 1 # increases time delay per led
 
                 pixels.show()
-                pixels= (0, 0, 0)
+                pixels.fill((0, 0, 0))
                 pixels.show()
 
         time.sleep(5.0) # infinite loop pause between spins
