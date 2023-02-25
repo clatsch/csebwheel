@@ -86,13 +86,13 @@ try:
 
                 pixels = (led_colour[0], led_colour[1], led_colour[2]) # pointer led
 
-                pixels[led-15] = (255, 0, 0)
-                pixels[led-14] = (128, 0, 0)
-                pixels[led-13] = (64, 0, 0)
-                pixels[led-12] = (32, 0, 0)
-                pixels[led-11] = (64, 0, 0)
-                pixels[led-10] = (128, 0, 0)
-                pixels[led-9] = (255, 0, 0)
+                pixels[led-14] = (255, 0, 0)
+                pixels[led-13] = (128, 0, 0)
+                pixels[led-12] = (64, 0, 0)
+                pixels[led-11] = (32, 0, 0)
+                pixels[led-10] = (64, 0, 0)
+                pixels[led-9] = (128, 0, 0)
+                pixels[led-8] = (255, 0, 0)
 
                 time.sleep(rotation/decay) # creates log style increasing time delay
                 decay -= 1 # increases time delay per led
