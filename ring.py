@@ -47,7 +47,7 @@ def selectwinner(spins): # function for choosing winner
     }
     return winner
 
-pixels= (0, 0, 0)
+# pixels= (0, 0, 0)
 
 print('Press Ctrl-C to quit.')
 
