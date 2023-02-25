@@ -84,17 +84,15 @@ try:
                 if led+1 == numleds: # if the last selected led - winner or loser
                     led_colour = led_stop_colour # changes colour based on winner or loser
 
-                # pixels = [led_colour[0], led_colour[1], led_colour[2]]  # pointer led
-
                 pixels[led] = (255,255,255)
 
-                pixels[led-11] = (255, 0, 0)
-                pixels[led-10] = (128, 0, 0)
-                pixels[led-9] = (64, 0, 0)
-                pixels[led-8] = (32, 0, 0)
-                pixels[led-7] = (64, 0, 0)
-                pixels[led-6] = (128, 0, 0)
-                pixels[led-5] = (255, 0, 0)
+                # pixels[led-11] = (255, 0, 0)
+                # pixels[led-10] = (128, 0, 0)
+                # pixels[led-9] = (64, 0, 0)
+                # pixels[led-8] = (32, 0, 0)
+                # pixels[led-7] = (64, 0, 0)
+                # pixels[led-6] = (128, 0, 0)
+                # pixels[led-5] = (255, 0, 0)
 
                 time.sleep(rotation/decay) # creates log style increasing time delay
                 decay -= 1 # increases time delay per led
