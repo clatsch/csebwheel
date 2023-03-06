@@ -24,4 +24,4 @@ def tap(position):
 def touch(position):
     print(f"Touch: {position}")
 
-signal.pause()
+# signal.pause()
