@@ -40,6 +40,6 @@ def touch(position):
     print('Touch!', position)
 
 while True:
-    skywriter.skywriter_poll()
+    skywriter.poll()
 
 signal.pause()
