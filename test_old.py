@@ -24,4 +24,7 @@ def tap(position):
 def touch(position):
     print(f"Touch: {position}")
 
-# signal.pause()
+while True:
+    move()
+
+signal.pause()
