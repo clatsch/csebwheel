@@ -39,6 +39,6 @@ def tap(position):
 def touch(position):
     print('Touch!', position)
 
-skywriter.start()
+skywriter.run()
 
 signal.pause()
