@@ -6,22 +6,7 @@ min_x, min_y, min_z = 65535, 65535, 65535
 
 @skywriter.move()
 def move(x, y, z):
-    global max_x, max_y, max_z, min_x, min_y, min_z
-
-    if x < min_x:
-        min_x = x
-    if y < min_y:
-        min_y = y
-    if z < min_z:
-        min_z = z
-    if x > max_x:
-        max_x = x
-    if y > max_y:
-        max_y = y
-    if z > max_z:
-        max_z = z
-
-    print(f"X: {x}, Y: {y}, Z: {z}, min_X: {min_x}, min_Y: {min_y}, min_Z: {min_z}, max_X: {max_x}, max_Y: {max_y}, max_Z: {max_z}")
+    print("Movement detected: x={}, y={}, z={}".format(x, y, z))
 
 @skywriter.airwheel()
 def airwheel(delta):
