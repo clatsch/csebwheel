@@ -4,6 +4,8 @@ import signal
 max_x, max_y, max_z = 0, 0, 0
 min_x, min_y, min_z = 65535, 65535, 65535
 
+print('Skywriter is up and running')
+
 @skywriter.move()
 def move(x, y, z):
     print("Movement detected: x={}, y={}, z={}".format(x, y, z))
@@ -23,8 +25,5 @@ def tap(position):
 @skywriter.touch()
 def touch(position):
     print(f"Touch: {position}")
-
-while True:
-    move()
 
 signal.pause()
