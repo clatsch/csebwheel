@@ -1,49 +1,42 @@
-#!/usr/bin/env python
-
+import skywriter
 import signal
 
-import skywriter
-
-
-some_value = 5000
-
-print('Skywriter is up and running')
+max_x, max_y, max_z = 0, 0, 0
+min_x, min_y, min_z = 65535, 65535, 65535
 
 @skywriter.move()
 def move(x, y, z):
-    print( x, y, z )
-    print("Skywriter moved")
+    global max_x, max_y, max_z, min_x, min_y, min_z
 
-@skywriter.flick()
-def flick(start,finish):
-    print('Got a flick!', start, finish)
-    print("Skywriter flicked")
+    if x < min_x:
+        min_x = x
+    if y < min_y:
+        min_y = y
+    if z < min_z:
+        min_z = z
+    if x > max_x:
+        max_x = x
+    if y > max_y:
+        max_y = y
+    if z > max_z:
+        max_z = z
+
+    print(f"X: {x}, Y: {y}, Z: {z}, min_X: {min_x}, min_Y: {min_y}, min_Z: {min_z}, max_X: {max_x}, max_Y: {max_y}, max_Z: {max_z}")
 
 @skywriter.airwheel()
-def spinny(delta):
-    global some_value
-    some_value += delta
-    if some_value < 0:
-        some_value = 0
-    if some_value > 10000:
-        some_value = 10000
-    print('Airwheel:', some_value/100)
-    print("Skywriter airwheeled")
+def airwheel(delta):
+    print(f"Airwheel: {delta}")
 
 @skywriter.double_tap()
 def doubletap(position):
-    print('Double tap!', position)
-    print("Skywriter double-tapped")
+    print(f"Double tap: {position}")
 
 @skywriter.tap()
 def tap(position):
-    print('Tap!', position)
-    print("Skywriter tapped")
+    print(f"Tap: {position}")
 
 @skywriter.touch()
 def touch(position):
-    print('Touch!', position)
-    print("Skywriter touched")
+    print(f"Touch: {position}")
 
-print("Waiting for input...")
 signal.pause()

@@ -1,5 +1,26 @@
+Installation of Library
+
+....
+curl -sSL get.pimoroni.com/skywriter | bash
+....
+
 Command to check if Skywriter is connected
+
+1. Open the Raspberry Pi Configuration tool by entering sudo `raspi-config` in the terminal.
+2. Use the arrow keys to select "Interfacing Options" and press Enter.
+3. Scroll down to "I2C" and press Enter.
+4. Select "Yes" to enable the I2C interface.
+5. Press Enter to confirm and exit the configuration tool.
+6. Reboot your Raspberry Pi by entering sudo reboot in the terminal.
+After your Raspberry Pi has rebooted, try running i2cdetect -y 1 again to check if the Skywriter HAT is detected.
 
 ....
 i2cdetect -y 1
 ....
+
+Clone git repository
+
+....
+git clone https://github.com/clatsch/csebwheel.git
+....
+
