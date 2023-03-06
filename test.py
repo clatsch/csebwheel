@@ -39,6 +39,7 @@ def tap(position):
 def touch(position):
     print('Touch!', position)
 
-skywriter.run()
+while True:
+    skywriter.skywriter_poll()
 
 signal.pause()
