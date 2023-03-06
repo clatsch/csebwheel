@@ -6,6 +6,11 @@ min_x, min_y, min_z = 65535, 65535, 65535
 
 print('Skywriter is up and running')
 
+def xyz(x, y, z):
+    print("x:{0}, y:{1}, z:{2}".format(x, y, z))
+
+skywriter.onXYZ(xyz)
+
 @skywriter.move()
 def move(x, y, z):
     print("Movement detected: x={}, y={}, z={}".format(x, y, z))
