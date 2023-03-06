@@ -7,6 +7,8 @@ import skywriter
 
 some_value = 5000
 
+print('Skywriter is up and running')
+
 @skywriter.move()
 def move(x, y, z):
     print( x, y, z )
