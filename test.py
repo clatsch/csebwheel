@@ -1,13 +1,9 @@
-#!/usr/bin/env python
-
 import signal
 
 import skywriter
 
 
 some_value = 5000
-
-print('Skywriter is up and running')
 
 @skywriter.move()
 def move(x, y, z):
@@ -38,8 +34,5 @@ def tap(position):
 @skywriter.touch()
 def touch(position):
     print('Touch!', position)
-
-while True:
-    skywriter.poll()
 
 signal.pause()
