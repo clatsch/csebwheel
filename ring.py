@@ -112,9 +112,6 @@ try:
                     pixels.show()
                     # pixels.fill((0, 0, 0))
                     # pixels.show()
-
-            time.sleep(5.0) # infinite loop pause between spins
-
             ##########################
             while input_value == False:
                 input_value = GPIO.input(17)
@@ -122,4 +119,3 @@ try:
 finally:
     print("ALL LEDS OFF")
     pixels= (0, 0, 0)
-    # pixels.show()
