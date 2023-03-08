@@ -24,26 +24,26 @@ def spin():
     spin_range = random.randint(6, 15)
     speed = 0.05  # reset the speed
     for i in range(16):
-        pixels[i] = (255, 255, 255)  # set all pixels to white
+        pixels[i] = (0, 0, 0)  # set all pixels to off
     pixels.show()
     time.sleep(0.5)  # pause for a moment
     for i in range(spin_range):
-        pixels[i] = (0, 0, 0)  # turn off all pixels
-        pixels[i-1] = (255, 255, 255)  # move the "active" pixel
+        pixels[i % numleds] = (255, 255, 255)  # set the "active" pixel
         pixels.show()
         time.sleep(speed)
         speed *= acceleration  # speed up the rotation
     pixels.fill((0, 0, 0))  # turn off all pixels
     pixels.show()
     time.sleep(1)  # pause for a moment
+    return spin_range % numleds  # return the index of the winning pixel
 
 # Main loop
 while True:
     input_value = GPIO.input(17)
     if input_value == False:
         print('Button pressed!')
-        spin()
-        if pixels[winning_pixels[-1]] == (255, 255, 255):
+        winning_pixel = spin()
+        if winning_pixel in winning_pixels:
             # if the last pixel is a winning pixel, flash green
             pixels.fill((0, 255, 0))
             pixels.show()
