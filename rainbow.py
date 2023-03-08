@@ -2,6 +2,10 @@ import time
 import board
 import neopixel
 
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(17, GPIO.IN)
+
 
 num_pixels = 16
 pixel_pin = board.D18
@@ -43,4 +47,9 @@ def rainbow_cycle(wait):
 
 
 while True:
-    rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
+    input_value = GPIO.input(17)
+    if input_value == False:
+        rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
+        print('Who pressed my button!')
+        while input_value == False:
+            input_value = GPIO.input(17)
