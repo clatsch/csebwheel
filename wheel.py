@@ -12,89 +12,44 @@ numleds = 16
 ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
-minrotations = 6
-maxrotations = 24
+# Define the winning pixels as an array
+winning_pixels = [3, 6, 9, 12]
 
-winningnumbers = [6, 12]
-losingnumbers = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14, 15]
+# Define the speed and acceleration of the LED ring
+acceleration = 1.05  # higher values mean faster acceleration
 
-spin = 0
-winning_spins = 0
-is_winner = False
-
-def selectwinner(spins):
-    global winning_spins, is_winner
-    winningspin = random.randint(3, 7)
-    if spin % winningspin == 0:
-        numleds = random.sample(winningnumbers, 1)
-        numleds = numleds[0]
-        led_colour = [0, 255, 0]
-        is_winner = True
-        winning_spins += 1
-    else:
-        numleds = random.sample(losingnumbers, 1)
-        numleds = numleds[0]
-        led_colour = [255, 0, 0]
-        is_winner = False
-    winner = {
-        "numleds": numleds,
-        "led_colour": led_colour,
-        "winning_spins": winning_spins,
-        "is_winner": is_winner
-    }
-    return winner
-
-print('Press Ctrl-C to quit.')
-
-try:
-    while True:
-        input_value = GPIO.input(17)
-        if input_value == False:
-            print('Who pressed my button!')
-            rotations = random.randint(minrotations, maxrotations)
-            decay = rotations * numleds
-            spin += 1
-            stop_led = random.randint(0, numleds - 1)
-            for rotation in range(1, rotations + 1):
-                led_colour = ((255, 255, 255))
-                led_stop_colour = ((255, 255, 255))
-                if rotation == rotations:
-                    winner = selectwinner(spin)
-                    numleds = winner.get("numleds")
-                    led_stop_colour = winner.get("led_colour")
-                    winning_spins = winner.get("winning_spins")
-                    is_winner = winner.get("is_winner")
-                for led in range(numleds):
-                    if led == stop_led:
-                        pixels[led] = led_stop_colour
-                        if is_winner:
-                            for i in range(5):
-                                pixels[led] = (0, 0, 0)
-                                pixels.show()
-                                time.sleep(0.1)
-                                pixels[led] = (0, 255, 0)
-                                pixels.show()
-                                time.sleep(0.1)
-                        else:
-                            for i in range(5):
-                                pixels[led] = (0, 0, 0)
-                                pixels.show()
-                                time.sleep(0.1)
-                                pixels[led] = (255, 0, 0)
-                                pixels.show()
-                                time.sleep(0.1)
-                    else:
-                        pixels[led] = (95, 110, 255)
-                        pixels[led - 1] = (40, 50, 60)
-                        pixels[led - 2] = (20, 25, 30)
-                        pixels[led - 3] = (0, 0, 0)
-                    time.sleep(rotation / decay)
-                    decay -= 1
-                    pixels.show()
-            while input_value == False:
-                input_value = GPIO.input(17)
-
-finally:
-    print("ALL LEDS OFF")
-    pixels.fill((0, 0, 0))
+# Function to spin the LED ring
+def spin():
+    # Generate a random spin range between 6 and 15 pixels
+    spin_range = random.randint(6, 15)
+    for i in range(16):
+        pixels[i] = (255, 255, 255)  # set all pixels to white
     pixels.show()
+    time.sleep(0.5)  # pause for a moment
+    for i in range(spin_range):
+        pixels[i] = (0, 0, 0)  # turn off all pixels
+        pixels[i-1] = (255, 255, 255)  # move the "active" pixel
+        pixels.show()
+        time.sleep(speed)
+        speed *= acceleration  # speed up the rotation
+    pixels.fill((0, 0, 0))  # turn off all pixels
+    pixels.show()
+    time.sleep(1)  # pause for a moment
+
+# Main loop
+while True:
+    if GPIO.input(17):
+        speed = 0.05  # reset the speed
+        spin()
+        if pixels[winning_pixels[-1]] == (255, 255, 255):
+            # if the last pixel is a winning pixel, flash green
+            pixels.fill((0, 255, 0))
+            pixels.show()
+            time.sleep(2)  # pause for a moment
+        else:
+            # if the last pixel is not a winning pixel, flash red
+            pixels.fill((255, 0, 0))
+            pixels.show()
+            time.sleep(2)  # pause for a moment
+        pixels.fill((0, 0, 0))  # turn off all pixels
+        pixels.show()
