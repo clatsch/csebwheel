@@ -13,16 +13,17 @@ ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 minrotations = 6
-maxrotations = 15
+maxrotations = 24
 
 winningnumbers = [6,12]
 losingnumbers = [1,2,3,4,5,7,8,9,10,11,13,14,15]
 
 spin = 0
 winning_spins = 0
+is_winner = False  # Define is_winner as a global variable
 
 def selectwinner(spins):
-    global winning_spins
+    global winning_spins, is_winner  # Access the global variable is_winner
     winningspin = random.randint(3, 7)
     if spin % winningspin == 0:
         numleds = random.sample(winningnumbers,  1)
