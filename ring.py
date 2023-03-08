@@ -3,6 +3,10 @@ import board
 import neopixel
 import random
 
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(17, GPIO.IN)
+
 pixel_pin = board.D18
 
 # The number of NeoPixels
