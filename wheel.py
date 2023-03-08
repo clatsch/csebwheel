@@ -112,7 +112,7 @@ try:
         time.sleep(5.0) # infinite loop pause between spins
 
 finally:
-print("ALL LEDS OFF")
-pixels= (0, 0, 0)
+    print("ALL LEDS OFF")
+    pixels= (0, 0, 0)
 # pixels.show()
 
