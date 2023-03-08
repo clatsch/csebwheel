@@ -24,3 +24,10 @@ Clone git repository
 git clone https://github.com/clatsch/csebwheel.git
 ....
 
+In order to use the Neopixel
+
+....
+sudo pip3 install rpi_ws281x adafruit-circuitpython-neopixel
+sudo python3 -m pip install --force-reinstall adafruit-blinka
+....
+
