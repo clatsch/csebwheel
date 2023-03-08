@@ -52,5 +52,4 @@ while True:
         print('Who pressed my button!')
         rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
         while input_value == False:
-            print('second while')
             input_value = GPIO.input(17)

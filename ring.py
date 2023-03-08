@@ -54,57 +54,66 @@ print('Press Ctrl-C to quit.')
 try:
     while True:
 
-        rotations = random.randint(minrotations, maxrotations) # randomised number of rotations in this spin
 
-        numleds = 16 # reset to total number of leds after changing to chosen winner or loser
+        input_value = GPIO.input(17)
+        if input_value == False:
+            print('Who pressed my button!')
+            ##########################
+            rotations = random.randint(minrotations, maxrotations) # randomised number of rotations in this spin
 
-        decay = rotations * numleds # total number of leds in this spin - although more as last rotation is less
+            numleds = 16 # reset to total number of leds after changing to chosen winner or loser
 
-        spin += 1 # spin number going up each loop
+            decay = rotations * numleds # total number of leds in this spin - although more as last rotation is less
 
-        for rotation in range(1,rotations): # start spin - multiple rotations loop
+            spin += 1 # spin number going up each loop
 
-            led_colour = ((255,255,255)) # default led colour B,G,R
-            led_stop_colour  = ((255,255,255)) # reset to default colour B,G,R
+            for rotation in range(1,rotations): # start spin - multiple rotations loop
 
-            if rotation == rotations - 1: # on last rotation of spin select winning number
+                led_colour = ((255,255,255)) # default led colour B,G,R
+                led_stop_colour  = ((255,255,255)) # reset to default colour B,G,R
 
-                winner = selectwinner(spin)
-                led_stop_colour = winner.get("led_colour") # colour of winner or loser
-                numleds = winner.get("numleds") # chosen winning or loser number
-                winning_spins = winner.get("winning_spins") # for testing average wins printed to console
+                if rotation == rotations - 1: # on last rotation of spin select winning number
 
-                # print("LED " + str(numleds)) # for testing print chosen led to console
-                # print("Spin " + str(spin)) # for testing printed to console
-                # print("Winning Spins " + str(winning_spins)) # for testing average wins printed to console
+                    winner = selectwinner(spin)
+                    led_stop_colour = winner.get("led_colour") # colour of winner or loser
+                    numleds = winner.get("numleds") # chosen winning or loser number
+                    winning_spins = winner.get("winning_spins") # for testing average wins printed to console
+
+                    # print("LED " + str(numleds)) # for testing print chosen led to console
+                    # print("Spin " + str(spin)) # for testing printed to console
+                    # print("Winning Spins " + str(winning_spins)) # for testing average wins printed to console
 
 
-            for led in range(numleds): # start single rotation loop
+                for led in range(numleds): # start single rotation loop
 
-                if led+1 == numleds: # if the last selected led - winner or loser
-                    led_colour = led_stop_colour # changes colour based on winner or loser
+                    if led+1 == numleds: # if the last selected led - winner or loser
+                        led_colour = led_stop_colour # changes colour based on winner or loser
 
-                pixels[led] = (95,110,125)
-                pixels[led-1] = (40,50,60)
-                pixels[led-2] = (20,25,30)
-                pixels[led-3] = (0,0,0)
+                    pixels[led] = (95,110,125)
+                    pixels[led-1] = (40,50,60)
+                    pixels[led-2] = (20,25,30)
+                    pixels[led-3] = (0,0,0)
 
-                # pixels[led-11] = (255, 0, 0)
-                # pixels[led-10] = (128, 0, 0)
-                # pixels[led-9] = (64, 0, 0)
-                # pixels[led-8] = (32, 0, 0)
-                # pixels[led-7] = (64, 0, 0)
-                # pixels[led-6] = (128, 0, 0)
-                # pixels[led-5] = (255, 0, 0)
+                    # pixels[led-11] = (255, 0, 0)
+                    # pixels[led-10] = (128, 0, 0)
+                    # pixels[led-9] = (64, 0, 0)
+                    # pixels[led-8] = (32, 0, 0)
+                    # pixels[led-7] = (64, 0, 0)
+                    # pixels[led-6] = (128, 0, 0)
+                    # pixels[led-5] = (255, 0, 0)
 
-                time.sleep(rotation/decay) # creates log style increasing time delay
-                decay -= 1 # increases time delay per led
+                    time.sleep(rotation/decay) # creates log style increasing time delay
+                    decay -= 1 # increases time delay per led
 
-                pixels.show()
-                # pixels.fill((0, 0, 0))
-                # pixels.show()
+                    pixels.show()
+                    # pixels.fill((0, 0, 0))
+                    # pixels.show()
 
-        time.sleep(5.0) # infinite loop pause between spins
+            time.sleep(5.0) # infinite loop pause between spins
+
+            ##########################
+            while input_value == False:
+                input_value = GPIO.input(17)
 
 finally:
     print("ALL LEDS OFF")
