@@ -28,15 +28,18 @@ def selectwinner(spins):
         numleds = random.sample(winningnumbers,  1)
         numleds = numleds[0]
         led_colour = [0,255,0]
+        is_winner = True
         winning_spins += 1
     else:
         numleds = random.sample(losingnumbers,  1)
         numleds = numleds[0]
         led_colour = [0,0,255]
+        is_winner = False
     winner = {
         "numleds":numleds,
         "led_colour":led_colour,
-        "winning_spins":winning_spins
+        "winning_spins":winning_spins,
+        "is_winner": is_winner
     }
     return winner
 
@@ -59,6 +62,7 @@ try:
                     led_stop_colour = winner.get("led_colour")
                     numleds = winner.get("numleds")
                     winning_spins = winner.get("winning_spins")
+                    is_winner = winner.get("is_winner")
                 for led in range(numleds):
                     if led+1 == numleds:
                         led_colour = led_stop_colour
