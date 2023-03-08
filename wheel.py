@@ -39,7 +39,9 @@ def spin():
 
 # Main loop
 while True:
-    if GPIO.input(17):
+    input_value = GPIO.input(17)
+    if input_value == False:
+        print('Button pressed!')
         spin()
         if pixels[winning_pixels[-1]] == (255, 255, 255):
             # if the last pixel is a winning pixel, flash green
