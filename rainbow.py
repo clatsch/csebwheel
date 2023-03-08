@@ -49,8 +49,8 @@ def rainbow_cycle(wait):
 while True:
     input_value = GPIO.input(17)
     if input_value == False:
-        rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
         print('Who pressed my button!')
         while input_value == False:
-            print('Button released!')
+            rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
+            print('second while')
             input_value = GPIO.input(17)
