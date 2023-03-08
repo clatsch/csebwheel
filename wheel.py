@@ -52,20 +52,20 @@ try:
         if input_value == False:
             print('Who pressed my button!')
             rotations = random.randint(minrotations, maxrotations)
-            numleds = 16
             decay = rotations * numleds
             spin += 1
+            stop_led = random.randint(0, numleds-1)  # Generate a random stopping point
             for rotation in range(1,rotations):
                 led_colour = ((255,255,255))
                 led_stop_colour  = ((255,255,255))
                 if rotation == rotations - 1:
                     winner = selectwinner(spin)
-                    led_stop_colour = winner.get("led_colour")
                     numleds = winner.get("numleds")
+                    led_stop_colour = winner.get("led_colour")
                     winning_spins = winner.get("winning_spins")
                     is_winner = winner.get("is_winner")
                 for led in range(numleds):
-                    if led+1 == numleds:
+                    if led == stop_led:  # Stop on the random stopping point
                         if is_winner:
                             pixels[led] = (0,255,0)
                             for i in range(5):
