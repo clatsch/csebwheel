@@ -13,7 +13,7 @@ ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 minrotations = 6
-maxrotations = 24
+maxrotations = 15
 
 winningnumbers = [6,12]
 losingnumbers = [1,2,3,4,5,7,8,9,10,11,13,14,15]
@@ -65,16 +65,29 @@ try:
                     is_winner = winner.get("is_winner")
                 for led in range(numleds):
                     if led+1 == numleds:
-                        led_colour = led_stop_colour
-                    if led+1 == numleds and led_colour == [0,255,0]:
-                        pixels[led] = (0,255,0)
-                    elif led+1 == numleds and led_colour == [0,0,255]:
-                        pixels[led] = (255,0,0)
+                        if is_winner:
+                            pixels[led] = (0,255,0)
+                            for i in range(5):
+                                pixels[led] = (0,0,0)
+                                pixels.show()
+                                time.sleep(0.1)
+                                pixels[led] = (0,255,0)
+                                pixels.show()
+                                time.sleep(0.1)
+                        else:
+                            pixels[led] = (255,0,0)
+                            for i in range(5):
+                                pixels[led] = (0,0,0)
+                                pixels.show()
+                                time.sleep(0.1)
+                                pixels[led] = (255,0,0)
+                                pixels.show()
+                                time.sleep(0.1)
                     else:
                         pixels[led] = (95,110,255)
-                    pixels[led-1] = (40,50,60)
-                    pixels[led-2] = (20,25,30)
-                    pixels[led-3] = (0,0,0)
+                        pixels[led-1] = (40,50,60)
+                        pixels[led-2] = (20,25,30)
+                        pixels[led-3] = (0,0,0)
                     time.sleep(rotation/decay)
                     decay -= 1
                     pixels.show()
