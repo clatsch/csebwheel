@@ -111,9 +111,6 @@ def start_spin():
             # Update the LEDs
             pixels.show()
 
-        # Wait for a short period of time before starting the next LED sequence
-        time.sleep(0.1)
-
     # Turn off all the LEDs
     pixels.fill((0, 0, 0))
     print("ALL LEDS OFF")
