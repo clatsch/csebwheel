@@ -120,9 +120,13 @@ print('Press Ctrl-C to quit.')
 
 try:
     while True:
-        input_value = GPIO.input(17)
-        if input_value == False:
+        select_spin = GPIO.input(17)
+        select_presentation = GPIO.input(27)
+        if select_spin == False:
+            print('spin selected')
             start_spin()
+        if select_presentation == False:
+            print('presentation selected')
 
 finally:
     # Turn off all the LEDs
