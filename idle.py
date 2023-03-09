@@ -35,7 +35,7 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
-def start_presentation():
+def start_idle_mode():
     global pixels
     rainbow_on = True
     while rainbow_on:
