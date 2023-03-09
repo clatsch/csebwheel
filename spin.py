@@ -39,8 +39,8 @@ def start_spin():
     spin += 1
 
     # set colors for pixels 5 and 14
-    pixels[5] = (255, 255, 255)  # pixel 5
-    pixels[14] = (255, 255, 255)  # pixel 14
+    pixels[3] = (255, 255, 255)  # pixel 5
+    pixels[12] = (255, 255, 255)  # pixel 14
 
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
