@@ -1,6 +1,7 @@
 import time
 import board
 import neopixel
+import RPi.GPIO as GPIO
 
 pixel_pin = board.D18
 numleds = 16
