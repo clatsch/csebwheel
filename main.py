@@ -17,6 +17,8 @@ try:
         if select_presentation == False:
             print('Presentation selected')
             start_presentation()
+            while select_presentation == False:
+                select_presentation = GPIO.input(27)
 
 finally:
     GPIO.cleanup()
