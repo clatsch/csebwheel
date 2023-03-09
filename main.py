@@ -23,7 +23,7 @@ try:
         if select_presentation_mode == False:
             print('Presentation Mode Selected')
             light_up_group()
-
+            time.sleep(0.2) # wait for button debounce
 
 finally:
     GPIO.cleanup()
