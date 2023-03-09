@@ -2,11 +2,17 @@ import time
 import board
 import neopixel
 import RPi.GPIO as GPIO
+from spin import start_spin
 
 pixel_pin = board.D18
 numleds = 16
 ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
+
+# Initialize GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(17, GPIO.IN)
+GPIO.setup(27, GPIO.IN)
 
 def wheel(pos):
     if pos < 0 or pos > 255:
@@ -45,4 +51,9 @@ def start_idle_mode():
             pixels.fill((0, 0, 0))
             pixels.show()
             while GPIO.input(27) == False:
+                pass
+        if GPIO.input(17) == False:
+            rainbow_on = False
+            start_spin()
+            while GPIO.input(17) == False:
                 pass
