@@ -128,6 +128,8 @@ try:
             start_spin()
         if select_presentation == False:
             print('presentation selected')
+            while select_presentation == False:
+                select_presentation = GPIO.input(27)
 
 finally:
     # Turn off all the LEDs
