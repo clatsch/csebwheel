@@ -38,9 +38,9 @@ def start_spin():
     decay = rotations * numleds
     spin += 1
 
-    # set colors for pixels 5 and 14
-    pixels[1] = (255, 255, 255)  # pixel 5
-    pixels[2] = (255, 255, 255)  # pixel 14
+    # # set colors for pixels 5 and 14
+    # pixels[1] = (255, 255, 255)  # pixel 5
+    # pixels[2] = (255, 255, 255)  # pixel 14
 
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
