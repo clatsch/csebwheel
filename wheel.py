@@ -73,48 +73,48 @@ def start_spin():
 
 
     # Loop through all the rotations in this spin
-for rotation in range(1, rotations):
+    for rotation in range(1, rotations):
 
-    # Set the default LED color to white
-    led_colour = (0, 0, 255)
+        # Set the default LED color to white
+        led_colour = (0, 0, 255)
 
-    # Reset the LED stop color to white
-    led_stop_colour = (0, 0, 255)
+        # Reset the LED stop color to white
+        led_stop_colour = (0, 0, 255)
 
-    # If this is the last rotation, select a winning or losing number
-    if rotation == rotations - 1:
-        winner, is_winning_number = selectwinner(spin)
-        numleds = winner
-        if is_winning_number:
-            led_stop_colour = (0, 255, 0)  # set to green if winning number
-        else:
-            led_stop_colour = (255, 0, 0)  # set to red if losing number not in winningnumbers array
+        # If this is the last rotation, select a winning or losing number
+        if rotation == rotations - 1:
+            winner, is_winning_number = selectwinner(spin)
+            numleds = winner
+            if is_winning_number:
+                led_stop_colour = (0, 255, 0)  # set to green if winning number
+            else:
+                led_stop_colour = (255, 0, 0)  # set to red if losing number not in winningnumbers array
 
-    # Loop through all the LEDs in this rotation
-    for led in range(numleds):
+        # Loop through all the LEDs in this rotation
+        for led in range(numleds):
 
-        # If this is the last LED in the rotation, change its color to the stop color
-        if led + 1 == numleds:
-            led_colour = led_stop_colour
+            # If this is the last LED in the rotation, change its color to the stop color
+            if led + 1 == numleds:
+                led_colour = led_stop_colour
 
-        # Turn on the current LED and turn off the previous LED
-        pixels[led] = led_colour
-        if led > 0:
-            pixels[led - 1] = (0, 0, 0)
-        else:
-            pixels[numleds - 1] = (0, 0, 0)
+            # Turn on the current LED and turn off the previous LED
+            pixels[led] = led_colour
+            if led > 0:
+                pixels[led - 1] = (0, 0, 0)
+            else:
+                pixels[numleds - 1] = (0, 0, 0)
 
-        # Sleep for a fraction of a second to create a logarithmic decay effect
-        time.sleep(rotation / decay)
+            # Sleep for a fraction of a second to create a logarithmic decay effect
+            time.sleep(rotation / decay)
 
-        # Decrement the decay variable to increase the sleep time for each subsequent LED
-        decay -= 1
+            # Decrement the decay variable to increase the sleep time for each subsequent LED
+            decay -= 1
 
-        # Update the LEDs
-        pixels.show()
+            # Update the LEDs
+            pixels.show()
 
-    # Wait for a short period of time before starting the next LED sequence
-    time.sleep(0.1)
+        # Wait for a short period of time before starting the next LED sequence
+        time.sleep(0.1)
 
 def wheel(pos):
     if pos < 0 or pos > 255:
