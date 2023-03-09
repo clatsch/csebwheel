@@ -25,9 +25,11 @@ def light_up_group(group):
 
 # Main loop
 current_group = 0
-while True:
-    if GPIO.input(BUTTON_PIN) == False:
-        light_up_group(groups[current_group]) # Light up the current group
-        current_group = (current_group + 1) % len(groups) # Move to the next group
-        while GPIO.input(BUTTON_PIN) == False:
-            pass # Wait for button to be released
+
+def start_presentation_mode():
+    while True:
+        if GPIO.input(BUTTON_PIN) == False:
+            light_up_group(groups[current_group]) # Light up the current group
+            current_group = (current_group + 1) % len(groups) # Move to the next group
+            while GPIO.input(BUTTON_PIN) == False:
+                pass # Wait for button to be released

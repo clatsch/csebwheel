@@ -2,7 +2,7 @@ import time
 import RPi.GPIO as GPIO
 from spin import start_spin
 from idle import start_idle_mode
-from presentation import light_up_group
+from presentation import start_presentation_mode
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN)
@@ -22,7 +22,7 @@ try:
             start_idle_mode()
         if select_presentation_mode == False:
             print('Presentation Mode Selected')
-            light_up_group()
+            select_presentation_mode()
             time.sleep(0.2) # wait for button debounce
 
 finally:
