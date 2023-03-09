@@ -44,6 +44,5 @@ def start_presentation():
             rainbow_on = False
             pixels.fill((0, 0, 0))
             pixels.show()
-            time.sleep(0.1)  # Add a debounce delay of 100ms
             while GPIO.input(27) == False:
                 pass

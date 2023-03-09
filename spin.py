@@ -37,7 +37,7 @@ def start_spin():
     numleds = 16
     decay = rotations * numleds
     spin += 1
-    for rotation in range(1,rotations):
+    for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
         led_stop_colour = (0, 0, 255)
         if rotation == rotations - 1:
@@ -50,7 +50,10 @@ def start_spin():
         for led in range(numleds):
             if led+1 == numleds:
                 led_colour = led_stop_colour
-            pixels[led] = led_colour
+            if led == 4 or led == 13:  # check for pixels 5 and 14
+                pixels[led] = (255, 255, 255)  # set color to white
+            else:
+                pixels[led] = led_colour
             pixels[led-1] = (0, 0, 0)
             time.sleep(rotation/decay)
             decay -= 1
