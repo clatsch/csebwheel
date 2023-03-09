@@ -20,10 +20,10 @@ try:
         if select_idle_mode == False:
             print('Idle Mode Selected')
             start_idle_mode()
-        if select_presentation_mode == False:
-            print('Presentation Mode Selected')
-            light_up_group()
-            time.sleep(0.2) # wait for button debounce
+        # if select_presentation_mode == False:
+        #     print('Presentation Mode Selected')
+        #     light_up_group()
+        #     time.sleep(0.2) # wait for button debounce
 
 finally:
     GPIO.cleanup()
