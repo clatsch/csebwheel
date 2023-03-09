@@ -57,7 +57,7 @@ def start_spin():
                 led_colour = led_stop_colour
             if led != 4 and led != 13:  # check if not pixel 5 or 14
                 pixels[led] = led_colour
-                # pixels[led-1] = (0, 0, 0)
+                pixels[led-1] = (0, 0, 0)
             time.sleep(rotation/decay)
             decay -= 1
             pixels.show()
