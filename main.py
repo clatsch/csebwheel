@@ -7,7 +7,7 @@ from presentation import light_up_group
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN)
 GPIO.setup(27, GPIO.IN)
-GPIO.setup(22, GPIO.IN)
+# GPIO.setup(22, GPIO.IN)
 
 try:
     while True:
