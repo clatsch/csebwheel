@@ -6,6 +6,9 @@ import RPi.GPIO as GPIO
 from idle import start_idle_mode
 from spin import start_spin
 
+GPIO.setup(17, GPIO.IN)
+GPIO.setup(27, GPIO.IN)
+
 # Pin definitions
 BUTTON_PIN = 22
 pixel_pin = board.D18
