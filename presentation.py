@@ -27,6 +27,7 @@ def light_up_group(group):
 current_group = 0
 
 def start_presentation_mode():
+    global current_group
     while True:
         if GPIO.input(BUTTON_PIN) == False:
             light_up_group(groups[current_group]) # Light up the current group
