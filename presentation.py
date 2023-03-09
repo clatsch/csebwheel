@@ -13,9 +13,9 @@ pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False,
 # Define groups of pixels
 groups = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15]]
 
-# Initialize button
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BUTTON_PIN, GPIO.IN)
+# # Initialize button
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(BUTTON_PIN, GPIO.IN)
 
 # Define function to light up a group of pixels
 def light_up_group(group):
