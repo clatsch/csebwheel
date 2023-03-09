@@ -2,56 +2,125 @@ import time
 import board
 import neopixel
 import random
-import RPi.GPIO as GPIO
 
+import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN)
 
 pixel_pin = board.D18
+
+# The number of NeoPixels
 numleds = 16
+
 ORDER = neopixel.GRB
-pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
-# Define the winning pixels as an array
-winning_pixels = [3, 6, 9, 12]
+pixels = neopixel.NeoPixel(
+    pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER
+)
 
-# Define the acceleration of the LED ring
-acceleration = 1.05  # higher values mean faster acceleration
+# Define the winning numbers
+winningnumbers = [1,2,3,4,5,6,12]
 
-# Function to spin the LED ring
-def spin():
-    # Generate a random spin range between 6 and 15 pixels
-    spin_range = random.randint(6, 15)
-    speed = 0.05  # reset the speed
-    for i in range(16):
-        pixels[i] = (0, 0, 0)  # set all pixels to off
-    pixels.show()
-    time.sleep(0.5)  # pause for a moment
-    for i in range(spin_range):
-        pixels[i % numleds] = (255, 255, 255)  # set the "active" pixel
-        pixels.show()
-        time.sleep(speed)
-        speed *= acceleration  # speed up the rotation
-    pixels.fill((0, 0, 0))  # turn off all pixels
-    pixels.show()
-    time.sleep(1)  # pause for a moment
-    return spin_range % numleds  # return the index of the winning pixel
+# Generate a list of losing numbers by subtracting the winning numbers from a set of all possible numbers
+losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
 
-# Main loop
-while True:
-    input_value = GPIO.input(17)
-    if input_value == False:
-        print('Button pressed!')
-        winning_pixel = spin()
-        if winning_pixel in winning_pixels:
-            # if the last pixel is a winning pixel, flash green
-            pixels.fill((0, 255, 0))
-            pixels.show()
-            time.sleep(2)  # pause for a moment
-        else:
-            # if the last pixel is not a winning pixel, flash red
-            pixels.fill((255, 0, 0))
-            pixels.show()
-            time.sleep(2)  # pause for a moment
-        pixels.fill((0, 0, 0))  # turn off all pixels
-        pixels.show()
+minrotations = 6
+maxrotations = 10
+
+spin = 0 # spin number
+last_winning_led = None # initialize the last winning LED to None
+
+def selectwinner(spins):
+    global last_winning_led
+
+    numleds = 0 # Initialize numleds to 0
+
+    # Choose a random number from the list of winning numbers or losing numbers that are not in the winning numbers list
+    if last_winning_led is not None and last_winning_led in winningnumbers:
+        numleds = random.choice(losingnumbers)
+    else:
+        numleds = random.choice(winningnumbers)
+
+    # If the current LED is a winning LED and the last winning LED is None, choose the first winning LED in the list
+    if numleds in winningnumbers and last_winning_led is None:
+        numleds = winningnumbers[0]
+    last_winning_led = numleds
+
+    is_winning_number = numleds in winningnumbers
+    winner = (numleds, is_winning_number)
+    return winner
+
+
+
+print('Press Ctrl-C to quit.')
+
+try:
+    while True:
+
+        input_value = GPIO.input(17)
+        if input_value == False:
+            print('Spin started!')
+
+            # Select a random number of rotations for this spin
+            rotations = random.randint(minrotations, maxrotations)
+
+            # Reset the number of LEDs to the total number
+            numleds = 16
+
+            # Calculate the total number of LEDs that will be lit up in this spin
+            decay = rotations * numleds
+
+            # Increment the spin number
+            spin += 1
+
+            print(rotations)
+
+            # Loop through all the rotations in this spin
+            for rotation in range(1,rotations):
+
+                # Set the default LED color to white
+                led_colour = (0, 0, 255)
+
+                # Reset the LED stop color to white
+                print('....')
+                led_stop_colour = (0, 0, 255)
+
+                # If this is the last rotation, select a winning or losing number
+                if rotation == rotations - 1:
+                    winner, is_winning_number = selectwinner(spin)
+                    numleds = winner
+                    if is_winning_number:
+                        led_stop_colour = (0, 255, 0) # set to green if winning number
+                    else:
+                        led_stop_colour = (255, 0, 0) # set to red if losing number not in winningnumbers array
+                    print("LED " + str(numleds))
+                    print("Spin " + str(spin))
+
+                # Loop through all the LEDs in this rotation
+                for led in range(numleds):
+
+                    # If this is the last LED in the rotation, change its color to the stop color
+                    if led+1 == numleds:
+                        led_colour = led_stop_colour
+
+                    # Turn on the current LED and turn off the previous LED
+                    pixels[led] = led_colour
+                    pixels[led-1] = (0, 0, 0)
+
+                    # Sleep for a fraction of a second to create a logarithmic decay effect
+                    time.sleep(rotation/decay)
+
+                    # Decrement the decay variable to increase the sleep time for each subsequent LED
+                    decay -= 1
+
+                    # Update the LEDs
+                    pixels.show()
+
+            # Wait for the button to be released before starting the next spin
+            while input_value == False:
+                input_value = GPIO.input(17)
+
+finally:
+    # Turn off all the LEDs
+    pixels.fill((0, 0, 0))
+    print("ALL LEDS OFF")
