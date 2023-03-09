@@ -19,8 +19,13 @@ groups = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15]]
 
 # Define function to light up a group of pixels
 def light_up_group(group):
-    for i in group:
-        pixels[i] = (255, 255, 255) # Set color of pixels to white
+    global current_group
+    for i in range(numleds):
+        if i in group:
+            pixels[i] = (255, 255, 255)  # Set color of pixels in the current group to white
+        else:
+            pixels[i] = (0, 0, 0)  # Set color of pixels in other groups to off
+    current_group = group
     pixels.show()
 
 # Main loop
