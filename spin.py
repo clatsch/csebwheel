@@ -2,62 +2,57 @@ import time
 import board
 import neopixel
 import random
+import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
-
-# The number of NeoPixels
-num_pixels = 16
-
+numleds = 16
 ORDER = neopixel.GRB
+pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
+winningnumbers = [1,2,3,4,5,6,12]
+losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
+minrotations = 6
+maxrotations = 10
+spin = 0
+last_winning_led = None
 
-pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
-)
+def selectwinner(spins):
+    global last_winning_led
+    numleds = 0
+    if last_winning_led is not None and last_winning_led in winningnumbers:
+        numleds = random.choice(losingnumbers)
+    else:
+        numleds = random.choice(winningnumbers)
+    if numleds in winningnumbers and last_winning_led is None:
+        numleds = winningnumbers[0]
+    last_winning_led = numleds
+    is_winning_number = numleds in winningnumbers
+    winner = (numleds, is_winning_number)
+    return winner
 
-starting_delay = 0.1
-delay_increment = 0.1
-current_delay = starting_delay
-
-while True:
-    pixels.fill((0, 0, 0))  # turn off all pixels
-    pixels.show()
-
-    # choose a random pixel to light up
-    pixel_index = random.randint(0, num_pixels-1)
-
-    # choose a random number of spins
-    num_spins = random.randint(3, 10)
-
-    # light up the chosen pixel
-    for i in range(num_spins * num_pixels):
-        # turn off all pixels
-        pixels.fill((0, 0, 0))
-
-        # calculate the pixel to light up based on the current spin
-        spin_position = i % num_pixels
-        current_pixel_index = (pixel_index + spin_position) % num_pixels
-
-        # set the color of the current pixel to a random color
-        pixels[current_pixel_index] = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-
-        # show the updated pixel colors
-        pixels.show()
-
-        # delay between updates, gradually increasing
-        time.sleep(current_delay)
-        current_delay += delay_increment
-
-        # check if the delay has been more than 3 seconds
-        if current_delay > 1.5:
-            # light up the last LED
-            pixels.fill((255, 0, 255))
+def start_spin():
+    global spin
+    global last_winning_led
+    rotations = random.randint(minrotations, maxrotations)
+    numleds = 16
+    decay = rotations * numleds
+    spin += 1
+    for rotation in range(1,rotations):
+        led_colour = (0, 0, 255)
+        led_stop_colour = (0, 0, 255)
+        if rotation == rotations - 1:
+            winner, is_winning_number = selectwinner(spin)
+            numleds = winner
+            if is_winning_number:
+                led_stop_colour = (0, 255, 0)
+            else:
+                led_stop_colour = (255, 0, 0)
+        for led in range(numleds):
+            if led+1 == numleds:
+                led_colour = led_stop_colour
+            pixels[led] = led_colour
+            pixels[led-1] = (0, 0, 0)
+            time.sleep(rotation/decay)
+            decay -= 1
             pixels.show()
-            time.sleep(5)
-            break  # break out of the loop
-
-    if current_delay > 1.5:
-        # break out of the outer while loop
-        break
-
-pixels.fill((0, 0, 0))  # turn off all pixels
-pixels.show()           # update the pixels to turn them off
+    pixels.fill((0, 0, 0))
