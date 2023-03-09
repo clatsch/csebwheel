@@ -22,7 +22,7 @@ try:
             start_idle_mode()
         if select_presentation_mode == False:
             print('Presentation Mode Selected')
-            select_presentation_mode()
+            start_presentation_mode()
             time.sleep(0.2) # wait for button debounce
 
 finally:
