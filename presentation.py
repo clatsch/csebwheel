@@ -27,14 +27,15 @@ def light_up_group(group):
     for i in group:
         pixels[i] = (255, 255, 255)
     pixels.show()
+    # Return the current group
+    return groups.index(group)
 
-# Define a callback function to handle button presses
 # Define a callback function to handle button presses
 def button_callback(channel):
     global current_group
     # Increment current_group to move to the next group
     current_group = (current_group + 1) % len(groups)
-    light_up_group(groups[current_group])
+    current_group_index = light_up_group(groups[current_group])
 
     # Check if spin button is pressed
     if GPIO.input(17) == False:
@@ -45,7 +46,6 @@ def button_callback(channel):
         print('Idle Mode Selected')
         start_idle_mode()
 
-
 # Initialize GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -55,6 +55,15 @@ GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING, callback=button_callback, bounce
 
 # Main loop
 current_group = 0
-light_up_group(groups[current_group])
+current_group_index = light_up_group(groups[current_group])
 while True:
-    pass  # Main loop does nothing
+    select_spin = GPIO.input(17)
+    select_idle_mode = GPIO.input(27)
+    if select_spin == False:
+        print('Spin selected')
+        start_spin()
+    if select_idle_mode == False:
+        print('Idle Mode Selected')
+        start_idle_mode()
+
+    time.sleep(0.1)
