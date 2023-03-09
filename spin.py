@@ -37,6 +37,7 @@ def start_spin():
     numleds = 16
     decay = rotations * numleds
     spin += 1
+    button_pressed = False # track if button 17 is pressed
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
         led_stop_colour = (0, 0, 255)
@@ -58,4 +59,13 @@ def start_spin():
             time.sleep(rotation/decay)
             decay -= 1
             pixels.show()
+
+            # Check if button 17 is pressed, and exit the loop and function
+            if GPIO.input(17) == False:
+                button_pressed = True
+                break
+        if button_pressed:
+            break
+
     pixels.fill((0, 0, 0))
+
