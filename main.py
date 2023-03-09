@@ -2,7 +2,7 @@ import time
 import RPi.GPIO as GPIO
 from spin import start_spin
 from idle import start_idle_mode
-from presentation import start_presentation_mode
+from presentation import light_up_group
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN)
@@ -22,9 +22,8 @@ try:
             start_idle_mode()
         if select_presentation_mode == False:
             print('Presentation Mode Selected')
-            start_presentation_mode()
-            time.sleep(0.2) # wait for button debounce
+            light_up_group()
 
-finally:
+except KeyboardInterrupt:
     GPIO.cleanup()
     print("All LEDs OFF")

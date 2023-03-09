@@ -3,6 +3,9 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 
+from idle import start_idle_mode
+from spin import start_spin
+
 # Pin definitions
 BUTTON_PIN = 22
 pixel_pin = board.D18
@@ -23,11 +26,22 @@ def light_up_group(group):
     pixels.show()
 
 # Define a callback function to handle button presses
+# Define a callback function to handle button presses
 def button_callback(channel):
     global current_group
     # Increment current_group to move to the next group
     current_group = (current_group + 1) % len(groups)
     light_up_group(groups[current_group])
+
+    # Check if spin button is pressed
+    if GPIO.input(17) == False:
+        print('Spin selected')
+        start_spin()
+    # Check if idle mode button is pressed
+    elif GPIO.input(27) == False:
+        print('Idle Mode Selected')
+        start_idle_mode()
+
 
 # Initialize GPIO
 GPIO.setmode(GPIO.BCM)
