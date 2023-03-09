@@ -2,6 +2,7 @@ import time
 import board
 import neopixel
 import RPi.GPIO as GPIO
+from spin import start_spin
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -49,3 +50,4 @@ def start_idle_mode():
             pixels.show()
             while GPIO.input(27) == GPIO.LOW:
                 pass
+            start_spin()
