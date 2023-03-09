@@ -50,4 +50,6 @@ def start_idle_mode():
             pixels.show()
             while GPIO.input(27) == GPIO.LOW:
                 pass
+        elif GPIO.input(17) == GPIO.LOW:
             start_spin()
+
