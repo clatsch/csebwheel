@@ -9,7 +9,7 @@ GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 pixel_pin = board.D18
 numleds = 280
-ORDER = neopixel.RGB
+ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 def wheel(pos):
@@ -29,7 +29,7 @@ def wheel(pos):
         r = 0
         g = int(pos * 3)
         b = int(255 - pos * 3)
-    return (r, g, b) if ORDER in (neopixel.RGB, neopixel.RGB) else (r, g, b, 0)
+    return (r, g, b) if ORDER in (neopixel.RGBW, neopixel.RGBW) else (r, g, b, w, 0)
 
 def rainbow_cycle(wait):
     for j in range(255):
