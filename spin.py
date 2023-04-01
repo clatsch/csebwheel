@@ -34,7 +34,7 @@ def start_spin():
     global spin
     global last_winning_led
     rotations = random.randint(minrotations, maxrotations)
-    numleds = 16
+    numleds = 280
     decay = rotations * numleds
     spin += 1
     for rotation in range(1, rotations):
