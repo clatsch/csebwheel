@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
 numleds = 280
-ORDER = neopixel.RGB
+ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 winningnumbers = [1,2,3,4,5,6,12]
 losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
