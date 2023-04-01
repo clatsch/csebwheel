@@ -6,13 +6,13 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
-numleds = 280
+numleds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 winningnumbers = [1,2,3,4,5,6,12]
 losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
-minrotations = 6
-maxrotations = 10
+minrotations = 2
+maxrotations = 3
 spin = 0
 last_winning_led = None
 
@@ -34,7 +34,7 @@ def start_spin():
     global spin
     global last_winning_led
     rotations = random.randint(minrotations, maxrotations)
-    numleds = 280
+    numleds = 2363
     decay = rotations * numleds
     spin += 1
     for rotation in range(1, rotations):
