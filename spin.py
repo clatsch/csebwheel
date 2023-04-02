@@ -35,26 +35,48 @@ def selectwinner(spins):
 def start_spin():
     global spin
     global last_winning_led
-    rotations = random.randint(minrotations, maxrotations)
-    global numleds
-    decay = rotations * numleds * 100
     spin += 1
-    chunk_size = 5  # Increase this value to update more LEDs per iteration
-    for rotation in range(1, rotations):
-        led_colour = (0, 0, 255)
-        led_stop_colour = (0, 0, 255)
-        if rotation == rotations - 1:
-            winner, is_winning_number = selectwinner(spin)
-            numleds = winner
+
+    min_rotations = 5
+    max_rotations = 10
+    total_rotations = random.randint(min_rotations, max_rotations)
+    initial_speed = 0.01  # Adjust this value to control the initial spinning speed
+    final_speed = 0.05  # Adjust this value to control the final spinning speed
+
+    chunk_size = 5
+    num_chunks = numleds // chunk_size
+    if num_chunks * chunk_size < numleds:
+        num_chunks += 1
+
+    for rotation in range(1, total_rotations * num_chunks):
+        winner, is_winning_number = selectwinner(spin)
+        numleds = winner
+
+        # Calculate the start and end index of the rotating chunk
+        start_index = (rotation % num_chunks) * chunk_size
+        end_index = min(start_index + chunk_size, numleds)
+
+        # Set the color of the pixels in the rotating chunk
+        for led in range(start_index, end_index):
             if is_winning_number:
-                led_stop_colour = (0, 255, 0)
+                pixels[led] = (0, 255, 0)  # Green for winning number
             else:
-                led_stop_colour = (255, 0, 0)
-        for i in reversed(range(0, numleds, chunk_size)):  # Update LEDs in chunks instead of every LED
-            chunk = min(chunk_size, numleds - i)
-            pixels[i:i+chunk] = [led_stop_colour] + [led_colour]*(chunk-1)
-            pixels[(i+chunk) % numleds] = (0, 0, 0)
-            time.sleep(rotation/decay)
-            decay -= chunk
-            pixels.show()
+                pixels[led] = (255, 0, 0)  # Red for losing number
+
+        # Turn off the rest of the pixels
+        for led in range(numleds):
+            if led < start_index or led >= end_index:
+                pixels[led] = (0, 0, 0)
+
+        # Calculate the current speed based on the progress of the rotation
+        progress = rotation / (total_rotations * num_chunks)
+        current_speed = initial_speed * (1 - progress) + final_speed * progress
+
+        # Wait for the specified amount of time and then show the pixels
+        time.sleep(current_speed)
+        pixels.show()
+
+    # Turn off all the pixels when the spinning is complete
     pixels.fill((0, 0, 0))
+    pixels.show()
+
