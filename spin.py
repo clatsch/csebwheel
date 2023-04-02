@@ -37,7 +37,7 @@ def start_spin():
     numleds = 363
     decay = rotations * numleds
     spin += 1
-    speed_factor = 2  # Increase this value to make the spinning faster
+    speed_factor = 20  # Increase this value to make the spinning faster
 
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
