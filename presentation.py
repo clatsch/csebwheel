@@ -37,7 +37,7 @@ def light_up_group(group):
     pixels.fill((0, 0, 0, 0))
     # Set the color of the pixels in the group to white
     for i in group:
-        pixels[i] = (255, 255, 255, 0)
+        pixels[i] = (255, 255, 255, 255)
     pixels.show()
     # Return the current group
     return groups.index(group)
