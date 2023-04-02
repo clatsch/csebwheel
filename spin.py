@@ -33,28 +33,39 @@ def selectwinner(spins):
 def start_spin():
     global spin
     global last_winning_led
-    rotations = random.randint(minrotations, maxrotations)
     global numleds
-    decay = rotations * numleds
     spin += 1
-    speed_factor = 100  # Increase this value to make the spinning faster
 
-    for rotation in range(1, rotations):
+    min_rotations = 5
+    max_rotations = 10
+    total_rotations = random.randint(min_rotations, max_rotations) * numleds
+    initial_speed = 0.003  # Adjust this value to control the initial spinning speed
+    decay_factor = 1.0008  # Adjust this value to control how quickly the spinning slows down
+
+    current_speed = initial_speed
+
+    for rotation in range(1, total_rotations):
         led_colour = (0, 0, 255)
         led_stop_colour = (0, 0, 255)
-        if rotation == rotations - 1:
-            winner, is_winning_number = selectwinner(spin)
-            numleds = winner
-            if is_winning_number:
-                led_stop_colour = (0, 255, 0)
-            else:
-                led_stop_colour = (255, 0, 0)
+
+        winner, is_winning_number = selectwinner(spin)
+        numleds = winner
+        if is_winning_number:
+            led_stop_colour = (0, 255, 0)
+        else:
+            led_stop_colour = (255, 0, 0)
+
         for led in reversed(range(numleds)):
             if led + 1 == numleds:
                 led_colour = led_stop_colour
-            pixels[led] = led_colour
+            else:
+                pixels[led] = led_colour
             pixels[(led + 1) % numleds] = (0, 0, 0)
-            time.sleep(rotation / decay * 1 / speed_factor)  # Adjust the time delay with the speed factor
-            decay -= 1
+
+            time.sleep(current_speed)
             pixels.show()
+
+        # Update the speed for the next rotation
+        current_speed *= decay_factor
+
     pixels.fill((0, 0, 0))
