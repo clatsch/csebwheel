@@ -38,8 +38,8 @@ def start_spin():
     global numleds
     spin += 1
 
-    initial_speed = 0.0005  # Adjust this value to control the initial spinning speed
-    friction = 3  # Adjust this value to control how quickly the spinning slows down
+    initial_speed = 0.0000005  # Adjust this value to control the initial spinning speed
+    friction = 300  # Adjust this value to control how quickly the spinning slows down
     current_speed = initial_speed
 
     for rotation in range(1, rotations):
