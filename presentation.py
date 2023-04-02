@@ -12,12 +12,24 @@ GPIO.setup(27, GPIO.IN)
 # Pin definitions
 BUTTON_PIN = 22
 pixel_pin = board.D18
-numleds = 16
+numleds = 363
 ORDER = neopixel.RGB
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 # Define groups of pixels
-groups = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15]]
+groups = [
+    list(range(0, 33)),
+    list(range(33, 66)),
+    list(range(66, 99)),
+    list(range(99, 132)),
+    list(range(132, 165)),
+    list(range(165, 198)),
+    list(range(198, 231)),
+    list(range(231, 264)),
+    list(range(264, 297)),
+    list(range(297, 330)),
+    list(range(330, 363))
+]
 
 # Define function to light up a group of pixels
 def light_up_group(group):
