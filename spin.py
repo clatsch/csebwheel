@@ -5,19 +5,17 @@ import random
 import RPi.GPIO as GPIO
 import math
 
-
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
 numleds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
-winningnumbers = [1, 2, 3, 4, 5, 6, 12]
-losingnumbers = list(set(range(1, numleds + 1)) - set(winningnumbers))
+winningnumbers = [1,2,3,4,5,6,12]
+losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
 minrotations = 5
 maxrotations = 11
 spin = 0
 last_winning_led = None
-
 
 def selectwinner(spins):
     global last_winning_led
@@ -32,7 +30,6 @@ def selectwinner(spins):
     is_winning_number = numleds in winningnumbers
     winner = (numleds, is_winning_number)
     return winner
-
 
 def start_spin():
     global spin
@@ -56,12 +53,11 @@ def start_spin():
             chunk = min(chunk_size, numleds - i)
             pixels[i:i+chunk] = [led_stop_colour] + [led_colour]*(chunk-1)
             if i == 0:
-                pixels[numleds-1] = (0, 0, 0)
+                pixels[(numleds - chunk_size):numleds] = [(0, 0, 0)]*chunk_size
             else:
-                pixels[i-1] = (0, 0, 0)
+                pixels[(i-chunk_size):i] = [(0, 0, 0)]*chunk_size
             progress = rotation / (rotations - 1)  # Calculate progress of spin
             current_speed = (1 - math.log(progress + 1, 2)) / 50  # Use logarithmic function to reduce speed
             time.sleep(current_speed)
             pixels.show()
     pixels.fill((0, 0, 0))
-
