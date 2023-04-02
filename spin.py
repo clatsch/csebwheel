@@ -43,9 +43,6 @@ def start_spin():
     max_speed = 0.04  # Adjust this value to control the final spinning speed
 
     for rotation in range(1, total_rotations):
-        led_colour = (0, 0, 255)
-        led_stop_colour = (0, 0, 255)
-
         winner, is_winning_number = selectwinner(spin)
         numleds = winner
         if is_winning_number:
@@ -53,18 +50,19 @@ def start_spin():
         else:
             led_stop_colour = (255, 0, 0)
 
-        for led in reversed(range(numleds)):
-            if led + 1 == numleds:
-                led_colour = led_stop_colour
-            else:
-                pixels[led] = led_colour
-            pixels[(led + 1) % numleds] = (0, 0, 0)
+        current_led = rotation % numleds
+        if current_led + 1 == numleds:
+            pixels[current_led] = led_stop_colour
+        else:
+            pixels[current_led] = (0, 0, 255)
+        pixels[(current_led - 1) % numleds] = (0, 0, 0)
 
-            progress = rotation / total_rotations
-            current_speed = initial_speed + (progress ** 2) * (max_speed - initial_speed)
-            time.sleep(current_speed)
-            pixels.show()
+        progress = rotation / total_rotations
+        current_speed = initial_speed + (progress ** 2) * (max_speed - initial_speed)
+        time.sleep(current_speed)
+        pixels.show()
 
     pixels.fill((0, 0, 0))
+
 
 
