@@ -35,9 +35,9 @@ def start_spin():
     global spin
     global last_winning_led
     rotations = random.randint(minrotations, maxrotations)
+    global numleds
     decay = rotations * numleds
     spin += 1
-    chunk_size = 10
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
         led_stop_colour = (0, 0, 255)
@@ -48,22 +48,15 @@ def start_spin():
                 led_stop_colour = (0, 255, 0)
             else:
                 led_stop_colour = (255, 0, 0)
-        for i in reversed(range(0, numleds, chunk_size)):
-            chunk = min(chunk_size, numleds - i)
-            pixels[i:i+chunk] = [led_stop_colour] + [led_colour]*(chunk-1)
-            pixels[(i+chunk) % numleds] = (0, 0, 0)
-            for j in range(i+chunk, i+chunk+chunk_size):
-                pixels[j % numleds] = (0, 0, 0)
-            progress = rotation / (rotations - 1)
-            current_speed = (1 - math.log(progress + 1, 2)) / 50
-            time_delay = current_speed * (chunk_size / numleds)
-            time.sleep(time_delay)
+        for led in range(numleds):
+            if led+1 == numleds:
+                led_colour = led_stop_colour
+            if led == 4 or led == 13:  # check for pixels 5 and 14
+                pixels[led] = (255, 255, 255)  # set color to white
+            else:
+                pixels[led] = led_colour
+            pixels[led-1] = (0, 0, 0)
+            time.sleep(rotation/decay)
+            decay -= 1
             pixels.show()
-            decay -= chunk_size
-        if rotation == rotations - 1:
-            pixels.fill(led_stop_colour)
-            time.sleep(0.5)
-            pixels.fill((0, 0, 0))
-        else:
-            pixels.fill((0, 0, 0))
-            time.sleep(0.2)
+    pixels.fill((0, 0, 0))
