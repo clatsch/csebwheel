@@ -55,9 +55,13 @@ def start_spin():
         for i in reversed(range(0, numleds, chunk_size)):  # Update LEDs in chunks instead of every LED
             chunk = min(chunk_size, numleds - i)
             pixels[i:i+chunk] = [led_stop_colour] + [led_colour]*(chunk-1)
-            pixels[(i+chunk) % numleds] = (0, 0, 0)
+            if i == 0:
+                pixels[numleds-1] = (0, 0, 0)
+            else:
+                pixels[i-1] = (0, 0, 0)
             progress = rotation / (rotations - 1)  # Calculate progress of spin
             current_speed = (1 - math.log(progress + 1, 2)) / 50  # Use logarithmic function to reduce speed
             time.sleep(current_speed)
             pixels.show()
-        pixels.fill((0, 0, 0))
+    pixels.fill((0, 0, 0))
+
