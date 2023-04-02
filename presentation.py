@@ -13,7 +13,7 @@ GPIO.setup(27, GPIO.IN)
 BUTTON_PIN = 22
 pixel_pin = board.D18
 numleds = 363
-ORDER = neopixel.RGB
+ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 # Define groups of pixels
@@ -28,16 +28,16 @@ groups = [
     list(range(231, 264)),
     list(range(264, 297)),
     list(range(297, 330)),
-    list(range(330, 363))
+    list(range(330, 361))
 ]
 
 # Define function to light up a group of pixels
 def light_up_group(group):
     # Turn off all pixels first
-    pixels.fill((0, 0, 0))
+    pixels.fill((0, 0, 0, 0))
     # Set the color of the pixels in the group to white
     for i in group:
-        pixels[i] = (255, 255, 255)
+        pixels[i] = (255, 255, 255, 0)
     pixels.show()
     # Return the current group
     return groups.index(group)
