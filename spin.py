@@ -34,24 +34,25 @@ def selectwinner(spins):
 def start_spin():
     global spin
     global last_winning_led
-    rotations = random.randint(minrotations, maxrotations)
     global numleds
     spin += 1
 
-    initial_speed = 0.0000005  # Adjust this value to control the initial spinning speed
-    friction = 300  # Adjust this value to control how quickly the spinning slows down
-    current_speed = initial_speed
+    min_rotations = 5
+    max_rotations = 10
+    total_rotations = random.randint(min_rotations, max_rotations)
+    initial_speed = 0.005  # Adjust this value to control the initial spinning speed
+    final_speed = 0.05  # Adjust this value to control the final spinning speed
 
-    for rotation in range(1, rotations):
+    for rotation in range(1, total_rotations * numleds):
         led_colour = (0, 0, 255)
         led_stop_colour = (0, 0, 255)
-        if rotation == rotations - 1:
-            winner, is_winning_number = selectwinner(spin)
-            numleds = winner
-            if is_winning_number:
-                led_stop_colour = (0, 255, 0)
-            else:
-                led_stop_colour = (255, 0, 0)
+
+        winner, is_winning_number = selectwinner(spin)
+        numleds = winner
+        if is_winning_number:
+            led_stop_colour = (0, 255, 0)
+        else:
+            led_stop_colour = (255, 0, 0)
 
         for led in reversed(range(numleds)):
             if led+1 == numleds:
@@ -61,13 +62,11 @@ def start_spin():
             else:
                 pixels[led] = led_colour
             pixels[(led+1) % numleds] = (0, 0, 0)
-            time.sleep(current_speed)  # Adjust the time delay based on current speed
-            pixels.show()
 
-        # Update the speed for the next rotation
-        current_speed *= friction
-        if current_speed < 0.0001:
-            break
+            progress = rotation / (total_rotations * numleds)
+            current_speed = initial_speed + progress * (final_speed - initial_speed)
+            time.sleep(current_speed)
+            pixels.show()
 
     pixels.fill((0, 0, 0))
 
