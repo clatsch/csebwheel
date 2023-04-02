@@ -14,7 +14,7 @@ BUTTON_PIN = 22
 pixel_pin = board.D18
 numleds = 363
 ORDER = neopixel.RGBW
-pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.5, auto_write=False, pixel_order=ORDER)
 
 # Define groups of pixels
 groups = [
@@ -37,7 +37,7 @@ def light_up_group(group):
     pixels.fill((0, 0, 0, 0))
     # Set the color of the pixels in the group to white
     for i in group:
-        pixels[i] = (255, 255, 255, 0)
+        pixels[i] = (255, 255, 255, 255)
     pixels.show()
     # Return the current group
     return groups.index(group)
