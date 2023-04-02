@@ -33,36 +33,29 @@ def selectwinner(spins):
 def start_spin():
     global spin
     global last_winning_led
-    global numleds
+    rotations = random.randint(minrotations, maxrotations)
+    numleds = 363
+    decay = rotations * numleds * 100
     spin += 1
-
-    min_rotations = 5
-    max_rotations = 10
-    total_rotations = random.randint(min_rotations, max_rotations) * numleds
-    initial_speed = 0.001  # Adjust this value to control the initial spinning speed
-    max_speed = 0.04  # Adjust this value to control the final spinning speed
-
-    for rotation in range(1, total_rotations):
-        winner, is_winning_number = selectwinner(spin)
-        numleds = winner
-        if is_winning_number:
-            led_stop_colour = (0, 255, 0)
-        else:
-            led_stop_colour = (255, 0, 0)
-
-        current_led = rotation % numleds
-        if current_led + 1 == numleds:
-            pixels[current_led] = led_stop_colour
-        else:
-            pixels[current_led] = (0, 0, 255)
-        pixels[(current_led - 1) % numleds] = (0, 0, 0)
-
-        progress = rotation / total_rotations
-        current_speed = initial_speed + (progress ** 2) * (max_speed - initial_speed)
-        time.sleep(current_speed)
-        pixels.show()
-
+    for rotation in range(1, rotations):
+        led_colour = (0, 0, 255)
+        led_stop_colour = (0, 0, 255)
+        if rotation == rotations - 1:
+            winner, is_winning_number = selectwinner(spin)
+            numleds = winner
+            if is_winning_number:
+                led_stop_colour = (0, 255, 0)
+            else:
+                led_stop_colour = (255, 0, 0)
+        for led in reversed(range(numleds)):  # Change the iteration order to reverse
+            if led+1 == numleds:
+                led_colour = led_stop_colour
+            if led == 4 or led == 13:  # check for pixels 5 and 14
+                pixels[led] = (255, 255, 255)  # set color to white
+            else:
+                pixels[led] = led_colour
+            pixels[led-1] = (0, 0, 0)
+            time.sleep(rotation/decay)
+            decay -= 1
+            pixels.show()
     pixels.fill((0, 0, 0))
-
-
-
