@@ -34,10 +34,10 @@ def start_spin():
     global spin
     global last_winning_led
     rotations = random.randint(minrotations, maxrotations)
-    numleds = 363
+    global numleds
     decay = rotations * numleds
     spin += 1
-    speed_factor = 10  # Increase this value to make the spinning faster
+    speed_factor = 5  # Increase this value to make the spinning faster
 
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
@@ -57,9 +57,10 @@ def start_spin():
             else:
                 pixels[led] = led_colour
             pixels[(led+1) % numleds] = (0, 0, 0)
-            time.sleep(rotation/decay)
-            decay -= speed_factor  # Adjust the decrement value of decay with the speed factor
+            time.sleep(rotation/decay * 1/speed_factor)  # Adjust the time delay with the speed factor
+            decay -= 1
             pixels.show()
     pixels.fill((0, 0, 0))
+
 
 
