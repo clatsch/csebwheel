@@ -11,8 +11,8 @@ ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 winningnumbers = [1,2,3,4,5,6,12]
 losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
-minrotations = 2
-maxrotations = 3
+minrotations = 5
+maxrotations = 10
 spin = 0
 last_winning_led = None
 
@@ -47,15 +47,16 @@ def start_spin():
                 led_stop_colour = (0, 255, 0)
             else:
                 led_stop_colour = (255, 0, 0)
-        for led in reversed(range(numleds)):  # Change the iteration order to reverse
+        for led in reversed(range(numleds)):
             if led+1 == numleds:
                 led_colour = led_stop_colour
             if led == 4 or led == 13:  # check for pixels 5 and 14
                 pixels[led] = (255, 255, 255)  # set color to white
             else:
                 pixels[led] = led_colour
-            pixels[led-1] = (0, 0, 0)
+            pixels[(led+1) % numleds] = (0, 0, 0)  # Change this line to switch off the previous LED
             time.sleep(rotation/decay)
             decay -= 1
             pixels.show()
     pixels.fill((0, 0, 0))
+
