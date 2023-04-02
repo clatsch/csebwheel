@@ -35,12 +35,13 @@ groups = [
 def light_up_group(group):
     # Turn off all pixels first
     pixels.fill((0, 0, 0, 0))
-    # Set the color of the pixels in the group to white
-    for i in group:
+    # Set the color of the pixels in the group to white, iterating over the group in reverse order
+    for i in reversed(group):
         pixels[i] = (255, 255, 255, 255)
     pixels.show()
     # Return the current group
     return groups.index(group)
+
 
 # Define a callback function to handle button presses
 def button_callback(channel):
