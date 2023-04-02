@@ -33,31 +33,29 @@ def selectwinner(spins):
 def start_spin():
     global spin
     global last_winning_led
+    rotations = random.randint(minrotations, maxrotations)
     global numleds
+    decay = rotations * numleds
     spin += 1
+    speed_factor = 0.001  # Adjust this value to make the spinning faster
 
-    total_rotations = random.randint(minrotations, maxrotations) * numleds
-    min_speed = 0.001  # Adjust this value to control the minimum spinning speed
-    max_speed = 0.04  # Adjust this value to control the maximum spinning speed
-
-    for rotation in range(1, total_rotations):
-        winner, is_winning_number = selectwinner(spin)
-        numleds = winner
-        if is_winning_number:
-            led_stop_colour = (0, 255, 0)
-        else:
-            led_stop_colour = (255, 0, 0)
-
-        current_led = numleds - (rotation % numleds) - 1
-        if current_led + 1 == numleds:
-            pixels[current_led] = led_stop_colour
-        else:
-            pixels[current_led] = (0, 0, 255)
-        pixels[(current_led + 1) % numleds] = (0, 0, 0)
-
-        progress = rotation / total_rotations
-        current_speed = min_speed + (max_speed - min_speed) * progress**2
-        time.sleep(current_speed)
-
-        pixels.show()
+    for rotation in range(1, rotations):
+        led_colour = (0, 0, 255)
+        led_stop_colour = (0, 0, 255)
+        if rotation == rotations - 1:
+            winner, is_winning_number = selectwinner(spin)
+            numleds = winner
+            if is_winning_number:
+                led_stop_colour = (0, 255, 0)
+            else:
+                led_stop_colour = (255, 0, 0)
+        for led in reversed(range(numleds)):
+            if led + 1 == numleds:
+                led_colour = led_stop_colour
+            pixels[led] = led_colour
+            pixels[(led + 1) % numleds] = (0, 0, 0)
+            time.sleep(rotation / decay * speed_factor)  # Adjust the time delay with the speed factor
+            decay -= 1
+            pixels.show()
     pixels.fill((0, 0, 0))
+
