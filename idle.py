@@ -3,6 +3,7 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 from spin import start_spin
+import threading
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -44,19 +45,25 @@ def start_idle_mode():
     rainbow_on = True
     while rainbow_on:
         rainbow_cycle(0.001)
+        time.sleep(0.01)
+
+def button_thread():
+    while True:
         if GPIO.input(27) == GPIO.LOW:
-            rainbow_on = False
             pixels.fill((0, 0, 0))
             pixels.show()
-            start_time = time.time()
             while GPIO.input(27) == GPIO.LOW:
-                if time.time() - start_time > 0.5:
-                    rainbow_on = False
-                    pixels.fill((0, 0, 0))
-                    pixels.show()
-                    break
+                pass
+            start_idle_mode()
         elif GPIO.input(17) == GPIO.LOW:
-            rainbow_on = False
             pixels.fill((0, 0, 0))
             pixels.show()
             start_spin()
+        time.sleep(0.01)
+
+button_checker = threading.Thread(target=button_thread)
+button_checker.daemon = True
+button_checker.start()
+
+while True:
+    pass
