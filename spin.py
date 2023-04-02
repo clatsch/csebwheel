@@ -52,11 +52,12 @@ def start_spin():
             pixels[i:i+chunk] = [led_stop_colour] + [led_colour]*(chunk-1)
             for j in range(i+chunk, i+chunk+chunk_size):
                 pixels[j % numleds] = (0, 0, 0)  # Turn off LEDs after the chunk being updated
-            decay = ((rotations - rotation) * numleds) / chunk_size  # Calculate decay time for this iteration
+            decay = ((rotations - rotation) * numleds * chunk_size)  # Calculate decay time for this iteration
             time_delay = decay / numleds  # Calculate time delay between LED updates
             time.sleep(time_delay)
             pixels.show()
     pixels.fill((0, 0, 0))
+
 
 
 
