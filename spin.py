@@ -41,8 +41,8 @@ def start_spin():
     spin += 1
     chunk_size = 5  # Increase this value to update more LEDs per iteration
     for rotation in range(1, rotations):
-        led_colour = (0, 0, 255)
-        led_stop_colour = (0, 0, 255)
+        led_colour = (0, 0, 255, 150)
+        led_stop_colour = (0, 0, 255, 150)
         if rotation == rotations - 1:
             winner, is_winning_number = selectwinner(spin)
             numleds = winner
