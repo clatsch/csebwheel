@@ -61,9 +61,10 @@ def start_spin():
             pixels[(led + 1) % numleds] = (0, 0, 0)
 
             progress = rotation / total_rotations
-            current_speed = initial_speed + progress * (max_speed - initial_speed)
+            current_speed = initial_speed + (progress ** 2) * (max_speed - initial_speed)
             time.sleep(current_speed)
             pixels.show()
 
     pixels.fill((0, 0, 0))
+
 
