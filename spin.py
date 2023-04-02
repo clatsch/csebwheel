@@ -39,11 +39,13 @@ def start_spin():
 
     min_rotations = 5
     max_rotations = 10
-    total_rotations = random.randint(min_rotations, max_rotations)
+    total_rotations = random.randint(min_rotations, max_rotations) * numleds
     initial_speed = 0.001  # Adjust this value to control the initial spinning speed
-    final_speed = 0.02  # Adjust this value to control the final spinning speed
+    decay_factor = 1.0005  # Adjust this value to control how quickly the spinning slows down
 
-    for rotation in range(1, total_rotations * numleds):
+    current_speed = initial_speed
+
+    for rotation in range(1, total_rotations):
         led_colour = (0, 0, 255)
         led_stop_colour = (0, 0, 255)
 
@@ -55,15 +57,16 @@ def start_spin():
             led_stop_colour = (255, 0, 0)
 
         for led in reversed(range(numleds)):
-            if led+1 == numleds:
+            if led + 1 == numleds:
                 led_colour = led_stop_colour
             else:
                 pixels[led] = led_colour
-            pixels[(led+1) % numleds] = (0, 0, 0)
+            pixels[(led + 1) % numleds] = (0, 0, 0)
 
-            progress = rotation / (total_rotations * numleds)
-            current_speed = initial_speed * (1 - progress) + final_speed * progress
             time.sleep(current_speed)
             pixels.show()
+
+        # Update the speed for the next rotation
+        current_speed *= decay_factor
 
     pixels.fill((0, 0, 0))
