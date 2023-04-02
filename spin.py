@@ -19,17 +19,18 @@ last_winning_led = None
 
 def selectwinner(spins):
     global last_winning_led
-    numleds = 0
+    winning_led = 0
     if last_winning_led is not None and last_winning_led in winningnumbers:
-        numleds = random.choice(losingnumbers)
+        winning_led = random.choice(losingnumbers)
     else:
-        numleds = random.choice(winningnumbers)
-    if numleds in winningnumbers and last_winning_led is None:
-        numleds = winningnumbers[0]
-    last_winning_led = numleds
-    is_winning_number = numleds in winningnumbers
-    winner = (numleds, is_winning_number)
+        winning_led = random.choice(winningnumbers)
+    if winning_led in winningnumbers and last_winning_led is None:
+        winning_led = winningnumbers[0]
+    last_winning_led = winning_led
+    is_winning_number = winning_led in winningnumbers
+    winner = (winning_led, is_winning_number)
     return winner
+
 
 def start_spin():
     global spin
