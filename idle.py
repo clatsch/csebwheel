@@ -55,5 +55,3 @@ def start_idle_mode():
             pixels.fill((0, 0, 0))
             pixels.show()
             start_spin()
-
-
