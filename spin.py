@@ -38,9 +38,10 @@ def start_spin():
     global numleds
     spin += 1
 
-    initial_speed = 0.02  # Adjust this value to control the initial spinning speed
-    friction = 0.995  # Adjust this value to control how quickly the spinning slows down
+    initial_speed = 0.005  # Adjust this value to control the initial spinning speed
+    friction = 0.98  # Adjust this value to control how quickly the spinning slows down
     current_speed = initial_speed
+
 
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
