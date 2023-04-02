@@ -12,7 +12,7 @@ pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False,
 winningnumbers = [1,2,3,4,5,6,12]
 losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
 minrotations = 5
-maxrotations = 10
+maxrotations = 11
 spin = 0
 last_winning_led = None
 
