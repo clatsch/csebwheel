@@ -6,7 +6,6 @@ from spin import start_spin
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(17, GPIO.IN)
 
 pixel_pin = board.D18
 numleds = 363
@@ -43,27 +42,18 @@ def rainbow_cycle(wait):
 def start_idle_mode():
     global pixels
     rainbow_on = True
-
-    def button_thread():
-        nonlocal rainbow_on
-        while rainbow_on:
-            if GPIO.input(27) == GPIO.LOW:
-                rainbow_on = False
-                pixels.fill((0, 0, 0))
-                pixels.show()
-                while GPIO.input(27) == GPIO.LOW:
-                    pass
-            elif GPIO.input(17) == GPIO.LOW:
-                rainbow_on = False
-                pixels.fill((0, 0, 0))
-                pixels.show()
-                start_spin()
-            time.sleep(0.1)
-
-    button_thread = threading.Thread(target=button_thread)
-    button_thread.start()
-
     while rainbow_on:
         rainbow_cycle(0.001)
+        if GPIO.input(27) == GPIO.LOW:
+            rainbow_on = False
+            pixels.fill((0, 0, 0))
+            pixels.show()
+            while GPIO.input(27) == GPIO.LOW:
+                pass
+        elif GPIO.input(17) == GPIO.LOW:
+            rainbow_on = False
+            pixels.fill((0, 0, 0))
+            pixels.show()
+            start_spin()
 
-    button_thread.join()
+
