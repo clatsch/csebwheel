@@ -3,10 +3,10 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 from spin import start_spin
-import threading
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(17, GPIO.IN)
 
 pixel_pin = board.D18
 numleds = 363
@@ -43,27 +43,27 @@ def rainbow_cycle(wait):
 def start_idle_mode():
     global pixels
     rainbow_on = True
+
+    def button_thread():
+        nonlocal rainbow_on
+        while rainbow_on:
+            if GPIO.input(27) == GPIO.LOW:
+                rainbow_on = False
+                pixels.fill((0, 0, 0))
+                pixels.show()
+                while GPIO.input(27) == GPIO.LOW:
+                    pass
+            elif GPIO.input(17) == GPIO.LOW:
+                rainbow_on = False
+                pixels.fill((0, 0, 0))
+                pixels.show()
+                start_spin()
+            time.sleep(0.1)
+
+    button_thread = threading.Thread(target=button_thread)
+    button_thread.start()
+
     while rainbow_on:
         rainbow_cycle(0.001)
-        time.sleep(0.01)
 
-def button_thread():
-    while True:
-        if GPIO.input(27) == GPIO.LOW:
-            pixels.fill((0, 0, 0))
-            pixels.show()
-            while GPIO.input(27) == GPIO.LOW:
-                pass
-            start_idle_mode()
-        elif GPIO.input(17) == GPIO.LOW:
-            pixels.fill((0, 0, 0))
-            pixels.show()
-            start_spin()
-        time.sleep(0.01)
-
-button_checker = threading.Thread(target=button_thread)
-button_checker.daemon = True
-button_checker.start()
-
-while True:
-    pass
+    button_thread.join()
