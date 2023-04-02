@@ -55,8 +55,13 @@ def start_spin():
             pixels[(i+chunk) % numleds] = (0, 0, 0)
             for j in range(i+chunk, i+chunk+chunk_size):
                 pixels[j % numleds] = (0, 0, 0)  # Turn off LEDs after the chunk being updated
-            time.sleep(rotation/decay)
-            decay -= chunk
+            progress = rotation / (rotations - 1)  # Calculate progress of spin
+            current_speed = (1 - math.log(progress + 1, 2)) / 50  # Use logarithmic function to reduce speed
+            time.sleep(current_speed)
             pixels.show()
+            decay -= chunk
+            if decay <= 0:
+                break
     pixels.fill((0, 0, 0))
+
 
