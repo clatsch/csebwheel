@@ -14,60 +14,41 @@ BUTTON_PIN = 22
 pixel_pin = board.D18
 numleds = 363
 ORDER = neopixel.RGBW
-pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.5, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 # Define groups of pixels
 groups = [
-    list(range(0, 33)),
-    list(range(33, 66)),
-    list(range(66, 99)),
-    list(range(99, 132)),
-    list(range(132, 165)),
-    list(range(165, 198)),
-    list(range(198, 231)),
-    list(range(231, 264)),
-    list(range(264, 297)),
+    list(range(330, 361)),
     list(range(297, 330)),
-    list(range(330, 361))
+    list(range(264, 297)),
+    list(range(231, 264)),
+    list(range(198, 231)),
+    list(range(165, 198)),
+    list(range(132, 165)),
+    list(range(99, 132)),
+    list(range(66, 99)),
+    list(range(33, 66)),
+    list(range(0, 33)),
 ]
 
 # Define function to light up a group of pixels
-def light_up_group(group, reverse=False):
+def light_up_group(group):
     # Turn off all pixels first
     pixels.fill((0, 0, 0, 0))
     # Set the color of the pixels in the group to white
-    if not reverse:
-        for i in group:
-            pixels[i] = (255, 255, 255, 255)
-    else:
-        for i in reversed(group):
-            pixels[i] = (255, 255, 255, 255)
+    for i in group:
+        pixels[i] = (255, 255, 255, 0)
     pixels.show()
     # Return the current group
     return groups.index(group)
 
-
 # Define a callback function to handle button presses
 def button_callback(channel):
-    global current_group, direction
-    # Get the next or previous group index based on the current direction
-    next_group = (current_group + 1) % len(groups)
-    prev_group = (current_group - 1) % len(groups)
-    # Check which group is closer based on the current direction
-    if direction == 1:
-        if next_group - current_group <= len(groups) // 2:
-            current_group = next_group
-        else:
-            current_group = prev_group
-    else:
-        if current_group - prev_group <= len(groups) // 2:
-            current_group = prev_group
-        else:
-            current_group = next_group
-    # Toggle direction
-    direction = 1 - direction
-    # Update the current group
-    current_group_index = light_up_group(groups[current_group], reverse=direction==0)
+    global current_group
+    # Increment current_group to move to the next group
+    current_group = (current_group + 1) % len(groups)
+    current_group_index = light_up_group(groups[current_group])
+
     # Check if spin button is pressed
     if GPIO.input(17) == False:
         print('Spin selected')
@@ -76,7 +57,6 @@ def button_callback(channel):
     elif GPIO.input(27) == False:
         print('Idle Mode Selected')
         start_idle_mode()
-
 
 # Initialize GPIO
 GPIO.setmode(GPIO.BCM)
@@ -87,7 +67,6 @@ GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING, callback=button_callback, bounce
 
 # Main loop
 current_group = 0
-direction = 1  # 1 for clockwise, 0 for counter-clockwise
 current_group_index = light_up_group(groups[current_group])
 while True:
     select_spin = GPIO.input(17)
