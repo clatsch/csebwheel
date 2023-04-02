@@ -31,24 +31,34 @@ groups = [
     list(range(330, 361))
 ]
 
-def light_up_group(group):
+# Define function to light up a group of pixels
+def light_up_group(group, reverse=False):
     # Turn off all pixels first
     pixels.fill((0, 0, 0, 0))
-    # Set the color of the pixels in the group to white, iterating over the group in normal order
-    for i in group:
-        pixels[i] = (255, 255, 255, 255)
+    # Set the color of the pixels in the group to white
+    if not reverse:
+        for i in group:
+            pixels[i] = (255, 255, 255, 255)
+    else:
+        for i in reversed(group):
+            pixels[i] = (255, 255, 255, 255)
     pixels.show()
     # Return the current group
     return groups.index(group)
 
 
-
 # Define a callback function to handle button presses
 def button_callback(channel):
-    global current_group
-    # Increment current_group to move to the next group
-    current_group = (current_group + 1) % len(groups)
-    current_group_index = light_up_group(groups[current_group])
+    global current_group, direction
+    # Increment or decrement current_group based on direction to move to the next or previous group
+    if direction == 1:
+        current_group = (current_group + 1) % len(groups)
+    else:
+        current_group = (current_group - 1) % len(groups)
+    current_group_index = light_up_group(groups[current_group], reverse=direction==0)
+
+    # Toggle direction
+    direction = 1 - direction
 
     # Check if spin button is pressed
     if GPIO.input(17) == False:
@@ -68,6 +78,7 @@ GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING, callback=button_callback, bounce
 
 # Main loop
 current_group = 0
+direction = 1  # 1 for clockwise, 0 for counter-clockwise
 current_group_index = light_up_group(groups[current_group])
 while True:
     select_spin = GPIO.input(17)
