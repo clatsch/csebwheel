@@ -3,6 +3,7 @@ import board
 import neopixel
 import random
 import RPi.GPIO as GPIO
+import numpy as np
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
@@ -35,9 +36,11 @@ def start_spin():
     global last_winning_led
     rotations = random.randint(minrotations, maxrotations)
     global numleds
-    decay = rotations * numleds
     spin += 1
-    speed_factor = 1000  # Increase this value to make the spinning faster
+
+    initial_speed = 0.02  # Adjust this value to control the initial spinning speed
+    friction = 0.995  # Adjust this value to control how quickly the spinning slows down
+    current_speed = initial_speed
 
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
@@ -49,6 +52,7 @@ def start_spin():
                 led_stop_colour = (0, 255, 0)
             else:
                 led_stop_colour = (255, 0, 0)
+
         for led in reversed(range(numleds)):
             if led+1 == numleds:
                 led_colour = led_stop_colour
@@ -57,10 +61,16 @@ def start_spin():
             else:
                 pixels[led] = led_colour
             pixels[(led+1) % numleds] = (0, 0, 0)
-            time.sleep(rotation/decay * 1/speed_factor)  # Adjust the time delay with the speed factor
-            decay -= 1
+            time.sleep(current_speed)  # Adjust the time delay based on current speed
             pixels.show()
+
+        # Update the speed for the next rotation
+        current_speed *= friction
+        if current_speed < 0.0001:
+            break
+
     pixels.fill((0, 0, 0))
+
 
 
 
