@@ -50,16 +50,24 @@ def light_up_group(group, reverse=False):
 # Define a callback function to handle button presses
 def button_callback(channel):
     global current_group, direction
-    # Increment or decrement current_group based on direction to move to the next or previous group
+    # Get the next or previous group index based on the current direction
+    next_group = (current_group + 1) % len(groups)
+    prev_group = (current_group - 1) % len(groups)
+    # Check which group is closer based on the current direction
     if direction == 1:
-        current_group = (current_group + 1) % len(groups)
+        if next_group - current_group <= len(groups) // 2:
+            current_group = next_group
+        else:
+            current_group = prev_group
     else:
-        current_group = (current_group - 1) % len(groups)
-    current_group_index = light_up_group(groups[current_group], reverse=direction==0)
-
+        if current_group - prev_group <= len(groups) // 2:
+            current_group = prev_group
+        else:
+            current_group = next_group
     # Toggle direction
     direction = 1 - direction
-
+    # Update the current group
+    current_group_index = light_up_group(groups[current_group], reverse=direction==0)
     # Check if spin button is pressed
     if GPIO.input(17) == False:
         print('Spin selected')
@@ -68,6 +76,7 @@ def button_callback(channel):
     elif GPIO.input(27) == False:
         print('Idle Mode Selected')
         start_idle_mode()
+
 
 # Initialize GPIO
 GPIO.setmode(GPIO.BCM)
