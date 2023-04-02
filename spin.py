@@ -37,7 +37,8 @@ def start_spin():
     global numleds
     decay = rotations * numleds
     spin += 1
-    speed_factor = 0.0000001  # Adjust this value to make the spinning faster
+    speed_factor = 0.001  # Adjust this value to make the spinning faster
+    chunk_size = 5  # Adjust this value to change the number of LEDs updated at a time
 
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
@@ -49,13 +50,16 @@ def start_spin():
                 led_stop_colour = (0, 255, 0)
             else:
                 led_stop_colour = (255, 0, 0)
-        for led in reversed(range(numleds)):
-            if led + 1 == numleds:
-                led_colour = led_stop_colour
-            pixels[led] = led_colour
-            pixels[(led + 1) % numleds] = (0, 0, 0)
+        for led in reversed(range(0, numleds, chunk_size)):
+            for i in range(chunk_size):
+                current_led = (led + i) % numleds
+                if current_led + 1 == numleds:
+                    led_colour = led_stop_colour
+                pixels[current_led] = led_colour
+                pixels[(current_led + 1) % numleds] = (0, 0, 0)
             time.sleep(rotation / decay * speed_factor)  # Adjust the time delay with the speed factor
             decay -= 1
             pixels.show()
     pixels.fill((0, 0, 0))
+
 
