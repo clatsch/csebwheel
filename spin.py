@@ -12,8 +12,8 @@ ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 winningnumbers = [1,2,3,4,5,6,12]
 losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
-minrotations = 5
-maxrotations = 11
+minrotations = 6
+maxrotations = 10
 spin = 0
 last_winning_led = None
 
@@ -35,10 +35,9 @@ def start_spin():
     global spin
     global last_winning_led
     rotations = random.randint(minrotations, maxrotations)
-    global numleds
-    decay = rotations * numleds * 100
+    decay = rotations * numleds
     spin += 1
-    chunk_size = 5  # Increase this value to update more LEDs per iteration
+    chunk_size = 10
     for rotation in range(1, rotations):
         led_colour = (0, 0, 255)
         led_stop_colour = (0, 0, 255)
@@ -49,17 +48,18 @@ def start_spin():
                 led_stop_colour = (0, 255, 0)
             else:
                 led_stop_colour = (255, 0, 0)
-        for i in reversed(range(0, numleds, chunk_size)):  # Update LEDs in chunks instead of every LED
+        for i in reversed(range(0, numleds, chunk_size)):
             chunk = min(chunk_size, numleds - i)
             pixels[i:i+chunk] = [led_stop_colour] + [led_colour]*(chunk-1)
             pixels[(i+chunk) % numleds] = (0, 0, 0)
             for j in range(i+chunk, i+chunk+chunk_size):
-                pixels[j % numleds] = (0, 0, 0)  # Turn off LEDs after the chunk being updated
-            progress = rotation / (rotations - 1)  # Calculate progress of spin
-            current_speed = (1 - math.log(progress + 1, 2)) / 50  # Use logarithmic function to reduce speed
-            time.sleep(current_speed)
+                pixels[j % numleds] = (0, 0, 0)
+            progress = rotation / (rotations - 1)
+            current_speed = (1 - math.log(progress + 1, 2)) / 50
+            time_delay = current_speed * (chunk_size / numleds)
+            time.sleep(time_delay)
             pixels.show()
-            decay -= chunk
+            decay -= chunk_size
         if rotation == rotations - 1:
             pixels.fill(led_stop_colour)
             time.sleep(0.5)
@@ -67,11 +67,3 @@ def start_spin():
         else:
             pixels.fill((0, 0, 0))
             time.sleep(0.2)
-
-
-
-
-
-
-
-
