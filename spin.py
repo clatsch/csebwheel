@@ -11,8 +11,8 @@ pixel_pin = board.D18
 numleds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
-winningnumbers = [1,2,3,4,5,6,12]
-losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
+winningnumbers = [1, 2, 3, 4, 5, 6, 12]
+losingnumbers = list(set(range(1, numleds + 1)) - set(winningnumbers))
 minrotations = 5
 maxrotations = 11
 spin = 0
@@ -60,4 +60,4 @@ def start_spin():
             current_speed = (1 - math.log(progress + 1, 2)) / 50  # Use logarithmic function to reduce speed
             time.sleep(current_speed)
             pixels.show()
-    pixels.fill((0, 0, 0))
+        pixels.fill((0, 0, 0))
