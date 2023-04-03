@@ -11,43 +11,37 @@ num_leds = 300
 ORDER = neopixel.RGB
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
-min_rotations = 4
-max_rotations = 7
+min_rotations = 3
+max_rotations = 5
 button_pin = 17
 
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+segments = [    list(range(290, 299)),    list(range(271, 289)),    list(range(264, 270)),    list(range(231, 264)),    list(range(198, 231)),    list(range(165, 198)),    list(range(132, 165)),    list(range(99, 132)),    list(range(66, 99)),    list(range(33, 66)),    list(range(0, 33)),]
+
 def start_spin():
     strength = random.uniform(0.4, 1.0)
-    print(strength)
 
-    # Calculate the total distance the wheel should travel based on the number of LEDs and the strength
     distance = strength * num_leds * 2 * math.pi
 
-    # Calculate the number of rotations needed to travel the total distance
     circumference = num_leds * 2 * math.pi
     rotations = int(distance / circumference)
 
-    # Add some random variation to the number of rotations
     rotations += random.randint(0, 2)
 
-    # Calculate the total number of steps based on the number of rotations
     total_steps = rotations * num_leds
 
-    # Calculate initial speed based on strength and friction
     friction = 0.9
     speed = 1.5 * strength
 
-    # Set a random starting position for the wheel
     starting_position = random.randint(0, num_leds - 1)
 
-    # Spin the wheel
+    lit_segments = []
+
     for i in range(starting_position, starting_position + total_steps):
-        # Calculate current speed based on remaining distance and friction
         remaining_steps = total_steps - (i - starting_position)
         current_speed = speed * remaining_steps / total_steps * friction
 
-        # Update LED colors and show them
         for j in range(5):
             prev_index = (i - 5 + j) % num_leds
             pixels[prev_index] = (0, 0, 0)
@@ -58,23 +52,47 @@ def start_spin():
 
         pixels.show()
 
-        # Wait for a short time based on current speed
+        for segment in segments:
+            if i % num_leds in segment and segment not in lit_segments:
+                for k in range(100):
+                    brightness = int(abs(math.sin(k * math.pi / 100)) * 255)
+                    for j in segment:
+                        pixels[j] = (brightness, brightness, brightness)
+                    pixels.show()
+                    time.sleep(0.01)
+
+                pixels.fill((0, 0, 0))
+                pixels.show()
+
+                lit_segments.append(segment)
+
+        if time.monotonic() - start_time > 20:
+            break
+
         delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
-    # Turn off all LEDs and show them
     pixels.fill((0, 0, 0))
     pixels.show()
 
-    # Wait for a short time before finishing
-    time.sleep(0.5)
+def flash_segment(segment):
+    for i in range(100):
+        brightness = int(abs(math.sin(i * math.pi / 100)) * 255)
+        for j in segment:
+            pixels[j] = (brightness, brightness, brightness)
+        pixels.show()
+        time.sleep(0.01)
 
+    pixels.fill((0, 0, 0))
+    pixels.show()
 
+start_time = time.monotonic()
 
 while True:
     input_state = GPIO.input(button_pin)
     if input_state == False:
-        print("Button pressed. Starting spin.")
         start_spin()
+        lit_segments = []
+        start_time = time.monotonic()
         time.sleep(0.2)
     time.sleep(0.1)
