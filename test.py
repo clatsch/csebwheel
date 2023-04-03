@@ -11,11 +11,10 @@ num_leds = 300
 ORDER = neopixel.RGB
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
-min_rotations = 1
-max_rotations = 3
-button_pin = 17  # Use the correct GPIO pin for the button
+min_rotations = 3
+max_rotations = 5
+button_pin = 17
 
-# Setup button input
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
@@ -35,14 +34,12 @@ def start_spin():
         pixels.show()
 
         progress = i / total_steps
-        delay_time = 0.0005 * (1 / initial_strength) * (1 + 15 * progress ** 2)
+        delay_time = -0.01 * math.log(1 - progress) * initial_strength
         time.sleep(delay_time)
-
 
 while True:
     input_state = GPIO.input(button_pin)
-    if input_state == False:  # Change this condition
-        print("Button pressed. Starting spin.")  # Debug print statement
+    if input_state == False:
         start_spin()
-        time.sleep(0.2)  # Debounce
-    time.sleep(0.1)  # Add a short delay to avoid excessive printing
+        time.sleep(0.2)
+    time.sleep(0.1)
