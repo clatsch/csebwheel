@@ -25,44 +25,19 @@ def start_spin():
     decay = rotations
 
     for i in range(total_steps):
-        # Calculate the progress of the spin (0 to 1)
-        progress = i / total_steps
-
-        # Calculate delay_time to start fast and gradually slow down
-        if progress < 0.5:
-            delay_time = (1 - 2 * progress) * 0.005 / initial_strength + 0.001
-        else:
-            delay_time = (2 * progress - 1) ** 2 / initial_strength + 0.001
+        # Turn off all LEDs
+        for j in range(num_leds):
+            pixels[j] = (0, 0, 0)
 
         # Light up 5 LEDs
         for j in range(5):
-            prev_index = (i - 5 + j) % num_leds
-            pixels[prev_index] = (0, 0, 0)
-
             index = (i + j) % num_leds
             pixels[index] = (0, 0, 255)
 
         pixels.show()
 
-        time.sleep(delay_time)
-
-    # Slow down the spin as it approaches the end
-    for i in range(total_steps, total_steps + decay):
-        # Calculate the progress of the spin (0 to 1)
-        progress = (i - total_steps) / decay
-
-        # Calculate delay_time to gradually slow down
-        delay_time = (1 - progress) ** 2 / initial_strength + 0.001
-
-        # Light up 5 LEDs
-        for j in range(5):
-            prev_index = (i - 5 + j) % num_leds
-            pixels[prev_index] = (0, 0, 0)
-
-            index = (i + j) % num_leds
-            pixels[index] = (0, 0, 255)
-
-        pixels.show()
+        # Calculate delay time to start fast and gradually slow down
+        delay_time = (i / decay) / (1000 * initial_strength) + 0.001
 
         time.sleep(delay_time)
 
