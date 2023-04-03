@@ -11,35 +11,41 @@ num_leds = 300
 ORDER = neopixel.RGB
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
-min_rotations = 3
-max_rotations = 5
-button_pin = 17
-
+button_pin = 17  # Use the correct GPIO pin for the button
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
-    initial_strength = random.uniform(0.5, 1.0)
-    rotations = int(random.randint(min_rotations, max_rotations) * num_leds * initial_strength)
-    total_steps = rotations * 2
+    # Define the initial speed and the decay factor
+    initial_speed = random.uniform(0.5, 1.0)  # Random initial speed between 50% and 100%
+    decay_factor = random.uniform(0.005, 0.015)  # Random decay factor between 0.5% and 1.5% per step
 
+    # Calculate the total number of steps and the delay time for each step
+    total_steps = random.randint(10, 20) * num_leds  # Random number of total steps between 3000 and 6000
+    delay_time = 0.01 / initial_speed  # Initial delay time proportional to the initial speed
+
+    # Start the animation
     for i in range(total_steps):
-        for j in range(5):
-            prev_index = (i - 5 + j) % num_leds
-            pixels[prev_index] = (0, 0, 0)
+        # Turn off all LEDs
+        for j in range(num_leds):
+            pixels[j] = (0, 0, 0)
 
+        # Light up 5 random LEDs
         for j in range(5):
-            index = (i + j) % num_leds
+            index = random.randint(0, num_leds - 1)
             pixels[index] = (0, 0, 255)
 
         pixels.show()
 
-        progress = i / total_steps
-        delay_time = -0.005 * math.log(1 - progress) * initial_strength
+        # Gradually increase the delay time to slow down the animation
+        delay_time += delay_time * decay_factor
+
+        # Wait for the delay time
         time.sleep(delay_time)
 
 while True:
     input_state = GPIO.input(button_pin)
     if input_state == False:
+        print("Button pressed. Starting spin.")
         start_spin()
         time.sleep(0.2)
     time.sleep(0.1)
