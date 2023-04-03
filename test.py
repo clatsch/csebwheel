@@ -13,10 +13,10 @@ pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False
 
 min_rotations = 5
 max_rotations = 11
-button_pin = 21  # Assuming you have the button connected to GPIO21
+button_pin = 17  # Assuming you have the button connected to GPIO21
 
 # Setup button input
-GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(button_pin, GPIO.IN)
 
 # Function to light up 5 LEDs
 def light_up(current_led):
