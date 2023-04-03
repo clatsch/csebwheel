@@ -71,22 +71,20 @@ def flash_segment_smooth(segment):
             pixels.show()
             if GPIO.input(button_pin) == False:
                 time.sleep(0.2)
-                break
+                return
         pixels.fill((0, 0, 0))
         pixels.show()
         if GPIO.input(button_pin) == False:
             time.sleep(0.2)
-            break
+            return
 
 while True:
     input_state = GPIO.input(button_pin)
     if input_state == False:
         print("Button pressed. Starting spin.")
-        # Start the spin and get the segment where it stopped
         first_led_index = start_spin()
         for segment in segments:
             if first_led_index in segment:
-                # Flash the segment smoothly for 3 seconds or until button is pressed
                 start_flash_time = time.time()
                 flash_duration = 3
                 while time.time() < start_flash_time + flash_duration:
@@ -97,14 +95,9 @@ while True:
                 break
         time.sleep(0.2)
 
-    # check if the button is pressed while flashing
     elif any(pixels):
-        print("Button pressed while flashing. Stopping flash and starting spin.")
-        # turn off the pixels
         pixels.fill((0, 0, 0))
         pixels.show()
-        # wait a bit before starting new spin
         time.sleep(0.5)
 
     time.sleep(0.1)
-
