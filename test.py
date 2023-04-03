@@ -56,7 +56,7 @@ def start_spin():
     # Light up the stopping point in yellow and wait for a short time before finishing
     for i in range(10):
         if i % 2 == 0:
-            pixels[stop_index] = (255, 255, 0)
+            pixels[int(stop_index)] = (255, 255, 0)
         else:
             pixels[stop_index] = (0, 0, 0)
         pixels.show()
