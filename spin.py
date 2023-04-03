@@ -93,7 +93,7 @@ while True:
                 start_flash_time = time.time()
                 flash_duration = 3
                 while time.time() < start_flash_time + flash_duration:
-                    flash_segment_smooth(segment, 3)
+                    flash_segment_pulse(segment, 3)
                     if GPIO.input(button_pin) == False:
                         time.sleep(0.2)
                         break
