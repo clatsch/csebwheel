@@ -30,7 +30,7 @@ def start_spin():
         # Light up 5 LEDs
         for j in range(5):
             index = (i + j) % num_leds
-            pixels[index] = (255, 0, 0)  # Set the color to red
+            pixels[index] = (255, 255, 0)  # Set the color to red
 
         pixels.show()
 
