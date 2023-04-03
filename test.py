@@ -57,8 +57,25 @@ def start_spin():
         delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
-    first_led_index = (i - 4) % num_leds
-    return first_led_index
+    last_led_index = (i - 1) % num_leds
+    for segment in segments:
+        if last_led_index in segment:
+            flash_segment_smooth(segment)
+
+    start_flash_time = time.time()
+    flash_duration = 10
+    while time.time() < start_flash_time + flash_duration:
+        input_state = GPIO.input(button_pin)
+        if input_state == False:
+            time.sleep(0.2)
+            return
+        flash_segment_smooth(segment)
+
+    pixels.fill((0, 0, 0))
+    pixels.show()
+
+    return last_led_index
+
 
 def flash_segment_smooth(segment):
     for k in range(100):
@@ -75,17 +92,17 @@ while True:
     if input_state == False:
         print("Button pressed. Starting spin.")
         # Start the spin and get the segment where it stopped
-        first_led_index = start_spin()
-        for segment in segments:
-            if first_led_index in segment:
-                # Flash the segment smoothly for 10 seconds or until button is pressed
-                start_flash_time = time.time()
-                flash_duration = 10
-                while time.time() < start_flash_time + flash_duration:
-                    flash_segment_smooth(segment)
-                    if GPIO.input(button_pin) == False:
-                        time.sleep(0.2)
-                        break
+        segment = start_spin()
+        if segment is not None:
+            # Flash the segment smoothly
+            flash_segment_smooth(segment)
+            start_flash_time = time.time()
+            flash_duration = 10
+            while time.time() < start_flash_time + flash_duration:
+                flash_segment_smooth(segment)
+                if GPIO.input(button_pin) == False:
+                    time.sleep(0.2)
+                    break
                 break
         time.sleep(0.2)
     time.sleep(0.1)
