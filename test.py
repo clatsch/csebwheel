@@ -3,6 +3,7 @@ import neopixel
 import RPi.GPIO as GPIO
 import time
 import random
+import math
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
@@ -17,12 +18,10 @@ button_pin = 17
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
-    initial_friction = 100
-    initial_speed = 1 / initial_friction
     strength = random.uniform(0.4, 1.0)
-    rotations = int(strength * (max_rotations - min_rotations) + min_rotations) * num_leds
+    print(strength)
+    rotations = int(random.randint(min_rotations, max_rotations) * num_leds * strength)
     total_steps = rotations * 2
-    friction = initial_friction
 
     for i in range(total_steps):
         for j in range(5):
@@ -35,18 +34,10 @@ def start_spin():
 
         pixels.show()
 
-        delay_time = (1 / friction) * initial_speed
+        delay_time = 0.005 * (1 + 2 * (i / total_steps) ** 2) / strength
         time.sleep(delay_time)
-        friction += 0.0005 * (1 - friction)
 
-        if i >= (rotations - num_leds) * 2:
-            strength -= 0.01
-            if strength < 0:
-                strength = 0
-            rotations = int(strength * (max_rotations - min_rotations) + min_rotations) * num_leds
-            friction = initial_friction
-
-    pixels.fill((255, 255, 0))
+    pixels.fill((0, 0, 0))
     pixels.show()
 
 while True:
