@@ -48,6 +48,7 @@ def start_spin():
 
     starting_position = random.randint(0, num_leds - 1)
 
+    i = starting_position # set default value for i
     for i in range(starting_position, starting_position + total_steps):
         remaining_steps = total_steps - (i - starting_position)
         current_speed = speed * remaining_steps / total_steps * friction
@@ -74,6 +75,7 @@ def start_spin():
 
     # Wait for a short time before finishing
     time.sleep(0.5)
+
 
 def lit_segment(segment):
     for i in range(10):
