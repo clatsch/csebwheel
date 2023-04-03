@@ -30,7 +30,7 @@ def start_spin():
         # Light up 5 LEDs
         for j in range(5):
             index = (i + j) % num_leds
-            pixels[index] = (255, 255, 0)  # Set the color to red
+            pixels[index] = (0, 0, 255)  # Set the color to blue
 
         pixels.show()
 
@@ -38,8 +38,10 @@ def start_spin():
         progress = i / total_steps
 
         # Calculate delay_time to start fast and gradually slow down
-        delay_time = 0.005 * (1 + 2 * (progress ** 2))
+        delay_time = 0.001 * (1 + 8 * (1 - math.exp(-8 * progress)))
         time.sleep(delay_time)
+
+
 
 
 while True:
