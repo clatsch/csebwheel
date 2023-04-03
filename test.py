@@ -13,42 +13,35 @@ pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False
 
 min_rotations = 5
 max_rotations = 11
-button_pin = 17  # Assuming you have the button connected to GPIO21
+button_pin = 17  # Use the correct GPIO pin for the button
 
 # Setup button input
-GPIO.setup(button_pin, GPIO.IN)
-
-# Function to light up 5 LEDs
-def light_up(current_led):
-    for i in range(5):
-        index = (current_led + i) % num_leds
-        pixels[index] = (255, 0, 0)  # Set the color to red
-
-# Function to turn off all LEDs
-def clear_leds():
-    for i in range(num_leds):
-        pixels[i] = (0, 0, 0)
-    pixels.show()
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
     rotations = random.randint(min_rotations, max_rotations) * num_leds
-    for i in range(rotations):
-        clear_leds()
-        light_up(i % num_leds)
+    for i in range(0, rotations * 2, 2):  # Change the step size for smoother animation
+        # Turn off all LEDs
+        for j in range(num_leds):
+            pixels[j] = (0, 0, 0)
+
+        # Light up 5 LEDs
+        for j in range(5):
+            index = (i + j) % num_leds
+            pixels[index] = (255, 0, 0)  # Set the color to red
+
         pixels.show()
 
         # Slow down the spin as it approaches the end
-        slowdown_factor = 1 + (i / rotations)
-        delay_time = 0.01 * math.sqrt(slowdown_factor)
+        slowdown_factor = 1 + (i / (rotations * 2))
+        delay_time = 0.005 * math.sqrt(slowdown_factor)  # Adjust delay_time for faster spinning
         time.sleep(delay_time)
 
 while True:
     input_state = GPIO.input(button_pin)
     print(f"Button state: {input_state}")  # Debug print statement
-    if input_state == True:  # Change this condition
+    if input_state == False:  # Change this condition
         print("Button pressed. Starting spin.")  # Debug print statement
         start_spin()
         time.sleep(0.2)  # Debounce
     time.sleep(0.1)  # Add a short delay to avoid excessive printing
-
-
