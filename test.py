@@ -19,27 +19,25 @@ button_pin = 17  # Use the correct GPIO pin for the button
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
-    initial_strength = random.uniform(0.5, 1.0)  # Random initial strength between 50% and 100%
+    initial_strength = random.uniform(0.5, 1.0)
     rotations = int(random.randint(min_rotations, max_rotations) * num_leds * initial_strength)
     total_steps = rotations * 2
     decay = rotations
 
     for i in range(total_steps):
-        # Turn off the previous 5 LEDs
         for j in range(5):
             prev_index = (i - 5 + j) % num_leds
             pixels[prev_index] = (0, 0, 0)
 
-        # Light up 5 LEDs
         for j in range(5):
             index = (i + j) % num_leds
-            pixels[index] = (0, 0, 255)  # Set the color to blue
+            pixels[index] = (0, 0, 255)
 
         pixels.show()
 
-        # Calculate delay_time to start fast and gradually slow down
-        delay_time = (i / decay) / (10 * initial_strength)  # Adjust the speed based on initial strength
+        delay_time = (i / decay) / (20 * initial_strength) + 0.005
         time.sleep(delay_time)
+
 
 
 while True:
