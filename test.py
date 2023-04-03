@@ -23,6 +23,9 @@ def start_spin():
     rotations = int(random.randint(min_rotations, max_rotations) * num_leds * strength)
     total_steps = rotations * 2
 
+    initial_speed = 0.01
+    friction = 0.9
+
     for i in range(total_steps):
         for j in range(5):
             prev_index = (i - 5 + j) % num_leds
@@ -34,11 +37,9 @@ def start_spin():
 
         pixels.show()
 
-        initial_friction = 1000
-        friction = initial_friction * strength
-        delay_time = 1 / friction
+        delay_time = (1 / friction) * initial_speed / strength
         time.sleep(delay_time)
-        friction += 0.01 * (initial_friction - friction)
+        friction += 0.0001 * (1 - friction) ** 2
 
     pixels.fill((0, 0, 0))
     pixels.show()
