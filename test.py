@@ -16,7 +16,7 @@ max_rotations = 11
 button_pin = 21  # Assuming you have the button connected to GPIO21
 
 # Setup button input
-GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # Function to light up 5 LEDs
 def light_up(current_led):
@@ -45,9 +45,10 @@ def start_spin():
 while True:
     input_state = GPIO.input(button_pin)
     print(f"Button state: {input_state}")  # Debug print statement
-    if input_state == False:
+    if input_state == True:  # Change this condition
         print("Button pressed. Starting spin.")  # Debug print statement
         start_spin()
         time.sleep(0.2)  # Debounce
     time.sleep(0.1)  # Add a short delay to avoid excessive printing
+
 
