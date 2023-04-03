@@ -61,40 +61,24 @@ def start_spin():
     return first_led_index
 
 def flash_segment_pulse(segment, num_pulses):
-    start_flash_time = time.time()
     flash_duration = 3
-    while True:
-        current_time = time.time()
-        elapsed_time = current_time - start_flash_time
-        if elapsed_time > flash_duration:
-            break
-        brightness = int(abs(math.sin(elapsed_time * math.pi / 3)) * 255)
-        for j in segment:
-            pixels[j] = (brightness, brightness, brightness)
+    for i in range(num_pulses):
+        start_flash_time = time.time()
+        while time.time() < start_flash_time + flash_duration:
+            brightness = int(abs(math.sin((time.time()-start_flash_time) * math.pi / 3)) * 255)
+            for j in segment:
+                pixels[j] = (brightness, brightness, brightness)
+            pixels.show()
+            if GPIO.input(button_pin) == False:
+                time.sleep(0.2)
+                return
+        pixels.fill((0, 0, 0))
         pixels.show()
-        if GPIO.input(button_pin) == False:
-            time.sleep(0.2)
-            return
-    pixels.fill((0, 0, 0))
-    pixels.show()
-    time.sleep(0.1)
-
-    for i in range(num_flashes):
-        for brightness in range(0, 256, 5):
-            for j in segment:
-                pixels[j] = (brightness, brightness, brightness)
-            pixels.show()
-            time.sleep(0.01)
-        for brightness in range(255, -1, -5):
-            for j in segment:
-                pixels[j] = (brightness, brightness, brightness)
-            pixels.show()
-            time.sleep(0.01)
-    pixels.fill((0, 0, 0))
-    pixels.show()
+        time.sleep(0.1)
     if GPIO.input(button_pin) == False:
         time.sleep(0.2)
         return
+
 
 
 while True:
@@ -108,7 +92,7 @@ while True:
                 start_flash_time = time.time()
                 flash_duration = 3
                 while time.time() < start_flash_time + flash_duration:
-                    flash_segment_pulse(segment, 3)
+                    flash_segment_pulse(segment, )
                     if GPIO.input(button_pin) == False:
                         time.sleep(0.2)
                         break
