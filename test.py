@@ -57,7 +57,7 @@ def start_spin():
         delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
-    first_led_index = (i - 4) % num_leds
+    first_led_index = i % num_leds
     return first_led_index
 
 def flash_segment_smooth(segment):
@@ -80,7 +80,7 @@ while True:
             if first_led_index in segment:
                 # Flash the segment smoothly for 10 seconds or until button is pressed
                 start_flash_time = time.time()
-                flash_duration = 10
+                flash_duration = 3
                 while time.time() < start_flash_time + flash_duration:
                     flash_segment_smooth(segment)
                     if GPIO.input(button_pin) == False:
