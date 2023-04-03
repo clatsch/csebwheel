@@ -18,7 +18,7 @@ button_pin = 17
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
-    initial_friction = 1
+    initial_friction = 10
     initial_speed = 1 / initial_friction
     friction = initial_friction
     rotations = random.randint(min_rotations, max_rotations) * num_leds
