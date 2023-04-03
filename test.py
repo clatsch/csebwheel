@@ -17,10 +17,19 @@ button_pin = 17
 
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)), list(range(231, 264)),
-            list(range(198, 231)), list(range(165, 198)), list(range(132, 165)), list(range(99, 132)),
-            list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
-
+segments = [
+    list(range(290, 299)),
+    list(range(271, 289)),
+    list(range(264, 270)),
+    list(range(231, 264)),
+    list(range(198, 231)),
+    list(range(165, 198)),
+    list(range(132, 165)),
+    list(range(99, 132)),
+    list(range(66, 99)),
+    list(range(33, 66)),
+    list(range(0, 33)),
+]
 
 def start_spin():
     strength = random.uniform(0.4, 1.0)
@@ -56,39 +65,27 @@ def start_spin():
         delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
-    pixels.fill((0, 0, 0))
-    pixels.show()
-
-    start_flash_time = time.time()
-    flash_duration = 15
-    while time.time() < start_flash_time + flash_duration:
-        flash_segments()
-        if GPIO.input(button_pin) == False:
-            time.sleep(0.2)
-            return
-    pixels.fill((0, 0, 0))
-    pixels.show()
-
-
-def flash_segments():
-    lit_segments = []
-
+    # Find the segment where the spin stopped and light it up
+    stop_position = (i - 4) % num_leds
     for segment in segments:
-        if segment[0] in range(num_leds - 5, num_leds) and segment not in lit_segments:
-            for k in range(100):
-                brightness = int(abs(math.sin(k * math.pi / 100)) * 255)
-                for j in segment:
-                    pixels[j] = (brightness, brightness, brightness)
-                pixels.show()
-                time.sleep(0.01)
+        if stop_position in segment:
+            lit_segment(segment)
+            break
 
-            pixels.fill((0, 0, 0))
-            pixels.show()
-
-            lit_segments.append(segment)
-
+    # Wait for a short time before finishing
     time.sleep(0.5)
 
+def lit_segment(segment):
+    for i in range(10):
+        for j in segment:
+            pixels[j] = (255, 0, 0)
+        pixels.show()
+        time.sleep(0.1)
+
+        for j in segment:
+            pixels[j] = (0, 0, 0)
+        pixels.show()
+        time.sleep(0.1)
 
 while True:
     input_state = GPIO.input(button_pin)
