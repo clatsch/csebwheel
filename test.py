@@ -22,24 +22,22 @@ def start_spin():
     initial_strength = random.uniform(0.5, 1.0)
     rotations = int(random.randint(min_rotations, max_rotations) * num_leds * initial_strength)
     total_steps = rotations * 2
-    decay = rotations * 2
+    decay = rotations / 3
 
     for i in range(total_steps):
-        # Turn off all LEDs
-        for j in range(num_leds):
-            pixels[j] = (0, 0, 0)
+        for j in range(5):
+            prev_index = (i - 5 + j) % num_leds
+            pixels[prev_index] = (0, 0, 0)
 
-        # Light up 5 LEDs
         for j in range(5):
             index = (i + j) % num_leds
             pixels[index] = (0, 0, 255)
 
         pixels.show()
 
-        # Calculate delay_time to simulate friction and gradually slow down the wheel
-        delay_time = 0.002 + 0.25 * ((total_steps - i) / decay) ** 2
-
+        delay_time = (i / decay) / (50 * initial_strength) + 0.001
         time.sleep(delay_time)
+
 
 while True:
     input_state = GPIO.input(button_pin)
