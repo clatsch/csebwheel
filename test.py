@@ -22,29 +22,6 @@ segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)),
             list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
 
 
-def flash_segment(segment):
-    for k in range(100):
-        brightness = int(abs(math.sin(k * math.pi / 100)) * 255)
-        for j in segment:
-            pixels[j] = (brightness, brightness, brightness)
-        pixels.show()
-        time.sleep(0.01)
-    pixels.fill((0, 0, 0))
-    pixels.show()
-
-
-def flash_segments_smooth():
-    for k in range(100):
-        brightness = int(abs(math.sin(k * math.pi / 100)) * 255)
-        for segment in segments:
-            for j in segment:
-                pixels[j] = (brightness, brightness, brightness)
-        pixels.show()
-        time.sleep(0.01)
-    pixels.fill((0, 0, 0))
-    pixels.show()
-
-
 def start_spin():
     strength = random.uniform(0.4, 1.0)
 
@@ -81,7 +58,7 @@ def start_spin():
         time.sleep(delay_time)
 
     # Find the segment where the spin stopped and light it up
-    first_led_index = (i - 5 + 1) % num_leds
+    first_led_index = (i - 4) % num_leds
     for segment in segments:
         if first_led_index in segment:
             flash_segment(segment)
@@ -95,6 +72,29 @@ def start_spin():
             time.sleep(0.2)
             return
 
+    pixels.fill((0, 0, 0))
+    pixels.show()
+
+
+def flash_segment(segment):
+    for k in range(100):
+        brightness = int(abs(math.sin(k * math.pi / 100)) * 255)
+        for j in segment:
+            pixels[j] = (brightness, brightness, brightness)
+        pixels.show()
+        time.sleep(0.01)
+    pixels.fill((0, 0, 0))
+    pixels.show()
+
+
+def flash_segments_smooth():
+    for k in range(100):
+        brightness = int(abs(math.sin(k * math.pi / 100)) * 255)
+        for segment in segments:
+            for j in segment:
+                pixels[j] = (brightness, brightness, brightness)
+        pixels.show()
+        time.sleep(0.01)
     pixels.fill((0, 0, 0))
     pixels.show()
 
