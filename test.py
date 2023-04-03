@@ -34,8 +34,11 @@ def start_spin():
 
         pixels.show()
 
-        delay_time = 0.005 * (1 + 2 * (i / total_steps) ** 2) / strength
+        initial_friction = 1000
+        friction = initial_friction * strength
+        delay_time = 1 / friction
         time.sleep(delay_time)
+        friction += 0.01 * (initial_friction - friction)
 
     pixels.fill((0, 0, 0))
     pixels.show()
