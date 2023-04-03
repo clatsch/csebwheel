@@ -20,7 +20,9 @@ GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
     rotations = random.randint(min_rotations, max_rotations) * num_leds
-    for i in range(0, rotations * 2, 2):  # Change the step size for smoother animation
+    total_steps = rotations * 2
+
+    for i in range(total_steps):
         # Turn off all LEDs
         for j in range(num_leds):
             pixels[j] = (0, 0, 0)
@@ -32,14 +34,15 @@ def start_spin():
 
         pixels.show()
 
-        # Slow down the spin as it approaches the end
-        slowdown_factor = 1 + (i / (rotations * 2))
-        delay_time = 0.005 * math.sqrt(slowdown_factor)  # Adjust delay_time for faster spinning
+        # Calculate the progress of the spin (0 to 1)
+        progress = i / total_steps
+
+        # Calculate delay_time to start fast and gradually slow down
+        delay_time = 0.01 + 0.1 * (progress ** 2)
         time.sleep(delay_time)
 
 while True:
     input_state = GPIO.input(button_pin)
-    print(f"Button state: {input_state}")  # Debug print statement
     if input_state == False:  # Change this condition
         print("Button pressed. Starting spin.")  # Debug print statement
         start_spin()
