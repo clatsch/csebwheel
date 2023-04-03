@@ -23,9 +23,7 @@ def start_spin():
     friction = initial_friction
     rotations = random.randint(min_rotations, max_rotations) * num_leds
     total_steps = rotations * 2
-    max_friction = 10000
-    decay_factor = 1.001
-    decay_threshold = 0.01
+    max_steps = max_rotations * num_leds * 2
 
     for i in range(total_steps):
         for j in range(5):
@@ -40,10 +38,10 @@ def start_spin():
 
         delay_time = (1 / friction) * initial_speed
         time.sleep(delay_time)
-        if friction < max_friction:
-            friction *= decay_factor
-        else:
-            friction *= decay_threshold
+        friction += 0.001 * (1 - friction)
+
+        if i >= max_steps:
+            break
 
     pixels.fill((255, 255, 0))
     pixels.show()
