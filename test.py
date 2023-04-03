@@ -22,7 +22,6 @@ def start_spin():
     initial_strength = random.uniform(0.5, 1.0)
     rotations = int(random.randint(min_rotations, max_rotations) * num_leds * initial_strength)
     total_steps = rotations * 2
-    decay = rotations
 
     for i in range(total_steps):
         for j in range(5):
@@ -35,10 +34,9 @@ def start_spin():
 
         pixels.show()
 
-        delay_time = (i / decay) / (1000 * initial_strength) + 0.0001
+        progress = i / total_steps
+        delay_time = (0.001 / initial_strength) * (1 + 5 * (progress ** 2))
         time.sleep(delay_time)
-
-
 
 
 while True:
