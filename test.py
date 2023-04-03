@@ -3,6 +3,7 @@ import neopixel
 import RPi.GPIO as GPIO
 import time
 import random
+import math
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
