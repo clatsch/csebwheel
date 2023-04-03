@@ -19,7 +19,18 @@ GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 def start_spin():
     strength = random.uniform(0.4, 1.0)
     print(strength)
-    rotations = int(random.randint(min_rotations, max_rotations) * strength)
+
+    # Calculate the total distance the wheel should travel based on the number of LEDs and the strength
+    distance = strength * num_leds * 2 * math.pi
+
+    # Calculate the number of rotations needed to travel the total distance
+    circumference = num_leds * 2 * math.pi
+    rotations = int(distance / circumference)
+
+    # Add some random variation to the number of rotations
+    rotations += random.randint(0, 2)
+
+    # Calculate the total number of steps based on the number of rotations
     total_steps = rotations * num_leds
 
     # Calculate initial speed based on strength and friction
@@ -56,6 +67,7 @@ def start_spin():
 
     # Wait for a short time before finishing
     time.sleep(0.5)
+
 
 
 while True:
