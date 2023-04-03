@@ -19,11 +19,20 @@ GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 def start_spin():
     strength = random.uniform(0.4, 1.0)
     print(strength)
-    rotations = int(random.randint(min_rotations, max_rotations) * num_leds * strength)
-    total_steps = rotations * 2
-    speed = 0.005 / strength
+    rotations = int(random.randint(min_rotations, max_rotations) * strength)
+    total_steps = rotations * num_leds
 
+    # Calculate initial speed based on strength and friction
+    friction = 0.9
+    speed = 1.5 * strength
+
+    # Spin the wheel
     for i in range(total_steps):
+        # Calculate current speed based on remaining distance and friction
+        remaining_steps = total_steps - i
+        current_speed = speed * remaining_steps / total_steps * friction
+
+        # Update LED colors and show them
         for j in range(5):
             prev_index = (i - 5 + j) % num_leds
             pixels[prev_index] = (0, 0, 0)
@@ -34,13 +43,16 @@ def start_spin():
 
         pixels.show()
 
-        progress = i / total_steps
-        delay_factor = random.uniform(0.8, 1.2)  # Random factor to introduce randomness to the speed reduction
-        delay_time = speed * (1 - progress) * delay_factor
+        # Wait for a short time based on current speed
+        delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
+    # Turn off all LEDs and show them
     pixels.fill((0, 0, 0))
     pixels.show()
+
+    # Wait for a short time before finishing
+    time.sleep(0.5)
 
 while True:
     input_state = GPIO.input(button_pin)
