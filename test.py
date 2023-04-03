@@ -3,7 +3,6 @@ import neopixel
 import RPi.GPIO as GPIO
 import time
 import random
-import math
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
@@ -18,17 +17,21 @@ button_pin = 17
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def start_spin():
-    initial_friction = random.uniform(0.01, 0.03)
-    initial_speed = 1 / initial_friction
-    friction = initial_friction
     strength = random.uniform(0.4, 1.0)
-    print(strength)
-    rotations = int(random.randint(min_rotations, max_rotations) * num_leds * strength)
+    rotations = int(random.randint(min_rotations, max_rotations) * strength * num_leds)
     total_steps = rotations * 2
 
-    stop_point = random.randint(rotations, total_steps - 1)
+    # Calculate initial speed based on strength and friction
+    friction = 0.95
+    speed = 10 * strength
 
+    # Spin the wheel
     for i in range(total_steps):
+        # Calculate current speed based on remaining distance and friction
+        remaining_steps = total_steps - i
+        current_speed = speed * remaining_steps / total_steps * friction
+
+        # Update LED colors and show them
         for j in range(5):
             prev_index = (i - 5 + j) % num_leds
             pixels[prev_index] = (0, 0, 0)
@@ -39,16 +42,25 @@ def start_spin():
 
         pixels.show()
 
-        if i >= stop_point:
-            friction += 0.001 * (friction - 0.001)
-        else:
-            friction += 0.001 * (1 - friction)
-
-        delay_time = (1 / friction) * initial_speed / strength
+        # Wait for a short time based on current speed
+        delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
+    # Determine stopping point based on strength
+    stop_index = (rotations * strength * num_leds) % num_leds
+
+    # Turn off all LEDs and show them
     pixels.fill((0, 0, 0))
     pixels.show()
+
+    # Light up the stopping point in yellow and wait for a short time before finishing
+    for i in range(10):
+        if i % 2 == 0:
+            pixels[stop_index] = (255, 255, 0)
+        else:
+            pixels[stop_index] = (0, 0, 0)
+        pixels.show()
+        time.sleep(0.1)
 
 while True:
     input_state = GPIO.input(button_pin)
