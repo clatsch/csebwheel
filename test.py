@@ -11,8 +11,8 @@ num_leds = 300
 ORDER = neopixel.RGB
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
-min_rotations = 5
-max_rotations = 11
+min_rotations = 3
+max_rotations = 5
 button_pin = 17  # Use the correct GPIO pin for the button
 
 # Setup button input
