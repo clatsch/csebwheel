@@ -37,8 +37,9 @@ def start_spin():
         pixels.show()
 
         # Calculate delay_time to start fast and gradually slow down
-        delay_time = i / decay
+        delay_time = (i / decay) / 10  # Divide by 10 to make the initial speed 10 times faster
         time.sleep(delay_time)
+
 
 
 
