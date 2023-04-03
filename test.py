@@ -63,17 +63,22 @@ def start_spin():
 def flash_segment_smooth(segment, num_flashes):
     for i in range(num_flashes):
         brightness = 255
-        for j in range(4):
+        for j in range(10):
             for k in segment:
                 pixels[k] = (brightness, brightness, brightness)
             pixels.show()
+            brightness = int(brightness * 0.75)
             time.sleep(0.05)
-            brightness = int(brightness * 0.5)
-        pixels.fill((0, 0, 0))
-        pixels.show()
-        if GPIO.input(button_pin) == False:
-            time.sleep(0.2)
-            return
+
+            if GPIO.input(button_pin) == False:
+                time.sleep(0.2)
+                return
+    pixels.fill((0, 0, 0))
+    pixels.show()
+    if GPIO.input(button_pin) == False:
+        time.sleep(0.2)
+        return
+
 
 
 while True:
@@ -87,7 +92,7 @@ while True:
                 start_flash_time = time.time()
                 flash_duration = 3
                 while time.time() < start_flash_time + flash_duration:
-                    flash_segment_smooth(segment)
+                    flash_segment_smooth(segment, 3)
                     if GPIO.input(button_pin) == False:
                         time.sleep(0.2)
                         break
