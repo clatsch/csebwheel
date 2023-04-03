@@ -38,7 +38,7 @@ def start_spin():
         progress = i / total_steps
 
         # Calculate delay_time to start fast and gradually slow down
-        delay_time = 0.01 + 0.1 * (progress ** 2)
+        delay_time = 0.001 + 0.05 * (progress ** 2)
         time.sleep(delay_time)
 
 while True:
