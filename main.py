@@ -1,4 +1,3 @@
-import time
 import RPi.GPIO as GPIO
 from spin import start_spin
 from idle import start_idle_mode

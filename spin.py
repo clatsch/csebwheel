@@ -1,78 +1,113 @@
-import time
 import board
 import neopixel
-import random
 import RPi.GPIO as GPIO
+import time
+import random
 import math
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
-numleds = 363
-ORDER = neopixel.RGBW
-pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
-winningnumbers = [1,2,3,4,5,6,12]
-losingnumbers = list(set(range(1, numleds+1)) - set(winningnumbers))
-minrotations = 5
-maxrotations = 11
-spin = 0
-last_winning_led = None
+num_leds = 300
+ORDER = neopixel.RGB
+pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
-def selectwinner(spins):
-    global last_winning_led
-    winning_led = 0
-    if last_winning_led is not None and last_winning_led in winningnumbers:
-        winning_led = random.choice(losingnumbers)
-    else:
-        winning_led = random.choice(winningnumbers)
-    if winning_led in winningnumbers and last_winning_led is None:
-        winning_led = winningnumbers[0]
-    last_winning_led = winning_led
-    is_winning_number = winning_led in winningnumbers
-    winner = (winning_led, is_winning_number)
-    return winner
+min_rotations = 3
+max_rotations = 5
+button_pin = 17
+
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)), list(range(231, 264)),
+            list(range(198, 231)), list(range(165, 198)), list(range(132, 165)), list(range(99, 132)),
+            list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
 
 
 def start_spin():
-    global spin
-    global last_winning_led
-    rotations = random.randint(minrotations, maxrotations)
-    global numleds
-    decay = rotations * numleds * 100
-    spin += 1
-    chunk_size = 5  # Increase this value to update more LEDs per iteration
-    for rotation in range(1, rotations):
-        led_colour = (0, 0, 255, 150)
-        led_stop_colour = (0, 0, 255, 150)
-        if rotation == rotations - 1:
-            winner, is_winning_number = selectwinner(spin)
-            numleds = winner
-            if is_winning_number:
-                led_stop_colour = (0, 255, 0)
-            else:
-                led_stop_colour = (255, 0, 0)
-        for i in reversed(range(0, numleds, chunk_size)):  # Update LEDs in chunks instead of every LED
-            chunk = min(chunk_size, numleds - i)
-            pixels[i:i+chunk] = [led_stop_colour] + [led_colour]*(chunk-1)
-            pixels[(i+chunk) % numleds] = (0, 0, 0)
-            for j in range(i+chunk, i+chunk+chunk_size):
-                pixels[j % numleds] = (0, 0, 0)  # Turn off LEDs after the chunk being updated
-            progress = rotation / (rotations - 1)  # Calculate progress of spin
-            current_speed = (1 - math.log(progress + 1, 2)) / 50  # Use logarithmic function to reduce speed
-            time.sleep(current_speed)
+    strength = random.uniform(0.4, 1.0)
+
+    distance = strength * num_leds * 2 * math.pi
+
+    circumference = num_leds * 2 * math.pi
+    rotations = int(distance / circumference)
+
+    rotations += random.randint(0, 2)
+
+    total_steps = rotations * num_leds
+
+    friction = 0.9
+    speed = 1.5 * strength
+
+    starting_position = random.randint(0, num_leds - 1)
+
+    i = starting_position
+    for i in range(starting_position, starting_position + total_steps):
+        remaining_steps = total_steps - (i - starting_position)
+        current_speed = speed * remaining_steps / total_steps * friction
+
+        for j in range(5):
+            prev_index = (i - 5 + j) % num_leds
+            pixels[prev_index] = (0, 0, 0)
+
+        for j in range(5):
+            index = (i + j) % num_leds
+            pixels[index] = (0, 0, 255)
+
+        pixels.show()
+
+        delay_time = 0.001 / current_speed
+        time.sleep(delay_time)
+
+    first_led_index = i % num_leds
+    return first_led_index
+
+def flash_segment_pulse(segment, num_pulses):
+    for i in range(num_pulses):
+        for j in range(40):
+            brightness = int(abs(math.cos((j/40) * math.pi)) * 255)
+            for k in segment:
+                pixels[k] = (brightness, brightness, brightness)
             pixels.show()
-            decay -= chunk
-        if rotation == rotations - 1:
-            pixels.fill(led_stop_colour)
-            time.sleep(0.5)
-            pixels.fill((0, 0, 0))
-        else:
-            pixels.fill((0, 0, 0))
+            time.sleep(0.025)
+        for j in range(40):
+            brightness = int(abs(math.cos((j/40) * math.pi)) * 255)
+            for k in segment:
+                pixels[k] = (brightness, brightness, brightness)
+            pixels.show()
+            time.sleep(0.025)
+        pixels.fill((0, 0, 0))
+        pixels.show()
+        time.sleep(0.1)
+        if GPIO.input(button_pin) == False:
             time.sleep(0.2)
+            return
 
 
+while True:
+    input_state = GPIO.input(button_pin)
+    if input_state == False:
+        print("Button pressed. Starting spin.")
+        first_led_index = start_spin()
+        flash_finished = False
+        for segment in segments:
+            if first_led_index in segment:
+                start_flash_time = time.time()
+                flash_duration = 3
+                while time.time() < start_flash_time + flash_duration:
+                    flash_segment_smooth(segment, 3)
+                    if GPIO.input(button_pin) == False:
+                        time.sleep(0.2)
+                        break
+                else:
+                    flash_finished = True
+                break
+        if not flash_finished:
+            pixels.fill((0, 0, 0))
+            pixels.show()
+        time.sleep(0.2)
 
+    elif any(pixels):
+        pixels.fill((0, 0, 0))
+        pixels.show()
+        time.sleep(0.5)
 
-
-
-
-
+    time.sleep(0.1)
