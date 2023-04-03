@@ -83,6 +83,7 @@ while True:
     if input_state == False:
         print("Button pressed. Starting spin.")
         first_led_index = start_spin()
+        flash_finished = False
         for segment in segments:
             if first_led_index in segment:
                 start_flash_time = time.time()
@@ -92,7 +93,12 @@ while True:
                     if GPIO.input(button_pin) == False:
                         time.sleep(0.2)
                         break
+                else:
+                    flash_finished = True
                 break
+        if not flash_finished:
+            pixels.fill((0, 0, 0))
+            pixels.show()
         time.sleep(0.2)
 
     elif any(pixels):
