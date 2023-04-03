@@ -1,79 +1,76 @@
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
-# SPDX-License-Identifier: MIT
-
-# Simple test for NeoPixels on Raspberry Pi
-import time
 import board
 import neopixel
+import RPi.GPIO as GPIO
+import random
+import time
 
-
-# Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
-# NeoPixels must be connected to D10, D12, D18 or D21 to work.
+GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
+numleds = 300
+ORDER = neopixel.RGB
+pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
-# The number of NeoPixels
-num_pixels = 300
+# Set up the button
+button_pin = 17
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-# The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
-# For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
-ORDER = neopixel.GRB
+# Define the minimum and maximum number of rotations
+min_rotations = 5
+max_rotations = 11
 
-pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
-)
+# Define the number of LEDs to light up at once
+num_lights = 5
 
+# Define the delay between LED updates
+delay = 0.02
 
-def wheel(pos):
-    # Input a value 0 to 255 to get a color value.
-    # The colours are a transition r - g - b - back to r.
-    if pos < 0 or pos > 255:
-        r = g = b = 0
-    elif pos < 85:
-        r = int(pos * 3)
-        g = int(255 - pos * 3)
-        b = 0
-    elif pos < 170:
-        pos -= 85
-        r = int(255 - pos * 3)
-        g = 0
-        b = int(pos * 3)
-    else:
-        pos -= 170
-        r = 0
-        g = int(pos * 3)
-        b = int(255 - pos * 3)
-    return (r, g, b) if ORDER in (neopixel.RGB, neopixel.GRB) else (r, g, b, 0)
+# Define the colors for the LEDs
+colors = [(255, 0, 0), (255, 127, 0), (255, 255, 0), (0, 255, 0), (0, 0, 255)]
 
+# Define a function to spin the wheel
+def spin_wheel():
+    # Choose a random number of rotations
+    num_rotations = random.randint(min_rotations, max_rotations)
 
-def rainbow_cycle(wait):
-    for j in range(255):
-        for i in range(num_pixels):
-            pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = wheel(pixel_index & 255)
-        pixels.show()
-        time.sleep(wait)
+    # Choose a random initial speed
+    speed = random.uniform(0.05, 0.1)
 
+    # Set up the initial LED positions
+    positions = list(range(numleds))
+    random.shuffle(positions)
+    lights = positions[:num_lights]
 
+    # Spin the wheel
+    for i in range(num_rotations):
+        for j in range(num_lights):
+            # Set the color for the current LED
+            color = colors[j % num_lights]
+            # Light up the current LED
+            pixels[lights[j]] = color
+        # Update the LED positions
+        lights = [(x + 1) % numleds for x in lights]
+        # Delay for a short time to slow down the wheel
+        time.sleep(speed)
+        # Reduce the speed
+        speed += 0.001
+    # Light up the final set of LEDs
+    for j in range(num_lights):
+        color = colors[j % num_lights]
+        pixels[lights[j]] = color
+    # Update the LEDs
+    pixels.show()
+
+# Define a function to handle button presses
+def button_pressed(channel):
+    # Spin the wheel
+    spin_wheel()
+
+# Set up the button event handler
+GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=button_pressed, bouncetime=300)
+
+# Main loop
 while True:
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((255, 0, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((255, 0, 0, 0))
+    # Update the LEDs
     pixels.show()
-    time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 255, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 255, 0, 0))
-    pixels.show()
-    time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 0, 255))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 0, 255, 0))
-    pixels.show()
-    time.sleep(1)
-
-    rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
+    # Delay for a short time
+    time.sleep(delay)
