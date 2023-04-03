@@ -34,7 +34,7 @@ def start_spin():
         pixels.show()
 
         progress = i / total_steps
-        delay_time = -0.01 * math.log(1 - progress) * initial_strength
+        delay_time = -0.005 * math.log(1 - progress) * initial_strength
         time.sleep(delay_time)
 
 while True:
