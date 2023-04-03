@@ -35,8 +35,9 @@ def start_spin():
 
         pixels.show()
 
-        delay_time = (i / decay) / (20 * initial_strength) + 0.005
+        delay_time = (i / decay) / (50 * initial_strength) + 0.001
         time.sleep(delay_time)
+
 
 
 
