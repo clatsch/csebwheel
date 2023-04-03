@@ -44,6 +44,10 @@ def start_spin():
 
 while True:
     input_state = GPIO.input(button_pin)
+    print(f"Button state: {input_state}")  # Debug print statement
     if input_state == False:
+        print("Button pressed. Starting spin.")  # Debug print statement
         start_spin()
         time.sleep(0.2)  # Debounce
+    time.sleep(0.1)  # Add a short delay to avoid excessive printing
+
