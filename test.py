@@ -26,10 +26,13 @@ def start_spin():
     friction = 0.9
     speed = 1.5 * strength
 
+    # Set a random starting position for the wheel
+    starting_position = random.randint(0, num_leds - 1)
+
     # Spin the wheel
-    for i in range(total_steps):
+    for i in range(starting_position, starting_position + total_steps):
         # Calculate current speed based on remaining distance and friction
-        remaining_steps = total_steps - i
+        remaining_steps = total_steps - (i - starting_position)
         current_speed = speed * remaining_steps / total_steps * friction
 
         # Update LED colors and show them
@@ -53,6 +56,7 @@ def start_spin():
 
     # Wait for a short time before finishing
     time.sleep(0.5)
+
 
 while True:
     input_state = GPIO.input(button_pin)
