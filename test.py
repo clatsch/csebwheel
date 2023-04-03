@@ -22,36 +22,54 @@ def start_spin():
     initial_strength = random.uniform(0.5, 1.0)
     rotations = int(random.randint(min_rotations, max_rotations) * num_leds * initial_strength)
     total_steps = rotations * 2
-
-    # Set the initial speed
-    delay_time = 0.005 / initial_strength
+    decay = rotations
 
     for i in range(total_steps):
-        # Turn off all LEDs
-        for j in range(num_leds):
-            pixels[j] = (0, 0, 0)
+        # Calculate the progress of the spin (0 to 1)
+        progress = i / total_steps
+
+        # Calculate delay_time to start fast and gradually slow down
+        if progress < 0.5:
+            delay_time = (1 - 2 * progress) * 0.005 / initial_strength + 0.001
+        else:
+            delay_time = (2 * progress - 1) ** 2 / initial_strength + 0.001
 
         # Light up 5 LEDs
         for j in range(5):
+            prev_index = (i - 5 + j) % num_leds
+            pixels[prev_index] = (0, 0, 0)
+
             index = (i + j) % num_leds
-            pixels[index] = (255, 0, 0)  # Set the color to red
+            pixels[index] = (0, 0, 255)
 
         pixels.show()
 
-        # Increase delay_time to slow down the spin
-        decay = (total_steps - i) / total_steps
-        delay_time += decay ** 2
+        time.sleep(delay_time)
 
-        # Cap the maximum delay_time to 0.1s
-        delay_time = min(delay_time, 0.1)
+    # Slow down the spin as it approaches the end
+    for i in range(total_steps, total_steps + decay):
+        # Calculate the progress of the spin (0 to 1)
+        progress = (i - total_steps) / decay
 
-        # Wait for the next step
+        # Calculate delay_time to gradually slow down
+        delay_time = (1 - progress) ** 2 / initial_strength + 0.001
+
+        # Light up 5 LEDs
+        for j in range(5):
+            prev_index = (i - 5 + j) % num_leds
+            pixels[prev_index] = (0, 0, 0)
+
+            index = (i + j) % num_leds
+            pixels[index] = (0, 0, 255)
+
+        pixels.show()
+
         time.sleep(delay_time)
 
 while True:
     input_state = GPIO.input(button_pin)
-    if input_state == False:  # Change this condition
-        print("Button pressed. Starting spin.")  # Debug print statement
+    if input_state == False:
+        print("Button pressed. Starting spin.")
         start_spin()
-        time.sleep(0.2)  # Debounce
-    time.sleep(0.1)  # Add a short delay to avoid excessive printing
+        time.sleep(0.2)
+    time.sleep(0.1)
