@@ -10,23 +10,22 @@ GPIO.setup(22, GPIO.IN)
 
 try:
     while True:
-        print("main.py script started.")
         select_spin = GPIO.input(17)
-        select_idle_mode = GPIO.input(27)
-        select_presentation_mode = GPIO.input(22)
-        print(f"Spin: {select_spin}, Idle: {select_idle_mode}, Presentation: {select_presentation_mode}")
-        select_spin = GPIO.input(17)
-        select_idle_mode = GPIO.input(27)
-        select_presentation_mode = GPIO.input(22)
-        if select_spin == False:
-            print('Spin selected')
-            start_spin()
-        if select_idle_mode == False:
-            print('Idle Mode Selected')
-            start_idle_mode()
-        if select_presentation_mode == False:
-            print('Presentation Mode Selected')
-            light_up_group()
+    select_idle_mode = GPIO.input(27)
+    select_presentation_mode = GPIO.input(22)
+
+    if select_spin == False:
+        print('Spin selected')
+        start_spin()
+    if select_idle_mode == False:
+        print('Idle Mode Selected')
+        start_idle_mode()
+    if select_presentation_mode == False:
+        print('Presentation Mode Selected')
+        button_callback(22)
+
+    time.sleep(0.1)
+
 
 except KeyboardInterrupt:
     GPIO.cleanup()
