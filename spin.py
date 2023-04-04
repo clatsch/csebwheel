@@ -22,11 +22,9 @@ segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)),
             list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
 
 def spin_action(first_led_index):
-    print(f"spin_action called with first_led_index = {first_led_index}")
     flash_finished = False
     for segment in segments:
         if first_led_index in segment:
-            print(f"Flashing segment: {segment}")
             flash_duration = 3
             flash_segment_pulse(segment, flash_duration, 3)
             flash_finished = True
@@ -103,7 +101,7 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
         time.sleep(0.01)
     pixels.fill((0, 0, 0))
     pixels.show()
-    time.sleep(0.5)
+    time.sleep(0.1)
 
 
 
