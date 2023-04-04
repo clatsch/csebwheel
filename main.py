@@ -13,6 +13,10 @@ try:
         select_spin = GPIO.input(17)
         select_idle_mode = GPIO.input(27)
         select_presentation_mode = GPIO.input(22)
+        print(f"Spin: {select_spin}, Idle: {select_idle_mode}, Presentation: {select_presentation_mode}")
+        select_spin = GPIO.input(17)
+        select_idle_mode = GPIO.input(27)
+        select_presentation_mode = GPIO.input(22)
         if select_spin == False:
             print('Spin selected')
             start_spin()
