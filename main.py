@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
-from spin import start_spin
+import time
+from spin import start_spin, spin_action
 from idle import start_idle_mode
 from presentation import light_up_group
 
@@ -18,6 +19,7 @@ try:
         if select_spin == False:
             print('Spin selected')
             start_spin()
+            spin_action()
             time.sleep(0.2)
         if select_idle_mode == False:
             print('Idle Mode Selected')
