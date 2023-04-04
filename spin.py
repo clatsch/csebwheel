@@ -22,35 +22,31 @@ segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)),
             list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
 
 def spin_action(first_led_index):
-    input_state = GPIO.input(button_pin)
-    if input_state == False:
-        print("Button pressed. Starting spin.")
-        first_led_index = start_spin()
-        flash_finished = False
-        for segment in segments:
-            if first_led_index in segment:
-                start_flash_time = time.time()
-                flash_duration = 3
-                while time.time() < start_flash_time + flash_duration:
-                    flash_segment_pulse(segment, 3)
-                    if GPIO.input(button_pin) == False:
-                        time.sleep(0.2)
-                        break
-                else:
-                    flash_finished = True
-                break
-        if not flash_finished:
-            pixels.fill((0, 0, 0))
-            pixels.show()
-        time.sleep(0.2)
+    flash_finished = False
+    for segment in segments:
+        if first_led_index in segment:
+            start_flash_time = time.time()
+            flash_duration = 3
+            while time.time() < start_flash_time + flash_duration:
+                flash_segment_pulse(segment, 3)
+                if GPIO.input(button_pin) == False:
+                    time.sleep(0.2)
+                    break
+            else:
+                flash_finished = True
+            break
 
-    elif any(pixels):
+    if not flash_finished:
+        pixels.fill((0, 0, 0))
+        pixels.show()
+    time.sleep(0.2)
+
+    if any(pixels):
         pixels.fill((0, 0, 0))
         pixels.show()
         time.sleep(0.5)
 
     time.sleep(0.1)
-
 
 def start_spin():
     strength = random.uniform(0.4, 1.0)
