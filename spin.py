@@ -100,6 +100,10 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
             else:
                 pixels[j] = (0, 0, 0)
         pixels.show()
-        time.sleep(0.05)
+        time.sleep(0.01)
+    pixels.fill((0, 0, 0))
+    pixels.show()
+    time.sleep(0.5)
+
 
 
