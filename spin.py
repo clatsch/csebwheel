@@ -44,7 +44,6 @@ def spin_action(first_led_index):
 
     time.sleep(0.1)
 
-
 def start_spin():
     strength = random.uniform(0.4, 1.0)
 

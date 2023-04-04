@@ -33,3 +33,9 @@ try:
 except KeyboardInterrupt:
     GPIO.cleanup()
     print("All LEDs OFF")
+
+# Add this code after the while loop
+if any(pixels):
+    pixels.fill((0, 0, 0))
+    pixels.show()
+
