@@ -100,9 +100,6 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
             else:
                 pixels[j] = (0, 0, 0)
         pixels.show()
-        if GPIO.input(button_pin) == False:
-            time.sleep(0.2)
-            return
         time.sleep(0.05)
 
 
