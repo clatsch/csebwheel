@@ -90,7 +90,6 @@ def start_spin():
     first_led_index = i % num_leds
     return first_led_index
 
-spin_action()
 
 def flash_segment_pulse(segment, num_pulses):
     flash_duration = 3
