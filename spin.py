@@ -21,7 +21,7 @@ segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)),
             list(range(198, 231)), list(range(165, 198)), list(range(132, 165)), list(range(99, 132)),
             list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
 
-def spin_action():
+def spin_action(first_led_index):
     input_state = GPIO.input(button_pin)
     if input_state == False:
         print("Button pressed. Starting spin.")
