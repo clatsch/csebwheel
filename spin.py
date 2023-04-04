@@ -60,6 +60,8 @@ def start_spin():
     first_led_index = i % num_leds
     return first_led_index
 
+spin_action()
+
 def flash_segment_pulse(segment, num_pulses):
     flash_duration = 3
     for i in range(num_pulses):
@@ -80,8 +82,7 @@ def flash_segment_pulse(segment, num_pulses):
         return
 
 
-
-while True:
+def spin_action():
     input_state = GPIO.input(button_pin)
     if input_state == False:
         print("Button pressed. Starting spin.")
