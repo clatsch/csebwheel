@@ -85,7 +85,11 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
     start_flash_time = time.time()
     flash_interval = flash_duration / num_pulses
     while time.time() < start_flash_time + flash_duration:
-        brightness = int(abs(math.sin((time.time() - start_flash_time) * math.pi / flash_interval)) * 255)
+        elapsed_time = time.time() - start_flash_time
+        if elapsed_time < flash_interval * 0.7:
+            brightness = 255
+        else:
+            brightness = int(abs(math.sin(elapsed_time * math.pi / flash_interval)) * 255)
         for j in segment:
             pixels[j] = (brightness, brightness, brightness)
         pixels.show()
@@ -93,3 +97,4 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
             time.sleep(0.2)
             return
         time.sleep(0.05)
+
