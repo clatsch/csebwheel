@@ -91,12 +91,16 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
         if elapsed_time < flash_interval * 0.7:
             brightness = 255
         else:
-            brightness = int(abs(math.sin(elapsed_time * math.pi / flash_interval)) * 255)
-        for j in segment:
-            pixels[j] = (brightness, brightness, brightness)
+            brightness = int(abs(math.sin((elapsed_time - flash_interval * 0.7) * math.pi / (flash_interval * 0.3))) * 255)
+        for j in range(num_leds):
+            if j in segment:
+                pixels[j] = (brightness, brightness, brightness)
+            else:
+                pixels[j] = (0, 0, 0)
         pixels.show()
         if GPIO.input(button_pin) == False:
             time.sleep(0.2)
             return
         time.sleep(0.05)
+
 
