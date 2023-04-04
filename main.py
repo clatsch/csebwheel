@@ -19,6 +19,7 @@ try:
         if select_spin == False:
             print('Spin selected')
             first_led_index = start_spin()
+            print(f"First LED index: {first_led_index}")
             spin_action(first_led_index)
             time.sleep(0.2)
         if select_idle_mode == False:
