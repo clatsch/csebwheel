@@ -10,6 +10,7 @@ GPIO.setup(22, GPIO.IN)
 
 try:
     while True:
+        print("main.py script started.")
         select_spin = GPIO.input(17)
         select_idle_mode = GPIO.input(27)
         select_presentation_mode = GPIO.input(22)
