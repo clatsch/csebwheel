@@ -21,12 +21,12 @@ segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)),
             list(range(198, 231)), list(range(165, 198)), list(range(132, 165)), list(range(99, 132)),
             list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
 
-def spin_action(first_led_index):
+def spin_action(first_led_index, last_led_index):
     flash_finished = False
     for segment in segments:
         if first_led_index in segment:
             flash_duration = 3
-            flash_segment_pulse(segment, flash_duration, 3)
+            flash_segment_pulse(segment, flash_duration, 3, last_led_index)
             flash_finished = True
             break
 
@@ -41,6 +41,7 @@ def spin_action(first_led_index):
         time.sleep(0.5)
 
     time.sleep(0.1)
+
 
 def start_spin():
     strength = random.uniform(0.4, 1.0)
@@ -60,16 +61,16 @@ def start_spin():
     starting_position = random.randint(0, num_leds - 1)
 
     i = starting_position
-    for i in range(starting_position, starting_position - total_steps, -1):
-        remaining_steps = total_steps - (starting_position - i)
+    for i in range(starting_position, starting_position + total_steps):
+        remaining_steps = total_steps - (i - starting_position)
         current_speed = speed * remaining_steps / total_steps * friction
 
         for j in range(5):
-            prev_index = (i + 5 - j) % num_leds
+            prev_index = (i - 5 + j) % num_leds
             pixels[prev_index] = (0, 0, 0)
 
         for j in range(5):
-            index = (i - j) % num_leds
+            index = (i + j) % num_leds
             pixels[index] = (0, 0, 255)
 
         pixels.show()
@@ -77,11 +78,9 @@ def start_spin():
         delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
-    first_led_index = i % num_leds
-    spin_action(first_led_index) # call spin_action with the first_led_index as argument
+    first_led_index = starting_position % num_leds
+    spin_action(first_led_index, i) # call spin_action with the first_led_index and last_led_index as arguments
     return first_led_index
-
-
 
 
 def flash_segment_pulse(segment, flash_duration, num_pulses):
