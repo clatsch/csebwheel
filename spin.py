@@ -61,16 +61,16 @@ def start_spin():
     starting_position = random.randint(0, num_leds - 1)
 
     i = starting_position
-    for i in range(starting_position, starting_position + total_steps):
-        remaining_steps = total_steps - (i - starting_position)
+    for i in range(starting_position, starting_position - total_steps, -1):
+        remaining_steps = abs(i - starting_position)
         current_speed = speed * remaining_steps / total_steps * friction
 
         for j in range(5):
-            prev_index = (i - 5 + j) % num_leds
+            prev_index = (i + 5 - j) % num_leds
             pixels[prev_index] = (0, 0, 0)
 
         for j in range(5):
-            index = (i + j) % num_leds
+            index = (i - j) % num_leds
             pixels[index] = (0, 0, 255)
 
         pixels.show()
@@ -78,10 +78,9 @@ def start_spin():
         delay_time = 0.001 / current_speed
         time.sleep(delay_time)
 
-    first_led_index = starting_position % num_leds
-    spin_action(first_led_index, i) # call spin_action with the first_led_index and last_led_index as arguments
+    first_led_index = i % num_leds
+    spin_action(first_led_index)
     return first_led_index
-
 
 def flash_segment_pulse(segment, flash_duration, num_pulses):
     start_flash_time = time.time()
