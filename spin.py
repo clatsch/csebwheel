@@ -17,9 +17,19 @@ button_pin = 17
 
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-segments = [list(range(290, 299)), list(range(271, 289)), list(range(264, 270)), list(range(231, 264)),
-            list(range(198, 231)), list(range(165, 198)), list(range(132, 165)), list(range(99, 132)),
-            list(range(66, 99)), list(range(33, 66)), list(range(0, 33)), ]
+groups = [
+    list(range(330, 361)),
+    list(range(297, 330)),
+    list(range(264, 297)),
+    list(range(231, 264)),
+    list(range(198, 231)),
+    list(range(165, 198)),
+    list(range(132, 165)),
+    list(range(99, 132)),
+    list(range(66, 99)),
+    list(range(33, 66)),
+    list(range(0, 33)),
+]
 
 def spin_action(first_led_index):
     flash_finished = False
