@@ -17,7 +17,7 @@ button_pin = 17
 
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-groups = [
+segments = [
     list(range(330, 361)),
     list(range(297, 330)),
     list(range(264, 297)),

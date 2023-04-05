@@ -39,5 +39,5 @@ except KeyboardInterrupt:
     print("All LEDs OFF")
 
 if any(pixels):
-    pixels.fill((0, 0, 0))
+    pixels.fill((0, 0, 0, 0))
     pixels.show()
