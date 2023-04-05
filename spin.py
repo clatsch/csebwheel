@@ -80,7 +80,7 @@ def start_spin():
 
         for j in range(5):
             index = (i - j) % num_leds
-            pixels[index] = (0, 0, 255, 100)
+            pixels[index] = (0, 0, 255, 0)
 
         pixels.show()
 
