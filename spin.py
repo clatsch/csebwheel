@@ -7,7 +7,7 @@ import math
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
-num_leds = 300
+num_leds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
@@ -41,12 +41,12 @@ def spin_action(first_led_index):
             break
 
     if not flash_finished:
-        pixels.fill((0, 0, 0))
+        pixels.fill((0, 0, 0, 0))
         pixels.show()
     time.sleep(0.2)
 
     if any(pixels):
-        pixels.fill((0, 0, 0))
+        pixels.fill((0, 0, 0, 0))
         pixels.show()
         time.sleep(0.5)
 
@@ -76,11 +76,11 @@ def start_spin():
 
         for j in range(5):
             prev_index = (i + 5 - j) % num_leds
-            pixels[prev_index] = (0, 0, 0)
+            pixels[prev_index] = (0, 0, 0, 0)
 
         for j in range(5):
             index = (i - j) % num_leds
-            pixels[index] = (0, 0, 255)
+            pixels[index] = (0, 0, 255, 100)
 
         pixels.show()
 
@@ -105,12 +105,12 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
             brightness = int(abs(math.sin((elapsed_time - flash_interval * 0.7) * math.pi / (flash_interval * 0.3))) * 255)
         for j in range(num_leds):
             if j in segment:
-                pixels[j] = (brightness, brightness, brightness)
+                pixels[j] = (brightness, brightness, brightness, brightness)
             else:
-                pixels[j] = (0, 0, 0)
+                pixels[j] = (0, 0, 0, 0)
         pixels.show()
         time.sleep(0.01)
-    pixels.fill((0, 0, 0))
+    pixels.fill((0, 0, 0, 0))
     pixels.show()
     time.sleep(0.1)
 
