@@ -13,7 +13,7 @@ GPIO.setup(27, GPIO.IN)
 BUTTON_PIN = 22
 pixel_pin = board.D18
 numleds = 363
-ORDER = neopixel.RGBW
+ORDER = neopixel.RGB
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
 # Define groups of pixels
