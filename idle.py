@@ -10,7 +10,7 @@ GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 pixel_pin = board.D18
 numleds = 363
 ORDER = neopixel.RGBW
-pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.2, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.8, auto_write=False, pixel_order=ORDER)
 
 def wheel(pos):
     if pos < 0 or pos > 255:
