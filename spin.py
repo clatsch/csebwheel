@@ -11,10 +11,7 @@ num_leds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
-min_rotations = 3
-max_rotations = 5
 button_pin = 17
-
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 segments = [
@@ -32,25 +29,14 @@ segments = [
 ]
 
 def spin_action(first_led_index):
-    flash_finished = False
     for segment in segments:
         if first_led_index in segment:
-            flash_duration = 3
-            flash_segment_pulse(segment, flash_duration, 3)
-            flash_finished = True
+            pixels[segment] = (255, 0, 0, 0) # Set the color of the segment to red
+            pixels.show()
+            time.sleep(1) # Wait for 1 second
+            pixels[segment] = (0, 0, 0, 0) # Reset the color of the segment to black
+            pixels.show()
             break
-
-    if not flash_finished:
-        pixels.fill((0, 0, 0, 0))
-        pixels.show()
-    time.sleep(0.2)
-
-    if any(pixels):
-        pixels.fill((0, 0, 0, 0))
-        pixels.show()
-        time.sleep(0.5)
-
-    time.sleep(0.1)
 
 def start_spin():
     strength = random.uniform(0.4, 1.0)
@@ -89,31 +75,11 @@ def start_spin():
 
     first_led_index = i % num_leds
     spin_action(first_led_index) # call spin_action with the first_led_index as argument
-    return first_led_index
 
+while True:
+    if GPIO.input(button_pin) == False:
+        print('Button pressed')
+        pixels.fill((0, 0, 0, 0)) # Reset the LED state
+        start_spin()
 
-
-
-def flash_segment_pulse(segment, flash_duration, num_pulses):
-    start_flash_time = time.time()
-    flash_interval = flash_duration / num_pulses
-    while time.time() < start_flash_time + flash_duration:
-        elapsed_time = time.time() - start_flash_time
-        if elapsed_time < flash_interval * 0.7:
-            brightness = 255
-        else:
-            brightness = int(abs(math.sin((elapsed_time - flash_interval * 0.7) * math.pi / (flash_interval * 0.3))) * 255)
-        for j in range(num_leds):
-            if j in segment:
-                pixels[j] = (brightness, brightness, brightness, brightness)
-            else:
-                pixels[j] = (0, 0, 0, 0)
-        pixels.show()
-        time.sleep(0.01)
-    pixels.fill((0, 0, 0, 0))
-    pixels.show()
-    time.sleep(0.1)
-
-
-
-
+    time.sleep(0.1) # Wait for 0.1 seconds before checking the button again
