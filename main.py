@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-from spin import start_spin
+from newSpin import start_spin
 from idle import start_idle_mode
 from presentation import light_up_group
 from callbacks import button_callback
