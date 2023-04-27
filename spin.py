@@ -84,4 +84,5 @@ while True:
         pixels.fill((0, 0, 0, 0)) # Reset the LED state
         start_spin()
 
+
     time.sleep(0.1) # Wait for 0.1 seconds before checking the button again
