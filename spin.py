@@ -1,9 +1,10 @@
 import board
 import neopixel
-import RPi.GPIO as GPIO
 import time
 import random
 import math
+import RPi.GPIO as GPIO
+
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
@@ -42,7 +43,7 @@ def spin_action(first_led_index):
             break
 
 def start_spin():
-    strength = random.uniform(0.4, 1.0)
+    strength = random.uniform(0.8, 1.0) # Increase the minimum strength to make it faster
 
     distance = strength * num_leds * 2 * math.pi
 
@@ -54,7 +55,7 @@ def start_spin():
     total_steps = rotations * num_leds
 
     friction = 0.9
-    speed = 2.5 * strength
+    speed = 3 * strength # Increase the speed to make it faster
 
     starting_position = random.randint(0, num_leds - 1)
 
@@ -78,10 +79,3 @@ def start_spin():
 
     first_led_index = i % num_leds
     spin_action(first_led_index) # call spin_action with the first_led_index as argument
-
-while True:
-    if GPIO.input(button_pin) == False:
-        print('Button pressed')
-        start_spin()
-
-    time.sleep(0.1)
