@@ -31,10 +31,12 @@ segments = [
 def spin_action(first_led_index):
     for segment in segments:
         if first_led_index in segment:
-            pixels[segment] = (255, 0, 0, 0) # Set the color of the segment to red
+            for index in segment:
+                pixels[index] = (255, 0, 0, 0) # Set the color of the pixel to red
             pixels.show()
             time.sleep(1) # Wait for 1 second
-            pixels[segment] = (0, 0, 0, 0) # Reset the color of the segment to black
+            for index in segment:
+                pixels[index] = (0, 0, 0, 0) # Reset the color of the pixel to black
             pixels.show()
             break
 
