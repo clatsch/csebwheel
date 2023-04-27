@@ -54,4 +54,4 @@ def start_idle_mode():
             rainbow_on = False
             pixels.fill((0, 0, 0))
             pixels.show()
-            start_spin(button_pin)
+            start_spin()
