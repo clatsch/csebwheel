@@ -94,10 +94,6 @@ def start_spin():
     spin_action(first_led_index) # call spin_action with the first_led_index as argument
     spin_completed = True # Set the flag variable to True when the first spin is completed
 
-
-
-
-
 def flash_segment_pulse(segment, flash_duration, num_pulses):
     start_flash_time = time.time()
     flash_interval = flash_duration / num_pulses
