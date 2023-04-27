@@ -5,15 +5,11 @@ import random
 import math
 import RPi.GPIO as GPIO
 
-
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
 num_leds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
-
-button_pin = 17
-GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 segments = [
     list(range(330, 361)),
