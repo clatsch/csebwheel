@@ -57,6 +57,9 @@ def start_spin(button_pin):
 
     starting_position = random.randint(0, num_leds - 1)
 
+    # Set up the GPIO channel as an input
+    GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
     # Disable the button before starting the spin
     GPIO.remove_event_detect(button_pin)
 
