@@ -39,6 +39,8 @@ def spin_action(first_led_index):
             flash_segment_pulse(segment, flash_duration, 3)
             flash_finished = True
             break
+        else:
+            continue
 
     if not flash_finished:
         pixels.fill((0, 0, 0))
@@ -51,6 +53,7 @@ def spin_action(first_led_index):
         time.sleep(0.5)
 
     time.sleep(0.1)
+
 
 def start_spin():
     strength = random.uniform(0.4, 1.0)
