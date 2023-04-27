@@ -21,7 +21,7 @@ try:
 
         if GPIO.input(17) == False and current_time - last_spin_time > DEBOUNCE_TIME:
             print('Spin selected')
-            start_spin()
+            start_spin(button_pin)
             last_spin_time = current_time
 
         if GPIO.input(27) == False and current_time - last_idle_time > DEBOUNCE_TIME:
