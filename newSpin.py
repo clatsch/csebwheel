@@ -53,6 +53,7 @@ def spin_action(first_led_index):
         time.sleep(0.5)
 
     time.sleep(0.1)
+    return
 
 
 def start_spin():
@@ -92,10 +93,7 @@ def start_spin():
 
     first_led_index = i % num_leds
     spin_action(first_led_index) # call spin_action with the first_led_index as argument
-    return first_led_index
-
-
-
+    return
 
 def flash_segment_pulse(segment, flash_duration, num_pulses):
     start_flash_time = time.time()
