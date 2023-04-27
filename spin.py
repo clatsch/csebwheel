@@ -38,7 +38,7 @@ def spin_action(first_led_index):
             pixels.show()
             break
 
-def start_spin():
+def start_spin(button_pin):
     strength = random.uniform(0.8, 1.0) # Increase the minimum strength to make it faster
 
     distance = strength * num_leds * 2 * math.pi

@@ -73,7 +73,7 @@ while True:
     select_idle_mode = GPIO.input(27)
     if select_spin == False:
         print('Spin selected')
-        start_spin()
+        start_spin(button_pin)
     if select_idle_mode == False:
         print('Idle Mode Selected')
         start_idle_mode()
