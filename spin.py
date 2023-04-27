@@ -1,3 +1,43 @@
+import board
+import neopixel
+import time
+import random
+import math
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BCM)
+pixel_pin = board.D18
+num_leds = 363
+ORDER = neopixel.RGBW
+pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
+
+segments = [
+    list(range(330, 361)),
+    list(range(297, 330)),
+    list(range(264, 297)),
+    list(range(231, 264)),
+    list(range(198, 231)),
+    list(range(165, 198)),
+    list(range(132, 165)),
+    list(range(99, 132)),
+    list(range(66, 99)),
+    list(range(33, 66)),
+    list(range(0, 33)),
+]
+
+def spin_action(first_led_index):
+    pixels.fill((0, 0, 0, 0)) # Reset the LED state before each spin
+    for segment in segments:
+        if first_led_index in segment:
+            for index in segment:
+                pixels[index] = (255, 0, 0, 0) # Set the color of the pixel to red
+            pixels.show()
+            time.sleep(1) # Wait for 1 second
+            for index in segment:
+                pixels[index] = (0, 0, 0, 0) # Reset the color of the pixel to black
+            pixels.show()
+            break
+
 def start_spin():
     strength = random.uniform(0.8, 1.0) # Increase the minimum strength to make it faster
 
@@ -11,7 +51,7 @@ def start_spin():
     total_steps = rotations * num_leds
 
     friction = 0.9
-    speed = 1.9 * strength # Increase the speed to make it faster
+    speed = 1.5 * strength # Increase the speed to make it faster
 
     starting_position = random.randint(0, num_leds - 1)
 
