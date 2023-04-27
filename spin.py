@@ -4,7 +4,7 @@ import time
 import random
 import math
 import RPi.GPIO as GPIO
-from main import button_callback
+from callbacks import button_callback
 
 
 GPIO.setmode(GPIO.BCM)

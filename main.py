@@ -3,6 +3,7 @@ import time
 from spin import start_spin
 from idle import start_idle_mode
 from presentation import light_up_group
+from callbacks import button_callback
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -14,11 +15,6 @@ DEBOUNCE_TIME = 0.3  # Set the debounce time to 300ms
 last_spin_time = 0
 last_idle_time = 0
 last_presentation_time = 0
-
-def button_callback(channel):
-    print("Button pressed!")
-
-# ...
 
 # Define the button_pin variable
 button_pin = 18
