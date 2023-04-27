@@ -107,12 +107,13 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
             if j in segment:
                 pixels[j] = (brightness, brightness, brightness)
             else:
-                pixels[j] = (0, 0, 0)
+                pixels[j] = (0, 0, 0, 0)
         pixels.show()
         time.sleep(0.01)
-    pixels.fill((0, 0, 0))
+    pixels.fill((0, 0, 0, 0))
     pixels.show()
     time.sleep(0.1)
+
 
 # Define a callback function for the button press
 def button_callback(channel):
@@ -130,10 +131,7 @@ try:
         time.sleep(0.1)
 
 except KeyboardInterrupt:
-    pixels.fill((0, 0, 0))
+    pixels.fill((0, 0, 0, 0))
     pixels.show()
     GPIO.cleanup()
-
-
-
 
