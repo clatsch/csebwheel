@@ -9,7 +9,7 @@ GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
 num_leds = 363
 ORDER = neopixel.RGBW
-pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.8, auto_write=False, pixel_order=ORDER)
 
 min_rotations = 3
 max_rotations = 5
@@ -18,7 +18,7 @@ button_pin = 17
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 segments = [
-    list(range(330, 361)),
+    list(range(330, 362)),
     list(range(297, 330)),
     list(range(264, 297)),
     list(range(231, 264)),
@@ -35,7 +35,7 @@ def spin_action(first_led_index):
     flash_finished = False
     for segment in segments:
         if first_led_index in segment:
-            flash_duration = 3
+            flash_duration = 4
             flash_segment_pulse(segment, flash_duration, 3)
             flash_finished = True
             break
@@ -69,7 +69,7 @@ def start_spin():
     total_steps = rotations * num_leds
 
     friction = 0.9
-    speed = 1.5 * strength
+    speed = 2.5 * strength
 
     starting_position = random.randint(0, num_leds - 1)
 
@@ -84,7 +84,7 @@ def start_spin():
 
         for j in range(5):
             index = (i - j) % num_leds
-            pixels[index] = (0, 0, 255, 50)
+            pixels[index] = (0, 0, 255, 70)
 
         pixels.show()
 
@@ -100,10 +100,10 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
     flash_interval = flash_duration / num_pulses
     while time.time() < start_flash_time + flash_duration:
         elapsed_time = time.time() - start_flash_time
-        if elapsed_time < flash_interval * 0.7:
+        if elapsed_time < flash_interval * 0.9:
             brightness = 255
         else:
-            brightness = int(abs(math.sin((elapsed_time - flash_interval * 0.7) * math.pi / (flash_interval * 0.3))) * 255)
+            brightness = int(abs(math.sin((elapsed_time - flash_interval * 0.9) * math.pi / (flash_interval * 0.3))) * 255)
         for j in range(num_leds):
             if j in segment:
                 pixels[j] = (brightness, brightness, brightness, brightness)
