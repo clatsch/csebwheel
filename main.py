@@ -15,6 +15,20 @@ last_spin_time = 0
 last_idle_time = 0
 last_presentation_time = 0
 
+def button_callback(channel):
+    print("Button pressed!")
+
+# ...
+
+# Define the button_pin variable
+button_pin = 18
+
+# Setup the button as input with pull-up resistor
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+# Add event detection for button press
+GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=button_callback, bouncetime=300)
+
 try:
     while True:
         current_time = time.time()
@@ -42,17 +56,5 @@ if any(pixels):
     pixels.fill((0, 0, 0, 0))
     pixels.show()
 
-def button_callback(channel):
-    print("Button pressed!")
 
-# ...
-
-# Define the button_pin variable
-button_pin = 18
-
-# Setup the button as input with pull-up resistor
-GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-# Add event detection for button press
-GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=button_callback, bouncetime=300)
 
