@@ -4,6 +4,8 @@ import time
 import random
 import math
 import RPi.GPIO as GPIO
+from main import button_callback
+
 
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
