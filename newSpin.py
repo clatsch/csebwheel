@@ -8,7 +8,7 @@ import math
 GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
 num_leds = 363
-ORDER = neopixel.RGB
+ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.6, auto_write=False, pixel_order=ORDER)
 
 min_rotations = 3
@@ -31,8 +31,6 @@ segments = [
     list(range(0, 33)),
 ]
 
-spin_completed = False # Flag variable to track if the first spin has been completed
-
 def spin_action(first_led_index):
     flash_finished = False
     for segment in segments:
@@ -41,21 +39,23 @@ def spin_action(first_led_index):
             flash_segment_pulse(segment, flash_duration, 3)
             flash_finished = True
             break
+        else:
+            continue
 
     if not flash_finished:
-        pixels.fill((0, 0, 0))
+        pixels.fill((0, 0, 0, 0))
         pixels.show()
     time.sleep(0.2)
 
     if any(pixels):
-        pixels.fill((0, 0, 0))
+        pixels.fill((0, 0, 0, 0))
         pixels.show()
         time.sleep(0.5)
 
     time.sleep(0.1)
 
+
 def start_spin():
-    global spin_completed # Use the global flag variable
     strength = random.uniform(0.4, 1.0)
 
     distance = strength * num_leds * 2 * math.pi
@@ -79,11 +79,11 @@ def start_spin():
 
         for j in range(5):
             prev_index = (i + 5 - j) % num_leds
-            pixels[prev_index] = (0, 0, 0)
+            pixels[prev_index] = (0, 0, 0, 0)
 
         for j in range(5):
             index = (i - j) % num_leds
-            pixels[index] = (0, 0, 255)
+            pixels[index] = (0, 0, 255, 50)
 
         pixels.show()
 
@@ -92,7 +92,10 @@ def start_spin():
 
     first_led_index = i % num_leds
     spin_action(first_led_index) # call spin_action with the first_led_index as argument
-    spin_completed = True # Set the flag variable to True when the first spin is completed
+    return first_led_index
+
+
+
 
 def flash_segment_pulse(segment, flash_duration, num_pulses):
     start_flash_time = time.time()
@@ -105,7 +108,7 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
             brightness = int(abs(math.sin((elapsed_time - flash_interval * 0.7) * math.pi / (flash_interval * 0.3))) * 255)
         for j in range(num_leds):
             if j in segment:
-                pixels[j] = (brightness, brightness, brightness)
+                pixels[j] = (brightness, brightness, brightness, brightness)
             else:
                 pixels[j] = (0, 0, 0, 0)
         pixels.show()
@@ -113,25 +116,3 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
     pixels.fill((0, 0, 0, 0))
     pixels.show()
     time.sleep(0.1)
-
-
-# Define a callback function for the button press
-def button_callback(channel):
-    global spin_completed # Use the global flag variable
-    if spin_completed:
-        first_led_index = start_spin()
-        spin_completed = False # Reset the flag variable
-    print("Button pressed")
-
-# Add a button interrupt to listen for button presses
-GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=button_callback, bouncetime=300)
-
-try:
-    while True:
-        time.sleep(0.1)
-
-except KeyboardInterrupt:
-    pixels.fill((0, 0, 0, 0))
-    pixels.show()
-    GPIO.cleanup()
-
