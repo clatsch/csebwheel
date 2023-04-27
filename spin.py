@@ -84,4 +84,4 @@ while True:
         print('Button pressed')
         start_spin()
 
-    time.sleep(
+    time.sleep(0.1)
