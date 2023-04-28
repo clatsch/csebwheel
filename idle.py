@@ -42,7 +42,7 @@ def start_idle_mode():
     # Setup the button as input with pull-up resistor
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Add event detection for button press using interrupts
-    GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=lambda _: stop_idle_mode(pixels), bouncetime=300)
+    GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=lambda _: setattr(rainbow_on, 'value', False), bouncetime=300)
     while rainbow_on:
         rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
         if GPIO.input(17) == GPIO.LOW:
