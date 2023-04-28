@@ -51,7 +51,7 @@ def start_idle_mode():
     global pixels
     rainbow_on = True
     while rainbow_on:
-        rainbow_cycle(0.05)
+        rainbow_cycle(0.2)
         if not rainbow_on:
             break
         if GPIO.input(27) == GPIO.LOW:
