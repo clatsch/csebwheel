@@ -39,6 +39,9 @@ def start_idle_mode():
     rainbow_on = [True]  # Use a list to store the value of rainbow_on
     # Define the button_pin variable for the button on pin 27
     button_pin = 27
+    # Save the current state of the GPIO
+    gpio_state = {pin: GPIO.gpio_function(pin) for pin in (button_pin, 17, 22)}
+    gpio_pull_state = {pin: GPIO.input(pin) for pin in (button_pin, 17, 22)}
     # Setup the button as input with pull-up resistor
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Add event detection for button press using interrupts
@@ -53,5 +56,11 @@ def start_idle_mode():
     # Cleanup the GPIO and remove the event detection for the button on pin 27
     GPIO.remove_event_detect(button_pin)
     GPIO.cleanup(button_pin)
+    # Restore the state of the GPIO
+    for pin, function in gpio_state.items():
+        GPIO.setup(pin, function)
+    for pin, pull_state in gpio_pull_state.items():
+        GPIO.input(pin, pull_state)
+
 
 
