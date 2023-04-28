@@ -45,8 +45,10 @@ def start_idle_mode():
             pixels.show()
             while GPIO.input(27) == GPIO.LOW:
                 pass
+            return  # Return to main.py
         elif GPIO.input(17) == GPIO.LOW:
             rainbow_on = False
             pixels.fill((0, 0, 0, 0))
             pixels.show()
             start_spin()
+
