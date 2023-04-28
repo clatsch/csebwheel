@@ -4,6 +4,7 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 from newSpin import start_spin
+from presentation import light_up_group
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
