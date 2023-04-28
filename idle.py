@@ -38,7 +38,7 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
-def start_spin():
+def start_idle_mode():
     global pixels
     spin_on = True
     last_button_time = 0  # initialize variable for last button press time
