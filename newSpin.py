@@ -45,7 +45,7 @@ def spin_action(first_led_index):
     if not flash_finished:
         pixels.fill((0, 0, 0, 0))
         pixels.show()
-    time.sleep(0.3)
+    time.sleep(0.2)
 
     if any(pixels):
         pixels.fill((0, 0, 0, 0))
