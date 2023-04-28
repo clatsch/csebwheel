@@ -17,11 +17,12 @@ def wheel(pos):
         b = w = 0
     elif pos < 128:
         b = 255 - pos*2
-        w = 0
+        w = pos*2
     else:
-        b = 0
-        w = (pos - 128)*2
+        b = (pos - 128)*2
+        w = 255 - (pos - 128)*2
     return (0, 0, b, w) if ORDER in (neopixel.RGBW, neopixel.RGBW) else (0, 0, b)
+
 
 
 
