@@ -8,6 +8,8 @@ from newSpin import start_spin
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN)
 
+DEBOUNCE_TIME = 0.3
+
 pixel_pin = board.D18
 numleds = 363
 ORDER = neopixel.RGBW
