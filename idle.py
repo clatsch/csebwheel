@@ -3,10 +3,9 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 from newSpin import start_spin
-from callbacks import button_callback
 
 GPIO.setmode(GPIO.BCM)
-GPIO.add_event_detect(27, GPIO.FALLING, callback=button_callback, bouncetime=300)
+GPIO.add_event_detect(27, GPIO.FALLING, bouncetime=300)
 
 DEBOUNCE_TIME = 0.3
 
