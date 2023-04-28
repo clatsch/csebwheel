@@ -61,6 +61,7 @@ def start_spin():
     print("Starting spin")
     strength = random.uniform(0.6, 1.0)
 
+
     distance = strength * num_leds * 2 * math.pi
 
     circumference = num_leds * 2 * math.pi
