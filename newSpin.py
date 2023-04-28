@@ -11,8 +11,8 @@ num_leds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.8, auto_write=False, pixel_order=ORDER)
 
-min_rotations = 3
-max_rotations = 5
+# min_rotations = 3
+# max_rotations = 5
 button_pin = 17
 
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -71,7 +71,7 @@ def start_spin():
     total_steps = rotations * num_leds
 
     friction = 0.9
-    speed = 1.8 * strength
+    speed = 2 * strength
 
     starting_position = random.randint(0, num_leds - 1)
 
