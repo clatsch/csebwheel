@@ -32,25 +32,22 @@ try:
         time.sleep(0.1)  # Add debounce delay
 
         if GPIO.input(button_pin) == False and current_time - last_spin_time > DEBOUNCE_TIME:
-            print('Spin selected')
+            # print('Spin selected')
             start_spin()
             last_spin_time = current_time
 
         time.sleep(0.1)  # Add debounce delay
 
-        print('Spin finished')
 
         if GPIO.input(27) == False and current_time - last_idle_time > DEBOUNCE_TIME:
-            print('Idle Mode Selected')
+            # print('Idle Mode Selected')
             start_idle_mode()
             last_idle_time = current_time
 
         time.sleep(0.1)  # Add debounce delay
 
-        print('before presentation')
-
         if GPIO.input(22) == False and current_time - last_presentation_time > DEBOUNCE_TIME:
-            print('Presentation Mode Selected')
+            # print('Presentation Mode Selected')
             light_up_group()
             last_presentation_time = current_time
 
