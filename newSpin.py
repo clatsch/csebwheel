@@ -70,8 +70,8 @@ def start_spin():
 
     total_steps = rotations * num_leds
 
-    friction = 0.9
-    speed = 10 * strength
+    friction = 0.7
+    speed = 1.6 * strength
 
     starting_position = random.randint(0, num_leds - 1)
 
