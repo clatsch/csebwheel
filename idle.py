@@ -49,7 +49,6 @@ def start_idle_mode():
             rainbow_on = False
             pixels.fill((0, 0, 0, 0))
             pixels.show()
-            light_up_group()
 
         elif GPIO.input(17) == GPIO.LOW:
             rainbow_on = False
