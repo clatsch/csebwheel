@@ -67,7 +67,7 @@ def start_spin():
     circumference = num_leds * 2 * math.pi
     rotations = int(distance / circumference)
 
-    rotations += random.randint(0, 2)
+    rotations += random.randint(1, 2)
 
     total_steps = rotations * num_leds
 
