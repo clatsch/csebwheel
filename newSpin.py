@@ -9,7 +9,7 @@ GPIO.setmode(GPIO.BCM)
 pixel_pin = board.D18
 num_leds = 363
 ORDER = neopixel.RGBW
-pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.8, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, num_leds, brightness=0.9, auto_write=False, pixel_order=ORDER)
 
 min_rotations = 3
 max_rotations = 5
@@ -45,12 +45,12 @@ def spin_action(first_led_index):
     if not flash_finished:
         pixels.fill((0, 0, 0, 0))
         pixels.show()
-    time.sleep(0.2)
+    time.sleep(0.1)
 
     if any(pixels):
         pixels.fill((0, 0, 0, 0))
         pixels.show()
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     time.sleep(0.1)
     return
