@@ -35,7 +35,7 @@ def spin_action(first_led_index):
     flash_finished = False
     for segment in segments:
         if first_led_index in segment:
-            flash_duration = 5
+            flash_duration = 6
             flash_segment_pulse(segment, flash_duration, 3)
             flash_finished = True
             break
