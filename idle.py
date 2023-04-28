@@ -4,7 +4,6 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 from newSpin import start_spin
-from presentation import light_up_group
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -54,7 +53,6 @@ def start_idle_mode():
                 rainbow_on = False
                 pixels.fill((0, 0, 0, 0))
                 pixels.show()
-                light_up_group()
                 break
             elif GPIO.input(17) == GPIO.LOW:
                 rainbow_on = False
