@@ -57,6 +57,7 @@ def spin_action(first_led_index):
 
 
 def start_spin():
+    print("Starting spin")
     strength = random.uniform(0.4, 1.0)
 
     distance = strength * num_leds * 2 * math.pi
