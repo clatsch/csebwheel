@@ -35,16 +35,34 @@ def rainbow_cycle(wait):
         time.sleep(wait)
 
 def start_idle_mode():
+    global pixels
+    if start_idle_mode.idle_running:  # Check if the idle mode is already running
+        return  # If it is, do nothing and return to the main program
+    start_idle_mode.idle_running = True  # Set the flag to True to indicate that the idle mode is running
+    rainbow_on = [True]  # Use a list to store the value of rainbow_on
     # Define the button_pin variable for the button on pin 27
     button_pin = 27
+    # Save the current state of the GPIO
+    gpio_state = {pin: GPIO.gpio_function(pin) for pin in (button_pin, 17, 22)}
+    gpio_pull_state = {pin: GPIO.input(pin) for pin in (button_pin, 17, 22)}
     # Setup the button as input with pull-up resistor
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    # Wait for the button on pin 27 to be pressed
-    while GPIO.input(button_pin) == GPIO.HIGH:
-        time.sleep(0.1)
-    # Cleanup the GPIO and return to main.py
+    # Add event detection for button press using interrupts
+    GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=lambda _: rainbow_on.__setitem__(0, False), bouncetime=300)
+    while rainbow_on[0]:
+        rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
+        if GPIO.input(17) == GPIO.LOW:
+            rainbow_on[0] = False
+            pixels.fill((0, 0, 0, 0))
+            pixels.show()
+            start_spin()
+    # Cleanup the GPIO and remove the event detection for the button on pin 27
+    GPIO.remove_event_detect(button_pin)
     GPIO.cleanup(button_pin)
-
-
-
-
+    # Restore the state of the GPIO
+    for pin, function in gpio_state.items():
+        GPIO.setup(pin, function)
+    for pin, pull_state in gpio_pull_state.items():
+        GPIO.input(pin, pull_state)
+    start_idle_mode.idle_running = False  # Set the flag to False to indicate that the idle mode is not running anymore
+start_idle_mode.idle_running = False  # Initialize the flag to False before starting the loop
