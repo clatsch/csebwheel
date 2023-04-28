@@ -2,7 +2,6 @@ import time
 import board
 import neopixel
 import RPi.GPIO as GPIO
-from callbacks import button_callback
 from newSpin import start_spin
 
 GPIO.setmode(GPIO.BCM)
@@ -55,8 +54,4 @@ def start_idle_mode():
             rainbow_on = False
             pixels.fill((0, 0, 0))
             pixels.show()
-            button_callback(17)
-
-    pixels.fill((0, 0, 0))
-    pixels.show()
-    time.sleep(0.1)
+            start_spin()

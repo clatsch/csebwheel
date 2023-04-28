@@ -1,9 +1,8 @@
 import RPi.GPIO as GPIO
 import time
-from newSpin import start_spin
 from idle import start_idle_mode
 from presentation import light_up_group
-from callbacks import button_callback
+from spin import start_spin
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -22,6 +21,10 @@ button_pin = 17
 # Setup the button as input with pull-up resistor
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+def button_callback(channel):
+    if channel == button_pin:
+        start_spin()
+
 # Add event detection for button press
 GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=button_callback, bouncetime=300)
 
@@ -31,7 +34,7 @@ try:
 
         time.sleep(0.1)  # Add debounce delay
 
-        if GPIO.input(button_pin) == False and current_time - last_spin_time > DEBOUNCE_TIME:
+        if GPIO.input(17) == False and current_time - last_spin_time > DEBOUNCE_TIME:
             print('Spin selected')
             start_spin()
             last_spin_time = current_time
