@@ -1,4 +1,5 @@
 import time
+import datetime
 import board
 import neopixel
 import RPi.GPIO as GPIO
@@ -44,11 +45,12 @@ def light_up_group(group):
 
 # Define a callback function to handle button presses
 def button_callback(channel):
-    global current_group
+    global current_group, last_group_change_time
+    # Reset last_group_change_time variable to current time
+    last_group_change_time = datetime.datetime.now()
     # Increment current_group to move to the next group
     current_group = (current_group + 1) % len(groups)
     current_group_index = light_up_group(groups[current_group])
-
     # Check if spin button is pressed
     if GPIO.input(17) == False:
         print('Spin selected')
@@ -68,9 +70,18 @@ GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING, callback=button_callback, bounce
 # Main loop
 current_group = 0
 current_group_index = light_up_group(groups[current_group])
+last_group_change_time = datetime.datetime.now()
 while True:
     select_spin = GPIO.input(17)
     select_idle_mode = GPIO.input(27)
+    current_time = datetime.datetime.now()
+    # Check if 10 seconds have passed since last group change
+    if (current_time - last_group_change_time).total_seconds() >= 10:
+        # Reset last_group_change_time variable to current time
+        last_group_change_time = current_time
+        # Increment current_group to move to the next group
+        current_group = (current_group + 1) % len(groups)
+        current_group_index = light_up_group(groups[current_group])
     if select_spin == False:
         print('Spin selected')
         start_spin()
