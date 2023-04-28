@@ -37,7 +37,6 @@ def spin_action(first_led_index):
         if first_led_index in segment:
             flash_duration = 4
             flash_segment_pulse(segment, flash_duration, 3)
-            time.sleep(0.5)
             flash_finished = True
             break
         else:
@@ -54,6 +53,7 @@ def spin_action(first_led_index):
         time.sleep(0.1)
 
     time.sleep(0.1)
+    flash_finished = False  # add this line to reset the variable
     return
 
 
