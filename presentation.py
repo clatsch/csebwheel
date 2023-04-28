@@ -76,7 +76,7 @@ while True:
     select_idle_mode = GPIO.input(27)
     current_time = datetime.datetime.now()
     # Check if 10 seconds have passed since last group change
-    if (current_time - last_group_change_time).total_seconds() >= 10:
+    if (current_time - last_group_change_time).total_seconds() >= 5:
         # Reset last_group_change_time variable to current time
         last_group_change_time = current_time
         # Increment current_group to move to the next group
