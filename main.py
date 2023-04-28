@@ -5,6 +5,7 @@ from idle import start_idle_mode
 from presentation import light_up_group
 from callbacks import button_callback
 
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
