@@ -36,12 +36,7 @@ def rainbow_cycle(wait):
             pixels[i] = wheel(pixel_index & 255)
         pixels.show()
         time.sleep(wait)
-        if GPIO.input(27) == False and current_time - last_idle_time > DEBOUNCE_TIME:
-            print('hello')
-            rainbow_on = False
-            pixels.fill((0, 0, 0, 0))
-            pixels.show()
-            light_up_group()
+
 
 def start_idle_mode():
     global pixels
