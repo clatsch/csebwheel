@@ -3,9 +3,10 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 from newSpin import start_spin
+from callbacks import button_callback
 
 GPIO.setmode(GPIO.BCM)
-GPIO.add_event_detect(27, GPIO.FALLING, bouncetime=300)
+GPIO.add_event_detect(27, GPIO.FALLING, callback=button_callback, bouncetime=300)
 
 DEBOUNCE_TIME = 0.3
 
@@ -34,7 +35,7 @@ def rainbow_cycle(wait):
             pixels[i] = wheel(pixel_index & 255)
         pixels.show()
         time.sleep(wait)
-        if not button_pressed and not GPIO.input(27) == False and current_time - last_idle_time > DEBOUNCE_TIME:
+        if not button_pressed and not GPIO.input(27):
             button_pressed = True
             break
     if button_pressed:
