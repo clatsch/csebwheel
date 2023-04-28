@@ -42,16 +42,25 @@ def rainbow_cycle(wait):
 def start_idle_mode():
     global pixels
     rainbow_on = True
+    last_button_time = 0  # initialize variable for last button press time
     while rainbow_on:
         rainbow_cycle(0.001)
+        current_time = time.time()  # get current time
         if GPIO.input(27) == GPIO.LOW:
-            rainbow_on = False
-            pixels.fill((0, 0, 0))
-            pixels.show()
-            while GPIO.input(27) == GPIO.LOW:
-                pass
+            # check if debounce time has passed since last button press
+            if current_time - last_button_time > DEBOUNCE_TIME:
+                rainbow_on = False
+                pixels.fill((0, 0, 0))
+                pixels.show()
+                while GPIO.input(27) == GPIO.LOW:
+                    pass
+                last_button_time = current_time  # update last button press time
         elif GPIO.input(17) == GPIO.LOW:
-            rainbow_on = False
-            pixels.fill((0, 0, 0))
-            pixels.show()
-            start_spin()
+            # check if debounce time has passed since last button press
+            if current_time - last_button_time > DEBOUNCE_TIME:
+                rainbow_on = False
+                pixels.fill((0, 0, 0))
+                pixels.show()
+                start_spin()
+                last_button_time = current_time  # update last button press time
+
