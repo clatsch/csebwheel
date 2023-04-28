@@ -38,12 +38,16 @@ try:
 
         time.sleep(0.1)  # Add debounce delay
 
+        print('Spin finished')
+
         if GPIO.input(27) == False and current_time - last_idle_time > DEBOUNCE_TIME:
             print('Idle Mode Selected')
             start_idle_mode()
             last_idle_time = current_time
 
         time.sleep(0.1)  # Add debounce delay
+
+        print('before presentation')
 
         if GPIO.input(22) == False and current_time - last_presentation_time > DEBOUNCE_TIME:
             print('Presentation Mode Selected')
