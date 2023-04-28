@@ -1,4 +1,5 @@
 import time
+import datetime
 import board
 import neopixel
 import RPi.GPIO as GPIO
@@ -39,7 +40,7 @@ def start_idle_mode():
     rainbow_on = True
     while rainbow_on:
         rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
-        if GPIO.input(27) == GPIO.LOW:
+        if GPIO.input(27) == False and current_time - last_idle_time > DEBOUNCE_TIME:
             print('hello')
             rainbow_on = False
             pixels.fill((0, 0, 0, 0))
