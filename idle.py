@@ -5,7 +5,10 @@ import RPi.GPIO as GPIO
 from newSpin import start_spin
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(27, GPIO.FALLING, bouncetime=300)
+
+DEBOUNCE_TIME = 0.3
 
 DEBOUNCE_TIME = 0.3
 
