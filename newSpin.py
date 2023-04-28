@@ -35,7 +35,7 @@ def spin_action(first_led_index):
     flash_finished = False
     for segment in segments:
         if first_led_index in segment:
-            flash_duration = 4
+            flash_duration = 5
             flash_segment_pulse(segment, flash_duration, 3)
             flash_finished = True
             break
@@ -109,7 +109,7 @@ def flash_segment_pulse(segment, flash_duration, num_pulses):
             brightness = int(abs(math.sin((elapsed_time - flash_interval * 0.9) * math.pi / (flash_interval * 0.3))) * 255)
         for j in range(num_leds):
             if j in segment:
-                pixels[j] = (brightness, brightness, brightness, brightness)
+                pixels[j] = (brightness, brightness, 0, brightness)
             else:
                 pixels[j] = (0, 0, 0, 0)
         pixels.show()
