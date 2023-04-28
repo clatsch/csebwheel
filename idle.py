@@ -40,6 +40,7 @@ def start_idle_mode():
     while rainbow_on:
         rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
         if GPIO.input(27) == GPIO.LOW:
+            print('hello')
             rainbow_on = False
             pixels.fill((0, 0, 0, 0))
             pixels.show()
