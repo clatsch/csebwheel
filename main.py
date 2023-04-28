@@ -17,7 +17,7 @@ last_idle_time = 0
 last_presentation_time = 0
 
 # Define the button_pin variable
-button_pin = 18
+button_pin = 17
 
 # Setup the button as input with pull-up resistor
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -31,9 +31,9 @@ try:
 
         time.sleep(0.1)  # Add debounce delay
 
-        if GPIO.input(17) == False and current_time - last_spin_time > DEBOUNCE_TIME:
+        if GPIO.input(button_pin) == False and current_time - last_spin_time > DEBOUNCE_TIME:
             print('Spin selected')
-            start_spin(button_pin)
+            start_spin()
             last_spin_time = current_time
 
         time.sleep(0.1)  # Add debounce delay
@@ -57,5 +57,3 @@ except KeyboardInterrupt:
 if any(pixels):
     pixels.fill((0, 0, 0, 0))
     pixels.show()
-
-
