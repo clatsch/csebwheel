@@ -36,17 +36,17 @@ def rainbow_cycle(wait):
 
 def start_idle_mode():
     global pixels
-    rainbow_on = True
+    rainbow_on = [True]  # Use a list to store the value of rainbow_on
     # Define the button_pin variable for the button on pin 27
     button_pin = 27
     # Setup the button as input with pull-up resistor
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Add event detection for button press using interrupts
-    GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=lambda _: setattr(rainbow_on, 'value', False), bouncetime=300)
-    while rainbow_on:
+    GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=lambda _: rainbow_on.__setitem__(0, False), bouncetime=300)
+    while rainbow_on[0]:
         rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
         if GPIO.input(17) == GPIO.LOW:
-            rainbow_on = False
+            rainbow_on[0] = False
             pixels.fill((0, 0, 0, 0))
             pixels.show()
             start_spin()
