@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 from newSpin import start_spin
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(27, GPIO.IN)
+GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 DEBOUNCE_TIME = 0.3
 
@@ -43,7 +43,8 @@ def start_idle_mode():
     rainbow_on = True
     while rainbow_on:
         rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
-        if GPIO.input(27) == False and current_time - last_idle_time > DEBOUNCE_TIME:
+        print('-----')
+        if GPIO.input(27) == GPIO.LOW:
             print('hello')
             rainbow_on = False
             pixels.fill((0, 0, 0, 0))
