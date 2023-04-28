@@ -2,6 +2,8 @@ import time
 import board
 import neopixel
 import RPi.GPIO as GPIO
+from callbacks import button_callback
+from newSpin import start_spin
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -40,21 +42,21 @@ def rainbow_cycle(wait):
 
 def start_idle_mode():
     global pixels
-    spin_on = True
-    last_button_time = 0  # initialize variable for last button press time
-    while spin_on:
+    rainbow_on = True
+    while rainbow_on:
         rainbow_cycle(0.001)
-        current_time = time.time()  # get current time
         if GPIO.input(27) == GPIO.LOW:
-            # check if debounce time has passed since last button press
-            if current_time - last_button_time > 0.3:
-                spin_on = False
-                pixels.fill((0, 0, 0))
-                pixels.show()
-                while GPIO.input(27) == GPIO.LOW:
-                    pass
-                last_button_time = current_time  # update last button press time
-        elif GPIO.input(17) == GPIO.LOW:
-            spin_on = False
+            rainbow_on = False
             pixels.fill((0, 0, 0))
             pixels.show()
+            while GPIO.input(27) == GPIO.LOW:
+                pass
+        elif GPIO.input(17) == GPIO.LOW:
+            rainbow_on = False
+            pixels.fill((0, 0, 0))
+            pixels.show()
+            button_callback(17)
+
+    pixels.fill((0, 0, 0))
+    pixels.show()
+    time.sleep(0.1)
