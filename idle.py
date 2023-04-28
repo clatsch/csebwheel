@@ -63,6 +63,6 @@ def start_idle_mode():
     for pin, function in gpio_state.items():
         GPIO.setup(pin, function)
     for pin, pull_state in gpio_pull_state.items():
-        GPIO.input(pin, pull_state)
+        GPIO.setup(pin, GPIO.IN, pull_up_down=pull_state)  # Change this line
     start_idle_mode.idle_running = False  # Set the flag to False to indicate that the idle mode is not running anymore
 start_idle_mode.idle_running = False  # Initialize the flag to False before starting the loop
