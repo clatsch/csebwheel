@@ -41,34 +41,18 @@ def rainbow_cycle(wait):
 def start_idle_mode():
     global pixels
     rainbow_on = True
-    rainbow_wait = 0.1
-    rainbow_steps = 255
-    rainbow_step_time = rainbow_wait / rainbow_steps
-    rainbow_pos = 0
-
     while rainbow_on:
-        # Intersperse with button press checks
-        for i in range(10):
-            if GPIO.input(27) == GPIO.LOW:
-                rainbow_on = False
-                pixels.fill((0, 0, 0, 0))
-                pixels.show()
-                break
-            elif GPIO.input(17) == GPIO.LOW:
-                rainbow_on = False
-                pixels.fill((0, 0, 0, 0))
-                pixels.show()
-                start_spin()
-                break
-            time.sleep(0.01)
-
-        # Continue with rainbow cycle
-        for j in range(rainbow_steps):
-            for i in range(numleds):
-                pixel_index = (i * 256 // numleds) + rainbow_pos
-                pixels[i] = wheel(pixel_index & 255)
+        rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
+        print('-----')
+        if GPIO.input(27) == GPIO.LOW:
+            print('hello')
+            rainbow_on = False
+            pixels.fill((0, 0, 0, 0))
             pixels.show()
-            time.sleep(rainbow_step_time)
-            rainbow_pos += 1
-            if rainbow_pos >= 256:
-                rainbow_pos = 0
+            light_up_group()
+
+        elif GPIO.input(17) == GPIO.LOW:
+            rainbow_on = False
+            pixels.fill((0, 0, 0, 0))
+            pixels.show()
+            start_spin()
