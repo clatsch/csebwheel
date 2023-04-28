@@ -14,22 +14,19 @@ pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.8, auto_write=False,
 
 def wheel(pos):
     if pos < 0 or pos > 255:
-        r = g = b = 0
-    elif pos < 85:
-        r = int(pos * 3)
-        g = int(255 - pos * 3)
-        b = 0
-    elif pos < 170:
-        pos -= 85
-        r = int(255 - pos * 3)
-        g = 0
-        b = int(pos * 3)
-    else:
-        pos -= 170
+        r = g = b = w = 0
+    elif pos < 128:
         r = 0
-        g = int(pos * 3)
-        b = int(255 - pos * 3)
-    return (r, g, b) if ORDER in (neopixel.RGBW, neopixel.RGBW) else (r, g, b, w)
+        g = 0
+        b = pos * 2
+        w = 0
+    else:
+        r = 0
+        g = 0
+        b = 0
+        w = (pos - 128) * 2
+    return (r, g, b, w) if ORDER in (neopixel.RGBW, neopixel.RGBW) else (r, g, b)
+
 
 def rainbow_cycle(wait):
     for j in range(255):
