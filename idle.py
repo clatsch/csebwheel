@@ -26,26 +26,33 @@ def wheel(pos):
         w = 255 - (pos - 128)*2
     return (0, 0, b, w) if ORDER in (neopixel.RGBW, neopixel.RGBW) else (0, 0, b)
 
-
-
-
 def rainbow_cycle(wait):
+    global pixels
+    button_pressed = False
     for j in range(255):
         for i in range(numleds):
             pixel_index = (i * 256 // numleds) + j
             pixels[i] = wheel(pixel_index & 255)
         pixels.show()
         time.sleep(wait)
+        if not button_pressed and not GPIO.input(27):
+            button_pressed = True
+            break
+    if button_pressed:
+        pixels.fill((0, 0, 0, 0))
+        pixels.show()
+        return
+
 
 
 def start_idle_mode():
     global pixels
     rainbow_on = True
     while rainbow_on:
-        rainbow_cycle(0.1)  # Increase the wait time for a slower cycle
-        print('-----')
+        rainbow_cycle(0.05)
+        if not rainbow_on:
+            break
         if GPIO.input(27) == GPIO.LOW:
-            print('hello')
             rainbow_on = False
             pixels.fill((0, 0, 0, 0))
             pixels.show()
