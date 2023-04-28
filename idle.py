@@ -12,6 +12,8 @@ numleds = 363
 ORDER = neopixel.RGBW
 pixels = neopixel.NeoPixel(pixel_pin, numleds, brightness=0.8, auto_write=False, pixel_order=ORDER)
 
+DEBOUNCE_TIME = 0.3  # Set the debounce time to 300ms
+
 def wheel(pos):
     if pos < 0 or pos > 255:
         r = g = b = 0
@@ -63,4 +65,3 @@ def start_idle_mode():
                 pixels.show()
                 start_spin()
                 last_button_time = current_time  # update last button press time
-
